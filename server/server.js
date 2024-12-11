@@ -1,9 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const stripe = require("stripe")(
-    "sk_test_51Q03RuH85R48nJ1WmhHX2iBy01alPuz1sDuRp4tyz38AB4KnZvo2qytig7ifjDr2wJwFCeRGZP0CUco6pjgT9CSJ00JHGnZwC4"
-);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require("body-parser");
 const courseRoutes = require("./routes/courseRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
@@ -20,8 +18,7 @@ app.post(
     "/webhook",
     bodyParser.raw({ type: "application/json" }),
     async (req, res) => {
-        const endpointSecret =
-            "whsec_8274bd520332f0b3008c86aaf439a778bbeef74e297a1820986e87618a6d167a"; 
+        const endpointSecret = process.env.STRIPE_ENPOINT_SECRET;
         const sig = req.headers["stripe-signature"];
 
         let event;

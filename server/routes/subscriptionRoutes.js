@@ -1,7 +1,5 @@
 const express = require("express");
-const stripe = require("stripe")(
-    "sk_test_51Q03RuH85R48nJ1WmhHX2iBy01alPuz1sDuRp4tyz38AB4KnZvo2qytig7ifjDr2wJwFCeRGZP0CUco6pjgT9CSJ00JHGnZwC4"
-);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const db = require("../models/db");
 const router = express.Router();
 
