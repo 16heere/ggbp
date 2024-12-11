@@ -72,3 +72,6 @@ node_repl_history
 
 # Coverage
 .nyc_output/
+
+# zip files
+.zip
