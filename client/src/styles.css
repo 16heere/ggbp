@@ -361,6 +361,7 @@ progress::-moz-progress-bar {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    overflow: hidden; /* Prevent content from overflowing */
 }
 
 .video-modal-content {
@@ -368,9 +369,19 @@ progress::-moz-progress-bar {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
-    max-width: 800px;
-    width: 100%;
+    max-width: 90vw; /* Constrain to 90% of the viewport width */
+    max-height: 90vh; /* Constrain to 90% of the viewport height */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto; /* Allow scrolling if content exceeds bounds */
+}
+
+video {
+    max-width: 100%; /* Scale the video to fit within the modal content */
+    max-height: 70vh; /* Prevent the video from exceeding the modal height */
+    border-radius: 5px;
 }
 
 .close-button {
@@ -382,6 +393,8 @@ progress::-moz-progress-bar {
     font-size: 1.5rem;
     cursor: pointer;
     color: #333;
+    z-index: 1100; /* Ensure it stays above all content */
+    padding: 5px;
 }
 
 .close-button:hover {

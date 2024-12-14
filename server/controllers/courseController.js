@@ -94,20 +94,19 @@ const getUserProgress = async (req, res) => {
 
         // Fetch the user's watched minutes
         const userResult = await db.query(
-            "SELECT watched_seconds FROM users WHERE id = $1",
+            "SELECT SUM(watched_duration) AS watched_duration FROM user_video_watch WHERE user_id = $1",
             [userId]
         );
-        const watchedMinutes = userResult.rows[0].watched_seconds;
+        const watchedSeconds = userResult.rows[0].watched_duration;
 
         // Fetch total video duration
         const videoResult = await db.query(
             "SELECT SUM(duration) AS total_duration FROM videos"
         );
-
         const totalDuration = videoResult.rows[0].total_duration;
         // Calculate progress
         const progress =
-            totalDuration > 0 ? (watchedMinutes / totalDuration) * 100 : 0;
+            totalDuration > 0 ? (watchedSeconds / totalDuration) * 100 : 0;
         res.status(200).json({ progress });
     } catch (error) {
         console.error("Error fetching progress:", error.message);

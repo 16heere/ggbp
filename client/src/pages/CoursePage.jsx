@@ -53,7 +53,8 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            setProgress(response.data.progress);
+            console.log(response.data);
+            setProgress(() => response.data.progress);
         } catch (error) {
             console.error("Failed to fetch progress:", error.message);
         }
@@ -124,11 +125,6 @@ const CoursePage = () => {
             {user?.isAdmin && (
                 <AdminPanel videos={videos} setVideos={setVideos} />
             )}
-            {user?.isSubscribed && (
-                <button className="unsubscribe-button" onClick={unsubscribe}>
-                    Unsubscribe from Course
-                </button>
-            )}
 
             <CourseProgress progress={progress} />
             <div className="video-grid">
@@ -155,6 +151,11 @@ const CoursePage = () => {
                     onClose={closeVideo}
                     onWatched={onVideoWatched}
                 />
+            )}
+            {user?.isSubscribed && !user?.isAdmin && (
+                <button className="unsubscribe-button" onClick={unsubscribe}>
+                    Unsubscribe from Course
+                </button>
             )}
         </div>
     );
