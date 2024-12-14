@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config();
 const cors = require("cors");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require("body-parser");
@@ -9,7 +10,6 @@ const {
     handleCheckoutSessionCompleted,
 } = require("./handlers/webhookHandlers");
 
-dotenv.config();
 const app = express();
 
 app.use(cors());

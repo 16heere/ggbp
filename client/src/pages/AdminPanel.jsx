@@ -23,7 +23,7 @@ const AdminPanel = ({ videos, setVideos }) => {
         try {
             const token = localStorage.getItem("token");
             const response = await axios.post(
-                "http://localhost:5000/api/courses/videos",
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos`,
                 formData,
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -53,7 +53,7 @@ const AdminPanel = ({ videos, setVideos }) => {
         try {
             const token = localStorage.getItem("token");
             await axios.delete(
-                `http://localhost:5000/api/courses/videos/${videoId}`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -82,7 +82,7 @@ const AdminPanel = ({ videos, setVideos }) => {
         try {
             const token = localStorage.getItem("token");
             await axios.post(
-                "http://localhost:5000/api/courses/videos/update-position",
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
                 { positions: updatedPositions },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

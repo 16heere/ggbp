@@ -18,7 +18,7 @@ const SubscriptionPage = () => {
     const handleSubscribeNow = async () => {
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/subscription/create-checkout-session",
+                `${process.env.REACT_APP_API_ENDPOINT}/subscription/create-checkout-session`,
                 {
                     email,
                     password,

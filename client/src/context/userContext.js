@@ -59,7 +59,7 @@ export const UserProvider = ({ children }) => {
 
             try {
                 const response = await axios.get(
-                    "http://localhost:5000/api/courses/user",
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/user`,
                     {
                         headers: { Authorization: `Bearer ${token}` },
                     }

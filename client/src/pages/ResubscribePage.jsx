@@ -17,7 +17,7 @@ const ResubscribePage = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/subscription/resubscribe-session",
+                `${process.env.REACT_APP_API_ENDPOINT}/subscription/resubscribe-session`,
                 {
                     email,
                     successUrl: "http://localhost:3000/course",

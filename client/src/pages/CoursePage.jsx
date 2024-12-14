@@ -34,7 +34,7 @@ const CoursePage = () => {
         try {
             const token = localStorage.getItem("token");
             const response = await axios.get(
-                "http://localhost:5000/api/courses/videos",
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -48,7 +48,7 @@ const CoursePage = () => {
         try {
             const token = localStorage.getItem("token");
             const response = await axios.get(
-                "http://localhost:5000/api/courses/user-progress",
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/user-progress`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -63,7 +63,7 @@ const CoursePage = () => {
         try {
             const token = localStorage.getItem("token");
             await axios.post(
-                "http://localhost:5000/api/courses/videos/watched",
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/watched`,
                 { videoId, videoDuration },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -84,7 +84,7 @@ const CoursePage = () => {
         try {
             const token = localStorage.getItem("token");
             const response = await axios.get(
-                `http://localhost:5000/api/courses/videos/${video.id}`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${video.id}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -101,7 +101,7 @@ const CoursePage = () => {
         try {
             const token = localStorage.getItem("token");
             await axios.post(
-                "http://localhost:5000/api/courses/unsubscribe",
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/unsubscribe`,
                 {},
                 {
                     headers: { Authorization: `Bearer ${token}` },
