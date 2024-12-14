@@ -5,10 +5,11 @@ import CourseProgress from "../components/CourseProgress";
 import VideoPlayer from "../components/VideoPlayer";
 import { UserContext } from "../context/userContext";
 import AdminPanel from "./AdminPanel";
-
+import { FaAngleRight, FaBars } from "react-icons/fa";
 const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [videos, setVideos] = useState([]);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -53,7 +54,6 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(response.data);
             setProgress(() => response.data.progress);
         } catch (error) {
             console.error("Failed to fetch progress:", error.message);
@@ -125,25 +125,48 @@ const CoursePage = () => {
             {user?.isAdmin && (
                 <AdminPanel videos={videos} setVideos={setVideos} />
             )}
+            <div className={`sidebar ${sidebarOpen ? "" : "closed"}`}>
+                <FaAngleRight
+                    size={30}
+                    className="sidebar-toggle-icon fa-angle-right"
+                    color="#007bff"
+                    onClick={() => setSidebarOpen(false)}
+                />
 
-            <CourseProgress progress={progress} />
-            <div className="video-grid">
-                {videos.map((video) => (
-                    <div
-                        className={`video-card ${
-                            video.watched ? "watched" : ""
-                        }`}
-                        key={video.id}
-                        onClick={() => openVideo(video)}
-                    >
-                        <h3>{video.title}</h3>
-                        <video width="100%" muted>
-                            <source src={video.url} type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                ))}
+                <div className="video-list">
+                    <CourseProgress progress={progress} />
+                    <ul>
+                        {videos.map((video) => (
+                            <li
+                                key={video.id}
+                                className={`video-item ${
+                                    selectedVideo?.id === video.id
+                                        ? "active"
+                                        : ""
+                                }`}
+                                onClick={() => openVideo(video)}
+                            >
+                                {video.title}
+                            </li>
+                        ))}
+                    </ul>
+                    {user?.isSubscribed && !user?.isAdmin && (
+                        <p className="unsubscribe-link" onClick={unsubscribe}>
+                            Unsubscribe
+                        </p>
+                    )}
+                </div>
             </div>
+
+            {/* Sidebar Toggle Button */}
+            {!sidebarOpen && (
+                <FaBars
+                    size={30}
+                    className="sidebar-toggle-icon fa-bars"
+                    color="#007bff"
+                    onClick={() => setSidebarOpen(true)}
+                />
+            )}
 
             {selectedVideo && (
                 <VideoPlayer
@@ -151,11 +174,6 @@ const CoursePage = () => {
                     onClose={closeVideo}
                     onWatched={onVideoWatched}
                 />
-            )}
-            {user?.isSubscribed && !user?.isAdmin && (
-                <button className="unsubscribe-button" onClick={unsubscribe}>
-                    Unsubscribe from Course
-                </button>
             )}
         </div>
     );
