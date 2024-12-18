@@ -43,6 +43,7 @@ const loginUser = async (req, res) => {
         }
 
         const token = generateToken(user.id);
+        console.log(token);
 
         res.json({
             token,
