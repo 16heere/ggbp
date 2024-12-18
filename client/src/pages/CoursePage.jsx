@@ -17,6 +17,29 @@ const CoursePage = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
+    const openVideo = useCallback(
+        async (video) => {
+            if (!video) return;
+            if (selectedVideo?.id === video.id) {
+                setSelectedVideo({ ...video, url: selectedVideo.url });
+                return;
+            }
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${video.id}`,
+                    {
+                        headers: { Authorization: `Bearer ${token}` },
+                    }
+                );
+                setSelectedVideo({ ...video, url: response.data.url });
+            } catch (error) {
+                console.error("Failed to load video:", error.message);
+            }
+        },
+        [selectedVideo]
+    );
+
     const fetchVideos = useCallback(async () => {
         try {
             const token = localStorage.getItem("token");
@@ -34,7 +57,7 @@ const CoursePage = () => {
         } catch (error) {
             console.error("Failed to fetch videos:", error.message);
         }
-    }, [selectedVideo,  openVideo]);
+    }, [selectedVideo, openVideo]);
 
     useEffect(() => {
         const adjustSidebarPosition = () => {
@@ -108,30 +131,6 @@ const CoursePage = () => {
             console.error("Failed to update watched seconds:", error.message);
         }
     };
-
-    const openVideo = useCallback(
-        async (video) => {
-            console.log(video);
-            if (!video) return;
-            if (selectedVideo?.id === video.id) {
-                setSelectedVideo({ ...video, url: selectedVideo.url });
-                return;
-            }
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(
-                    `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${video.id}`,
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }
-                );
-                setSelectedVideo({ ...video, url: response.data.url });
-            } catch (error) {
-                console.error("Failed to load video:", error.message);
-            }
-        },
-        [selectedVideo]
-    );
 
     const unsubscribe = async () => {
         try {
