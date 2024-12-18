@@ -873,6 +873,11 @@ hr {
     .add-video-form button {
         flex: 1 1 100%;
     }
+
+    .navbar h1 a img {
+        height: 30px;
+        width: auto;
+    }
 }
 
 @media (max-width: 480px) {
@@ -893,6 +898,13 @@ hr {
     .add-video-form button {
         font-size: 12px;
         padding: 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    .navbar {
+        align-items: center;
+        justify-content: center;
     }
 }
 

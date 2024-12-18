@@ -28,7 +28,7 @@ const HomePage = () => {
         },
         {
             name: "Olaoluwa Olaofe",
-            content: "The strategies they teach her are pure gold...",
+            content: "The strategies they teach here are pure gold...",
         },
     ];
 
