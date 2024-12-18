@@ -12,7 +12,14 @@ const {
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: "https://ggbp.org.uk",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.post(
     "/webhook",
