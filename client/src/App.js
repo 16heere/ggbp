@@ -7,7 +7,7 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import { FaLinkedin, FaInstagram, FaTwitter, FaTiktok } from "react-icons/fa6";
 import { UserContext } from "./context/userContext";
-import ResubscribePage from "./pages/ResubscribePage"; // Import the component
+import ResubscribePage from "./pages/ResubscribePage";
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
@@ -17,7 +17,9 @@ const App = () => {
         <div className="content-container">
             <header className="navbar">
                 <h1>
-                    <Link to="/">GGBP</Link>
+                    <Link to="/">
+                        <img src="../public/assets/ggbp LOGO.png" alt="" />
+                    </Link>
                 </h1>
                 <nav>
                     {!user && <Link to="/login">Login</Link>}

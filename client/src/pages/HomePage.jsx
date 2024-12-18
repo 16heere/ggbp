@@ -5,9 +5,31 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const HomePage = () => {
     const reviews = [
-        { name: "John Doe", content: "This program changed my life!" },
-        { name: "Jane Smith", content: "Highly recommend this program." },
-        { name: "Alex Johnson", content: "Great support and community!" },
+        {
+            name: "Rajan Rama",
+            content:
+                "I used to be scared of crypto, but now it's my main source of income",
+        },
+        {
+            name: "Luke Richards",
+            content:
+                "This service is for sure worth the money and I'd recommend it to anyone who would like to understand and truly get into the world of trading",
+        },
+        { name: "Eshar Heer", content: "I wish I joined sooner" },
+        {
+            name: "Jessica Mitchell",
+            content:
+                "I had been scammed before so I was skeptical, but this was the first mentorship that delivered on every promise",
+        },
+        {
+            name: "Ethan Caldwell",
+            content:
+                "The mentors actually care and give you step by step tools & 1-1 help",
+        },
+        {
+            name: "Olaoluwa Olaofe",
+            content: "The strategies they teach her are pure gold...",
+        },
     ];
 
     return (
