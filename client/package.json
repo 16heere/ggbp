@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ggbp.org.uk/",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@stripe/react-stripe-js": "^3.0.0",
