@@ -1,18 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @font-face {
-    font-family: "SFPROLIGHT";
-    src: url("../public/fonts/SFPRODISPLAYLIGHTITALIC.OTF") format("opentype");
-}
-
-@font-face {
     font-family: "SFPROREG";
     src: url("../public/fonts/SFPRODISPLAYREGULAR.OTF") format("opentype");
 }
 
 @font-face {
     font-family: "SFPROBOLD";
-    src: url("../public/fonts/SFPRODISPLAYSEMIBOLDITALIC.OTF")
-        format("opentype");
+    src: url("../public/fonts/SFPRODISPLAYBOLD.OTF") format("opentype");
 }
 
 * {
@@ -58,7 +52,7 @@ h1 {
 h2,
 h3,
 h4 {
-    font-family: "SFPROLIGHT";
+    font-family: "SFPROBOLD";
 }
 
 /* Navbar */
@@ -69,8 +63,8 @@ h4 {
     align-items: center;
     background: linear-gradient(
         to right,
-        purple,
-        blue
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
     ); /* Blue to purple gradient */
     color: #f9fafb; /* Light text */
     padding: 15px 50px;
@@ -137,7 +131,11 @@ h4 {
 /* Footer */
 .footer {
     height: auto;
-    background: linear-gradient(to right, purple, blue); /* Vibrant indigo */
+    background: linear-gradient(
+        to right,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    ); /* Vibrant indigo */
     color: #f9fafb;
     text-align: center;
     padding: 15px 0;
@@ -234,7 +232,7 @@ form button:hover {
     margin-bottom: 20px;
 }
 .course-progress-title {
-    color: purple;
+    color: rgba(202, 108, 230, 255);
 }
 
 progress {
@@ -249,11 +247,19 @@ progress::-webkit-progress-bar {
 }
 
 progress::-webkit-progress-value {
-    background: linear-gradient(to right, purple, blue);
+    background: linear-gradient(
+        to right,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    );
 }
 
 progress::-moz-progress-bar {
-    background: linear-gradient(to right, purple, blue);
+    background: linear-gradient(
+        to right,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    );
 }
 
 /* Subscription Page */
@@ -659,8 +665,8 @@ video {
     padding: 50px 20px;
     background: linear-gradient(
         to right,
-        purple,
-        blue
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
     ); /* Blue to purple gradient */
     color: #ffffff;
     min-height: 450px;
@@ -1001,7 +1007,12 @@ hr {
 }
 
 .video-list .video-item.active {
-    background-color: purple; /* Darker blue for active video */
+    background-color: rgba(
+        202,
+        108,
+        230,
+        255
+    ); /* Darker blue for active video */
     color: white;
 }
 
