@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-const VideoPlayer = ({ video, onClose, onWatched }) => {
+
+const VideoPlayer = ({ video, onWatched }) => {
     const [isWatched, setIsWatched] = useState(false);
 
     const handleTimeUpdate = (event) => {
@@ -16,19 +17,24 @@ const VideoPlayer = ({ video, onClose, onWatched }) => {
     if (!video || !video.url) return null;
 
     return (
-        <div className="video-modal">
-            <div className="video-modal-content">
-                <button className="close-button" onClick={onClose}>
-                    ✖
-                </button>
-                <h2>{video.title}</h2>
-                <video width="100%" controls onTimeUpdate={handleTimeUpdate}>
-                    <source src={video.url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+        <div className="video-player">
+            <h2>{video.title}</h2>
+            <video
+                key={video.url}
+                width="100%"
+                controls
+                onTimeUpdate={handleTimeUpdate}
+            >
+                <source src={video.url} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
         </div>
     );
 };
 
-export default VideoPlayer;
+export default React.memo(VideoPlayer, (prevProps, nextProps) => {
+    return (
+        prevProps.video.id === nextProps.video.id &&
+        prevProps.video.url === nextProps.video.url
+    );
+});

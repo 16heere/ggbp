@@ -6,14 +6,37 @@ import VideoPlayer from "../components/VideoPlayer";
 import { UserContext } from "../context/userContext";
 import AdminPanel from "./AdminPanel";
 import { FaAngleRight, FaBars } from "react-icons/fa";
+
 const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [videos, setVideos] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarRight, setSidebarRight] = useState(0);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const adjustSidebarPosition = () => {
+            const container = document.querySelector(".container");
+            if (container) {
+                const containerStyle = window.getComputedStyle(container);
+                const marginRight = parseFloat(containerStyle.marginRight) || 0;
+                setSidebarRight(marginRight);
+            }
+        };
+
+        adjustSidebarPosition();
+        window.addEventListener("resize", adjustSidebarPosition);
+
+        return () =>
+            window.removeEventListener("resize", adjustSidebarPosition);
+    }, []);
+
+    useEffect(() => {
+        console.log("Selected video updated:", selectedVideo);
+    }, [selectedVideo]);
 
     useEffect(() => {
         if (user !== null && user !== undefined) {
@@ -40,11 +63,16 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
+            console.log(response.data);
             setVideos(response.data);
+            if (!selectedVideo && response.data.length > 0) {
+                openVideo(response.data[0]);
+            }
         } catch (error) {
             console.error("Failed to fetch videos:", error.message);
         }
     };
+
     const fetchProgress = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -82,6 +110,12 @@ const CoursePage = () => {
     };
 
     const openVideo = async (video) => {
+        console.log(video);
+        if (!video) return;
+        if (selectedVideo?.id === video.id) {
+            setSelectedVideo({ ...video, url: selectedVideo.url });
+            return;
+        }
         try {
             const token = localStorage.getItem("token");
             const response = await axios.get(
@@ -95,8 +129,6 @@ const CoursePage = () => {
             console.error("Failed to load video:", error.message);
         }
     };
-
-    const closeVideo = () => setSelectedVideo(null);
 
     const unsubscribe = async () => {
         try {
@@ -121,21 +153,23 @@ const CoursePage = () => {
 
     return (
         <div className="course-page">
-            <h1>Course Content</h1>
             {user?.isAdmin && (
                 <AdminPanel videos={videos} setVideos={setVideos} />
             )}
-            <div className={`sidebar ${sidebarOpen ? "" : "closed"}`}>
+            <div
+                className={`sidebar ${sidebarOpen ? "" : "closed"}`}
+                style={{ right: `calc(-${sidebarRight}px - 20px)` }}
+            >
                 <FaAngleRight
                     size={30}
                     className="sidebar-toggle-icon fa-angle-right"
-                    color="#007bff"
+                    color="purple"
                     onClick={() => setSidebarOpen(false)}
                 />
 
                 <div className="video-list">
                     <CourseProgress progress={progress} />
-                    <ul>
+                    <ol>
                         {videos.map((video) => (
                             <li
                                 key={video.id}
@@ -143,13 +177,13 @@ const CoursePage = () => {
                                     selectedVideo?.id === video.id
                                         ? "active"
                                         : ""
-                                }`}
+                                } ${video.watched ? "watched" : ""}`}
                                 onClick={() => openVideo(video)}
                             >
                                 {video.title}
                             </li>
                         ))}
-                    </ul>
+                    </ol>
                     {user?.isSubscribed && !user?.isAdmin && (
                         <p className="unsubscribe-link" onClick={unsubscribe}>
                             Unsubscribe
@@ -160,21 +194,24 @@ const CoursePage = () => {
 
             {/* Sidebar Toggle Button */}
             {!sidebarOpen && (
-                <FaBars
-                    size={30}
-                    className="sidebar-toggle-icon fa-bars"
-                    color="#007bff"
-                    onClick={() => setSidebarOpen(true)}
-                />
+                <div className="fa-bars-container">
+                    <FaBars
+                        size={30}
+                        className="sidebar-toggle-icon fa-bars"
+                        color="purple"
+                        onClick={() => setSidebarOpen(true)}
+                    />
+                </div>
             )}
-
-            {selectedVideo && (
-                <VideoPlayer
-                    video={selectedVideo}
-                    onClose={closeVideo}
-                    onWatched={onVideoWatched}
-                />
-            )}
+            <div className={`video-container ${sidebarOpen ? "" : "expanded"}`}>
+                {selectedVideo && (
+                    <VideoPlayer
+                        video={selectedVideo}
+                        onWatched={onVideoWatched}
+                    />
+                )}
+            </div>
+            {/* Display the selected video on the page */}
         </div>
     );
 };

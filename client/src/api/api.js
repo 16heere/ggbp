@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: process.env.REACT_APP_API_ENDPOINT });
+const API = axios.create({
+    baseURL: `${process.env.REACT_APP_API_ENDPOINT}`,
+});
 
 export const loginUser = (credentials) =>
     API.post("/courses/login", credentials);

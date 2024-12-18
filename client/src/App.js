@@ -5,13 +5,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import CoursePage from "./pages/CoursePage";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
-import {
-    FaLinkedin,
-    FaInstagram,
-    FaTwitter,
-    FaFacebook,
-    FaTiktok,
-} from "react-icons/fa6";
+import { FaLinkedin, FaInstagram, FaTwitter, FaTiktok } from "react-icons/fa6";
 import { UserContext } from "./context/userContext";
 import ResubscribePage from "./pages/ResubscribePage"; // Import the component
 
@@ -27,7 +21,11 @@ const App = () => {
                 </h1>
                 <nav>
                     {!user && <Link to="/login">Login</Link>}
-                    {!user && <Link to="/subscribe">Subscribe</Link>}
+                    {!user && (
+                        <Link className="subscribe-btn" to="/subscribe">
+                            Subscribe
+                        </Link>
+                    )}
                     {user && user.isSubscribed && (
                         <Link to="/course">Course</Link>
                     )}
@@ -55,44 +53,36 @@ const App = () => {
                 <p>© 2024 GGBP. All rights reserved.</p>
                 <div className="socials">
                     <a
-                        href="https://www.facebook.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="social-link"
-                    >
-                        <FaFacebook size={50} />
-                    </a>
-                    <a
                         href="https://www.twitter.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="social-link"
                     >
-                        <FaTwitter size={50} />
+                        <FaTwitter size={30} />
                     </a>
                     <a
-                        href="https://www.instagram.com"
+                        href="https://www.instagram.com/ggbp"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="social-link"
                     >
-                        <FaInstagram size={50} />
+                        <FaInstagram size={30} />
                     </a>
                     <a
-                        href="https://www.linkedin.com"
+                        href="https://www.linkedin.com/company/ggbp-get-gbp/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="social-link"
                     >
-                        <FaLinkedin size={50} />
+                        <FaLinkedin size={30} />
                     </a>
                     <a
-                        href="https://tiktok.com"
+                        href="https://www.tiktok.com/@ggbp"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="social-link"
                     >
-                        <FaTiktok size={50} />
+                        <FaTiktok size={30} />
                     </a>
                 </div>
             </footer>

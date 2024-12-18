@@ -281,6 +281,7 @@ const removeVideo = async (req, res) => {
 const getVideos = async (req, res) => {
     try {
         const userId = req.user.id;
+        console.log(userId);
         const result = await db.query(
             `
         SELECT 
@@ -296,6 +297,7 @@ const getVideos = async (req, res) => {
         `,
             [userId]
         );
+        console.log(result);
         res.status(200).json(result.rows);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
@@ -320,7 +322,6 @@ const getVideoById = async (req, res) => {
             Key: s3_key,
             Expires: 3600,
         });
-
         // Return the signed URL as JSON (instead of sending binary data)
         res.status(200).json({ url: signedUrl });
     } catch (error) {

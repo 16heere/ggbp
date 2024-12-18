@@ -3,83 +3,71 @@ const db = require("../models/db");
 
 async function handleCheckoutSessionCompleted(session) {
     const email = session.metadata.email;
-    const password = session.metadata.password;
-
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const password = session.metadata.password
+        ? session.metadata.password
+        : null;
+    const hashedPassword =
+        password != null ? await bcrypt.hash(password, 10) : null;
     const stripeSubscriptionId = session.subscription;
 
     try {
+        // Check if the user already exists
         const existingUser = await db.query(
             "SELECT id FROM users WHERE email = $1",
             [email]
         );
+
         let userId;
+
         if (existingUser.rows.length > 0) {
+            // Existing user
             userId = existingUser.rows[0].id;
+
+            // Check if the user has an existing subscription
+            const existingSubscription = await db.query(
+                "SELECT id FROM subscriptions WHERE user_id = $1",
+                [userId]
+            );
+
+            if (existingSubscription.rows.length > 0) {
+                // Update existing subscription
+                await db.query(
+                    "UPDATE subscriptions SET stripe_subscription_id = $1, status = $2 WHERE user_id = $3",
+                    [stripeSubscriptionId, true, userId]
+                );
+                console.log(`Subscription updated for user ${email}`);
+            } else {
+                // Insert a new subscription for the existing user
+                await db.query(
+                    "INSERT INTO subscriptions (user_id, stripe_subscription_id, status) VALUES ($1, $2, $3)",
+                    [userId, stripeSubscriptionId, true]
+                );
+                console.log(`Subscription added for existing user ${email}`);
+            }
         } else {
+            // New user
             const insertUserQuery =
                 "INSERT INTO users (email, password, is_admin) VALUES ($1, $2, $3) RETURNING id";
             const userResult = await db.query(insertUserQuery, [
                 email,
                 hashedPassword,
-                false,
+                false, // Assuming new users are not admins
             ]);
             userId = userResult.rows[0].id;
-        }
 
-        const insertSubscriptionQuery = `
-            INSERT INTO subscriptions (user_id, stripe_subscription_id, status)
-            VALUES ($1, $2, $3)
-        `;
-        await db.query(insertSubscriptionQuery, [
-            userId,
-            stripeSubscriptionId,
-            true,
-        ]);
-        console.log(`User ${email} subscribed to course`);
+            // Insert a new subscription for the new user
+            await db.query(
+                "INSERT INTO subscriptions (user_id, stripe_subscription_id, status) VALUES ($1, $2, $3)",
+                [userId, stripeSubscriptionId, true]
+            );
+            console.log(`New user ${email} subscribed`);
+        }
     } catch (err) {
-        console.error("Error handling course subscription:", err);
+        console.error("Error handling course subscription:", err.message);
         throw new Error("Database operation failed");
     }
 }
 
-const handleStripeWebhook = async (req, res) => {
-    const sig = req.headers["stripe-signature"];
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-    let event;
-
-    try {
-        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    } catch (error) {
-        console.error("Error verifying Stripe webhook:", error.message);
-        return res.status(400).send(`Webhook error: ${error.message}`);
-    }
-
-    if (event.type === "checkout.session.completed") {
-        const session = event.data.object;
-
-        if (session.mode === "subscription") {
-            const userId = session.metadata.userId;
-
-            try {
-                // Update subscription status in the database
-                await db.query(
-                    "UPDATE subscriptions SET status = true WHERE user_id = $1",
-                    [userId]
-                );
-
-                console.log(`User ${userId} subscription reactivated.`);
-            } catch (error) {
-                console.error("Error updating subscription:", error.message);
-            }
-        }
-    }
-
-    res.status(200).send("Received webhook");
-};
-
 module.exports = {
     handleCheckoutSessionCompleted,
-    handleStripeWebhook,
 };

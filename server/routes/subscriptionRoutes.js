@@ -20,8 +20,8 @@ router.post("/create-checkout-session", async (req, res) => {
                 email,
                 password,
             },
-            success_url: "http://localhost:3000/login",
-            cancel_url: "http://localhost:3000/cancel",
+            success_url: "https://ggbp.org.uk/login",
+            cancel_url: "https://ggbp.org.uk/cancel",
         });
 
         res.json({ url: session.url });
@@ -49,8 +49,8 @@ router.post("/create-course-subscription", async (req, res) => {
                 password,
                 courseId, // Pass course ID in metadata
             },
-            success_url: "http://localhost:3000/login",
-            cancel_url: "http://localhost:3000/cancel",
+            success_url: "https://ggbp.org.uk/login",
+            cancel_url: "https://ggbp.org.uk/cancel",
         });
 
         res.json({ url: session.url });
@@ -135,11 +135,12 @@ router.post("/resubscribe-session", async (req, res) => {
             success_url: successUrl,
             cancel_url: cancelUrl,
             metadata: {
+                email: email,
                 userId: userId, // Pass user ID to metadata for webhook
             },
         });
 
-        res.status(200).json({ sessionId: session.id });
+        res.status(200).json({ email: email, sessionId: session.id });
     } catch (error) {
         console.error("Error creating Stripe session:", error.message);
         res.status(500).json({ message: "Server error" });

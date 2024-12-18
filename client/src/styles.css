@@ -5,6 +5,11 @@
 }
 
 @font-face {
+    font-family: "SFPROREG";
+    src: url("../public/fonts/SFPRODISPLAYREGULAR.OTF") format("opentype");
+}
+
+@font-face {
     font-family: "SFPROBOLD";
     src: url("../public/fonts/SFPRODISPLAYSEMIBOLDITALIC.OTF")
         format("opentype");
@@ -14,6 +19,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "SFPROREG";
 }
 
 #root {
@@ -38,7 +44,6 @@ body {
 
 body {
     min-height: 100vh;
-    font-family: "Poppins", sans-serif;
     background-color: #f9fafb; /* Soft light background */
     color: #333;
     display: flex;
@@ -47,27 +52,30 @@ body {
 }
 
 h1 {
-    font-family: "SFPRODISPLAYSEMIBOLDITALIC";
+    font-family: "SFPROBOLD";
 }
 
 h2,
 h3,
 h4 {
-    font-family: "SFPRODISPLAYLIGHTITALIC";
+    font-family: "SFPROLIGHT";
 }
 
 /* Navbar */
 .navbar {
-    height: 100px;
+    height: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #4f46e5; /* Vibrant indigo */
+    background: linear-gradient(
+        to right,
+        purple,
+        blue
+    ); /* Blue to purple gradient */
     color: #f9fafb; /* Light text */
     padding: 15px 50px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
-
 .navbar h1 a {
     font-size: 1.8rem;
     font-weight: bold;
@@ -79,15 +87,20 @@ h4 {
 }
 
 .navbar a {
+    font-size: 1.2rem;
     color: #f9fafb;
     font-weight: 500;
     text-decoration: none;
     align-self: center;
+    transition: all 0.1s ease-in-out;
+}
+
+.navbar a:hover {
+    transform: scale(1.05);
 }
 
 .navbar .logout-button {
     background-color: #f87171; /* Soft red */
-    font-family: "Poppins", sans-serif;
     color: white;
     border: none;
     border-radius: 5px;
@@ -112,18 +125,19 @@ h4 {
 .container {
     flex: 1;
     max-width: 1800px;
-    margin: 20px auto 0 auto;
-    padding: 20px;
+    margin: 0 auto 0 auto;
+    padding: 0 20px 20px 20px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 /* Footer */
 .footer {
-    height: 130px;
-    background-color: #4f46e5; /* Vibrant indigo */
+    height: auto;
+    background: linear-gradient(to right, purple, blue); /* Vibrant indigo */
     color: #f9fafb;
     text-align: center;
     padding: 15px 0;
@@ -219,6 +233,9 @@ form button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+.course-progress-title {
+    color: purple;
+}
 
 progress {
     width: 100%;
@@ -232,11 +249,11 @@ progress::-webkit-progress-bar {
 }
 
 progress::-webkit-progress-value {
-    background-color: #007bff;
+    background: linear-gradient(to right, purple, blue);
 }
 
 progress::-moz-progress-bar {
-    background-color: #007bff;
+    background: linear-gradient(to right, purple, blue);
 }
 
 /* Subscription Page */
@@ -247,10 +264,11 @@ progress::-moz-progress-bar {
     padding: 20px;
     background-color: #f9fafb; /* Light background */
     min-height: 100vh;
+    width: 80%;
 }
 
 .subscription-card {
-    max-width: 600px;
+    max-width: 1200px;
     width: 100%;
     background: #ffffff;
     padding: 30px;
@@ -544,13 +562,19 @@ video {
 }
 
 .first-info {
-    min-height: 450px;
-    text-align: center;
+    color: #000;
+    /* background: url("../public/assets/DALL·E\ 2024-12-16\ 01.03.30\ -\ A\ visually\ striking\ background\ for\ a\ trading\ website's\ hero\ section\,\ designed\ to\ contrast\ a\ blue-purple\ gradient\ navbar.\ The\ image\ features\ a\ warm\ gra.webp")
+        no-repeat center center;
+    background-size: cover;  */
+    width: 100vw; /* Makes sure the background spans the full viewport width */
+    height: 450px; /* Matches the height of the section */
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    text-align: center;
 }
+
 .first-info h1 {
     font-size: 4rem;
 }
@@ -609,8 +633,12 @@ video {
     color: white; /* Ensure text color stays consistent */
 }
 
+.login-page {
+    width: 80%;
+}
+
 .login-form {
-    justify-self: center;
+    width: 100%;
 }
 
 .course-page {
@@ -627,13 +655,13 @@ video {
 }
 
 .course-info {
-    width: 150%; /* Adjusted width */
+    min-width: 100vw; /* Adjusted width */
     padding: 50px 20px;
     background: linear-gradient(
-        135deg,
-        #007bff,
-        #0056b3
-    ); /* Gradient background */
+        to right,
+        purple,
+        blue
+    ); /* Blue to purple gradient */
     color: #ffffff;
     min-height: 450px;
     display: flex;
@@ -674,7 +702,8 @@ video {
     display: inline-block;
     width: 60px;
     height: 60px;
-    line-height: 57px;
+    line-height: 55px;
+    letter-spacing: 5px;
     text-align: center;
     border: 3px solid #ffffff;
     border-radius: 50%;
@@ -715,7 +744,6 @@ hr {
 
 .review {
     padding: 30px;
-    font-family: "Poppins", sans-serif;
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -879,10 +907,9 @@ hr {
 /* General Sidebar Styles */
 .sidebar {
     position: absolute; /* Change to absolute for natural scrolling */
-    top: 100px;
-    bottom: 130px;
-    right: 0;
-    height: calc(100%-230px); /* Full height */
+    top: 0;
+    right: -20px;
+    height: 100%; /* Full height */
     width: 300px; /* Default width */
     background-color: #f8f9fa; /* Light gray background */
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1); /* Shadow for better visibility */
@@ -906,11 +933,39 @@ hr {
     cursor: pointer;
 }
 
-.sidebar-toggle-icon.fa-bars {
+.fa-bars-container {
+    height: 30px;
+    width: 30px;
     position: absolute;
-    top: 120px;
-    left: calc(100vw - 50px);
-    z-index: 10000;
+    top: 1%;
+    right: 10px;
+    z-index: 1;
+    visibility: hidden; /* Hidden by default */
+    opacity: 0; /* Fully transparent */
+    transition: visibility 0.3s ease, opacity 0.3s ease; /* Matches sidebar */
+}
+
+/* Show FaBars Container When Sidebar is Closed */
+.sidebar.closed + .fa-bars-container {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Hide FaBars Container When Sidebar is Open */
+.sidebar + .fa-bars-container {
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* FaBars Icon Styles */
+.sidebar-toggle-icon.fa-bars {
+    cursor: pointer;
+}
+
+@media (min-width: 1800px) {
+    .fa-bars-container {
+        right: -1%;
+    }
 }
 
 .sidebar-toggle-icon.fa-angle-right {
@@ -923,7 +978,6 @@ hr {
 /* Video List Styling */
 .video-list {
     padding: 20px;
-    font-family: Arial, sans-serif;
 }
 
 .video-list h3 {
@@ -946,13 +1000,8 @@ hr {
     transition: background-color 0.3s;
 }
 
-.video-list .video-item:hover {
-    background-color: #007bff;
-    color: white;
-}
-
 .video-list .video-item.active {
-    background-color: #0056b3; /* Darker blue for active video */
+    background-color: purple; /* Darker blue for active video */
     color: white;
 }
 
@@ -980,4 +1029,109 @@ hr {
     .sidebar-toggle-icon {
         left: -35px; /* Adjust toggle button position */
     }
+
+    .course-info {
+        padding: 20px;
+        min-height: auto; /* Adjust height to fit content */
+        flex-direction: column; /* Stack elements vertically */
+    }
+
+    .course-info-title h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .course-info-points {
+        flex-direction: column; /* Stack the points vertically */
+        gap: 15px; /* Reduce spacing between points */
+    }
+
+    .course-info-point {
+        max-width: 100%; /* Allow points to take full width */
+        align-self: center;
+    }
+
+    .course-info-point-circle {
+        margin-bottom: 15px; /* Reduce spacing */
+    }
+
+    .first-info {
+        height: auto; /* Let content determine height */
+        padding: 20px;
+    }
+
+    .first-info h1 {
+        font-size: 2rem; /* Reduce font size */
+        margin-bottom: 10px;
+    }
+
+    .courses {
+        flex-direction: column; /* Stack course boxes vertically */
+        width: 100%;
+    }
+
+    .course p {
+        width: 80%; /* Adjust text width */
+    }
+}
+
+@media (max-width: 480px) {
+    .course-info-title h2 {
+        font-size: 1.2rem; /* Smaller font size */
+    }
+
+    .course-info-point-circle {
+        width: 40px; /* Smaller circle size */
+        height: 40px;
+        line-height: 35px;
+        letter-spacing: 1px;
+        font-size: 1rem;
+    }
+
+    .first-info h1 {
+        font-size: 1.8rem; /* Further reduce font size */
+    }
+
+    .course-info-point p {
+        font-size: 0.9rem; /* Smaller text */
+    }
+
+    .course-info {
+        text-align: center; /* Center content on small screens */
+    }
+}
+
+.video-container {
+    width: calc(100% - 300px); /* Account for sidebar width */
+    transition: width 0.3s ease-in-out;
+    padding: 20px;
+}
+
+.video-container.expanded {
+    width: 100%; /* Full width when sidebar is closed */
+}
+
+.video-item.watched {
+    background-color: #b3b3b3; /* Light gray */
+    color: #6b6b6b; /* Gray text */
+    opacity: 1; /* Slight fade effect */
+}
+
+.navbar .subscribe-btn {
+    background-color: #fff;
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 50px;
+}
+
+.navbar .subscribe-btn:hover {
+    color: #fff;
+    background-color: #000;
+}
+
+.video-player video {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 8px; /* Optional for rounded corners */
+    transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
 }

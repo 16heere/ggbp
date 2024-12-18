@@ -3,7 +3,7 @@ require("dotenv").config();
 
 // PostgreSQL connection pool
 const db = new Pool({
-    host: process.env.DB_HOST, // e.g., 'localhost'
+    host: process.env.DB_HOST, //
     user: process.env.DB_USER, // Your PostgreSQL user
     password: process.env.DB_PASSWORD, // Your PostgreSQL password
     database: process.env.DB_NAME, // Your PostgreSQL database name
