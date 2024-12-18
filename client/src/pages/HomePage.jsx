@@ -78,7 +78,7 @@ const HomePage = () => {
                     id="carouselExampleControls"
                     className="carousel slide"
                     data-bs-ride="carousel"
-                    data-bs-interval="10000" // 10 seconds
+                    data-bs-interval="10000"
                 >
                     <div className="carousel-inner">
                         {reviews.map((review, index) => (

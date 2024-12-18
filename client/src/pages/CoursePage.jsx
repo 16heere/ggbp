@@ -81,6 +81,7 @@ const CoursePage = () => {
     }, [selectedVideo]);
 
     useEffect(() => {
+        console.log(user);
         if (user !== null && user !== undefined) {
             setLoading(false);
             if (!user.isSubscribed) {

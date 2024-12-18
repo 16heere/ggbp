@@ -23,6 +23,7 @@ const LoginPage = () => {
             localStorage.setItem("token", token);
             localStorage.setItem("loginTime", Date.now().toString());
             handleLogin(user, token);
+            console.log(user);
             alert("Login successful!");
             navigate("/course");
         } catch (error) {
