@@ -18,7 +18,7 @@ const App = () => {
             <header className="navbar">
                 <h1>
                     <Link to="/">
-                        <img src="../public/assets/ggbp LOGO.png" alt="" />
+                        <img src="./assets/ggbp LOGO.png" alt="" />
                     </Link>
                 </h1>
                 <nav>
