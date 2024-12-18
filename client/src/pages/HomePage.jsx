@@ -58,38 +58,57 @@ const HomePage = () => {
                 </div>
                 <div className="course-info-points">
                     <div className="course-info-point">
+                        <img
+                            src="/assets/IMG_7594.png"
+                            alt="Education"
+                            className="course-image"
+                        />
                         <h2 className="course-info-point-circle">1</h2>
                         <h4>Education</h4>
                         <p>
-                            Elevate you investing skills to the next level. Gain
-                            access to comprehensive courses, 50+ hours and
-                            counting of in-depth tutorials, and several
-                            expert-crafted articles
+                            Elevate your investing skills to the next level.
+                            Gain access to comprehensive courses, 50+ hours of
+                            tutorials, and expert-crafted articles.
                         </p>
                     </div>
                     <div className="course-info-point">
+                        <img
+                            src="/assets/IMG_7595.png"
+                            alt="Insights"
+                            className="course-image"
+                        />
                         <h2 className="course-info-point-circle">2</h2>
                         <h4>Insights You Can Trust</h4>
                         <p>
                             Discover and invest in opportunities backed by
-                            expert analysis
+                            expert analysis.
                         </p>
                     </div>
                     <div className="course-info-point">
+                        <img
+                            src="/assets/IMG_7593.png"
+                            alt="Market Analysis"
+                            className="course-image"
+                        />
                         <h2 className="course-info-point-circle">3</h2>
                         <h4>Market Analysis</h4>
                         <p>
                             Safeguard your investments against unpredictable
-                            market volatility
+                            market volatility.
                         </p>
                     </div>
                     <div className="course-info-point">
+                        <img
+                            src="/assets/IMG_7596.png"
+                            alt="Network"
+                            className="course-image"
+                        />
                         <h2 className="course-info-point-circle">4</h2>
                         <h4>Network</h4>
                         <p>
                             Collaborate and learn alongside the sharpest minds
                             in crypto, and connect directly with 8-figure
-                            traders. 1-1 Sessions on demand
+                            traders. 1-1 Sessions on demand.
                         </p>
                     </div>
                 </div>
@@ -146,6 +165,22 @@ const HomePage = () => {
                         <span className="visually-hidden">Next</span>
                     </button>
                 </div>
+            </div>
+            <div
+                class="trustpilot-widget"
+                data-locale="en-GB"
+                data-template-id="56278e9abfbbba0bdcd568bc"
+                data-businessunit-id="6761cdf3148b1d5d425fd96b"
+                data-style-height="52px"
+                data-style-width="100%"
+            >
+                <a
+                    href="https://uk.trustpilot.com/review/ggbp.org.uk"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Trustpilot
+                </a>
             </div>
         </div>
     );

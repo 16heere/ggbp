@@ -57,6 +57,7 @@ h4 {
 
 /* Navbar */
 .navbar {
+    position: relative;
     height: auto;
     display: flex;
     justify-content: space-between;
@@ -68,8 +69,20 @@ h4 {
     ); /* Blue to purple gradient */
     color: #f9fafb; /* Light text */
     padding: 15px 50px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
+.navbar::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    opacity: 0.5;
+}
+
 .navbar h1 a {
     font-size: 1.8rem;
     font-weight: bold;
@@ -572,10 +585,7 @@ video {
 }
 
 .first-info {
-    color: #000;
-    /* background: url("../public/assets/DALL·E\ 2024-12-16\ 01.03.30\ -\ A\ visually\ striking\ background\ for\ a\ trading\ website's\ hero\ section\,\ designed\ to\ contrast\ a\ blue-purple\ gradient\ navbar.\ The\ image\ features\ a\ warm\ gra.webp")
-        no-repeat center center;
-    background-size: cover;  */
+    color: #fff;
     width: 100vw; /* Makes sure the background spans the full viewport width */
     height: 450px; /* Matches the height of the section */
     display: flex;
@@ -583,10 +593,32 @@ video {
     justify-content: center;
     align-items: center;
     text-align: center;
+    position: relative;
+    overflow: hidden; /* Ensures pseudo-element stays contained */
+    background: linear-gradient(
+        to right,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    );
 }
+
+/* .first-info::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("../public/assets/home-img.webp");
+    background-size: contain;
+    opacity: 0.3; 
+    z-index: -1;
+    pointer-events: none; 
+} */
 
 .first-info h1 {
     font-size: 4rem;
+    z-index: 1; /* Ensure it stays above the background */
 }
 
 .courses {
@@ -595,6 +627,7 @@ video {
     width: 50%;
     justify-content: space-around;
     align-items: center;
+    z-index: 1; /* Ensure it stays above the background */
 }
 
 .course {
@@ -603,24 +636,30 @@ video {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    z-index: 1; /* Ensure it stays above the background */
 }
 
 .course p {
-    width: 50%;
+    flex: 1;
+    width: 35%;
     text-align: center;
+    z-index: 1; /* Ensure it stays above the background */
+    margin-top: 15px;
 }
 
 .course a {
-    margin: 5%;
-    padding: 1.5%;
+    margin: 0;
+    padding: 10px 15px;
     font-size: 1.3rem;
     border-radius: 50px;
     border: none;
-    background-color: rgb(255, 72, 0);
+    background-color: #000;
     color: white;
     cursor: pointer;
     text-decoration: none; /* Ensure links have no underline */
     display: inline-block; /* Ensure the link behaves like a button */
+    z-index: 1; /* Ensure it stays above the background */
+    transition: all 0.3s ease; /* Smooth transitions for hover effects */
 }
 
 .course a button {
@@ -639,7 +678,6 @@ video {
 }
 
 .course a:hover button {
-    background-color: transparent; /* Keeps the button matching the link's background */
     color: white; /* Ensure text color stays consistent */
 }
 
@@ -667,11 +705,11 @@ video {
 .course-info {
     min-width: 100vw; /* Adjusted width */
     padding: 50px 20px;
-    background: linear-gradient(
+    /* background: linear-gradient(
         to right,
         rgba(202, 108, 230, 255),
         rgba(0, 74, 173, 255)
-    ); /* Blue to purple gradient */
+    ); */
     color: #ffffff;
     min-height: 450px;
     display: flex;
@@ -681,9 +719,25 @@ video {
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.course-info::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("../public/assets/home-img.webp");
+    background-size: contain; /* Changed to cover for better responsiveness */
+    opacity: 0.3; /* Adjust the opacity of the background image */
+    z-index: -1; /* Ensures the pseudo-element stays behind the content */
+    pointer-events: none; /* Ensures no interactions with the pseudo-element */
 }
 
 .course-info-title h2 {
+    color: #000;
     font-size: 2rem;
     margin-bottom: 30px;
     text-transform: uppercase;
@@ -691,21 +745,11 @@ video {
 }
 
 .course-info-points {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 30px; /* Spacing between points */
-    max-width: 1200px;
-    margin-top: 20px;
-}
-
-.course-info-point {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 250px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    gap: 30px; /* Space between grid items */
+    max-width: 800px; /* Optional: Control the overall width */
+    margin: 0 auto; /* Center the grid */
 }
 
 .course-info-point-circle {
@@ -726,11 +770,40 @@ video {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.course-info-point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.course-info-point:hover {
+    transform: translateY(-5px);
+}
+
+.course-image {
+    width: 100%; /* Fit the container */
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.course-info-point h4 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #333;
+}
+
 .course-info-point p {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    color: #555;
     line-height: 1.5;
-    color: #e0e0e0;
-    padding: 0 10px;
 }
 
 hr {
@@ -1135,7 +1208,7 @@ hr {
 .navbar .subscribe-btn {
     background-color: #fff;
     color: #000;
-    padding: 5px 10px;
+    padding: 8px 15px;
     border-radius: 50px;
 }
 
