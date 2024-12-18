@@ -19,6 +19,7 @@ const AdminPanel = ({ videos, setVideos }) => {
         formData.append("video", newVideo.file);
         formData.append("position", videos.length + 1);
         formData.append("duration", videoDuration);
+        formData.append("level", newVideoLevel);
 
         setLoading(true);
         try {
@@ -39,6 +40,7 @@ const AdminPanel = ({ videos, setVideos }) => {
                     position: addedVideo.position,
                     videoData: addedVideo.videoData,
                     duration: videoDuration,
+                    level: newVideoLevel,
                 },
             ]);
             setNewVideo({ title: "", file: null });
