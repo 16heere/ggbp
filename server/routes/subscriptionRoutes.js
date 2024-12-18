@@ -12,7 +12,7 @@ router.post("/create-checkout-session", async (req, res) => {
             mode: "subscription",
             line_items: [
                 {
-                    price: "prod_RQHp30gN7m6YlB",
+                    price: "price_1QXRGADwIDDdMRawdBXA9c6u",
                     quantity: 1,
                 },
             ],
@@ -40,7 +40,7 @@ router.post("/create-course-subscription", async (req, res) => {
             mode: "subscription",
             line_items: [
                 {
-                    price: "prod_RQHp30gN7m6YlB",
+                    price: "price_1QXRGADwIDDdMRawdBXA9c6u",
                     quantity: 1,
                 },
             ],
@@ -127,7 +127,7 @@ router.post("/resubscribe-session", async (req, res) => {
             payment_method_types: ["card"],
             line_items: [
                 {
-                    price: "prod_RQHp30gN7m6YlB", // Replace with your price ID
+                    price: "price_1QXRGADwIDDdMRawdBXA9c6u", // Replace with your price ID
                     quantity: 1,
                 },
             ],
