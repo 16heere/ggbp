@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -31,6 +31,14 @@ const HomePage = () => {
             content: "The strategies they teach here are pure gold...",
         },
     ];
+
+    useEffect(() => {
+        if (window.Trustpilot) {
+            window.Trustpilot.loadFromElement(
+                document.querySelector(".trustpilot-widget")
+            );
+        }
+    }, []);
 
     return (
         <div className="home-page">
