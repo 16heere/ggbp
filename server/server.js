@@ -12,6 +12,7 @@ const {
 
 const app = express();
 
+// CORS Configuration
 const corsOptions = {
     origin: "https://ggbp.org.uk",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -19,8 +20,13 @@ const corsOptions = {
     credentials: true,
 };
 
+// CORS Middleware
 app.use(cors(corsOptions));
 
+// Handle Preflight Requests
+app.options("*", cors(corsOptions));
+
+// Webhook Route (use raw bodyParser)
 app.post(
     "/webhook",
     bodyParser.raw({ type: "application/json" }),
@@ -65,12 +71,15 @@ app.post(
     }
 );
 
+// Body Parsing Middleware
 app.use(express.json());
 app.use(express.json({ limit: "500mb" }));
 app.use(express.urlencoded({ limit: "500mb", extended: true }));
 
+// Routes
 app.use("/api/courses", courseRoutes);
 app.use("/api/subscription", subscriptionRoutes);
 
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
