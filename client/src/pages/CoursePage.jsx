@@ -49,7 +49,6 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(response.data);
             setVideos(response.data);
             if (!selectedVideo && response.data.length > 0) {
                 openVideo(response.data[0]);
@@ -81,7 +80,6 @@ const CoursePage = () => {
     }, [selectedVideo]);
 
     useEffect(() => {
-        console.log(user);
         if (user !== null && user !== undefined) {
             setLoading(false);
             if (!user.isSubscribed) {
