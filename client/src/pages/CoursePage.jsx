@@ -34,7 +34,7 @@ const CoursePage = () => {
         } catch (error) {
             console.error("Failed to fetch videos:", error.message);
         }
-    }, [selectedVideo]);
+    }, [selectedVideo,  openVideo]);
 
     useEffect(() => {
         const adjustSidebarPosition = () => {
@@ -109,26 +109,29 @@ const CoursePage = () => {
         }
     };
 
-    const openVideo = async (video) => {
-        console.log(video);
-        if (!video) return;
-        if (selectedVideo?.id === video.id) {
-            setSelectedVideo({ ...video, url: selectedVideo.url });
-            return;
-        }
-        try {
-            const token = localStorage.getItem("token");
-            const response = await axios.get(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${video.id}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            setSelectedVideo({ ...video, url: response.data.url });
-        } catch (error) {
-            console.error("Failed to load video:", error.message);
-        }
-    };
+    const openVideo = useCallback(
+        async (video) => {
+            console.log(video);
+            if (!video) return;
+            if (selectedVideo?.id === video.id) {
+                setSelectedVideo({ ...video, url: selectedVideo.url });
+                return;
+            }
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${video.id}`,
+                    {
+                        headers: { Authorization: `Bearer ${token}` },
+                    }
+                );
+                setSelectedVideo({ ...video, url: response.data.url });
+            } catch (error) {
+                console.error("Failed to load video:", error.message);
+            }
+        },
+        [selectedVideo]
+    );
 
     const unsubscribe = async () => {
         try {
