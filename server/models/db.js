@@ -3,12 +3,10 @@ require("dotenv").config();
 
 // PostgreSQL connection pool
 const db = new Pool({
-    host: process.env.DB_HOST, //
-    user: process.env.DB_USER, // Your PostgreSQL user
-    password: process.env.DB_PASSWORD, // Your PostgreSQL password
-    database: process.env.DB_NAME, // Your PostgreSQL database name
-    port: process.env.DB_PORT || 5432, // Default PostgreSQL port
-    max: 10, // Maximum number of connections
+    connectionString: process.env.DB_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 
 db.on("connect", () => {
