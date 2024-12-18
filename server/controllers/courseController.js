@@ -145,6 +145,7 @@ const addVideo = async (req, res) => {
             .status(403)
             .json({ message: "Access denied: Admin privileges required" });
     }
+    console.log(req.body);
 
     const { title, position, duration, level } = req.body;
     const videoFile = req.file; // multer-s3 provides this, the file is already on Spaces
