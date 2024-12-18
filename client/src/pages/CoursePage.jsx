@@ -152,6 +152,14 @@ const CoursePage = () => {
         return <p>Loading...</p>;
     }
 
+    const groupedVideos = videos.reduce((groups, video) => {
+        if (!groups[video.level]) {
+            groups[video.level] = [];
+        }
+        groups[video.level].push(video);
+        return groups;
+    }, {});
+
     return (
         <div className="course-page">
             {user?.isAdmin && (
@@ -170,21 +178,33 @@ const CoursePage = () => {
 
                 <div className="video-list">
                     <CourseProgress progress={progress} />
-                    <ol>
-                        {videos.map((video) => (
-                            <li
-                                key={video.id}
-                                className={`video-item ${
-                                    selectedVideo?.id === video.id
-                                        ? "active"
-                                        : ""
-                                } ${video.watched ? "watched" : ""}`}
-                                onClick={() => openVideo(video)}
-                            >
-                                {video.title}
-                            </li>
-                        ))}
-                    </ol>
+                    {Object.entries(groupedVideos).map(
+                        ([level, levelVideos]) => (
+                            <div key={level} className="level-section">
+                                <h3>
+                                    {level.charAt(0).toUpperCase() +
+                                        level.slice(1)}
+                                </h3>
+                                <ol>
+                                    {levelVideos.map((video) => (
+                                        <li
+                                            key={video.id}
+                                            className={`video-item ${
+                                                selectedVideo?.id === video.id
+                                                    ? "active"
+                                                    : ""
+                                            } ${
+                                                video.watched ? "watched" : ""
+                                            }`}
+                                            onClick={() => openVideo(video)}
+                                        >
+                                            {video.title}
+                                        </li>
+                                    ))}
+                                </ol>
+                            </div>
+                        )
+                    )}
                     {user?.isSubscribed && !user?.isAdmin && (
                         <p className="unsubscribe-link" onClick={unsubscribe}>
                             Unsubscribe

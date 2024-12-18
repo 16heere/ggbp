@@ -146,7 +146,7 @@ const addVideo = async (req, res) => {
             .json({ message: "Access denied: Admin privileges required" });
     }
 
-    const { title, position, duration } = req.body;
+    const { title, position, duration, level } = req.body;
     const videoFile = req.file; // multer-s3 provides this, the file is already on Spaces
 
     if (!title || !videoFile || position === undefined) {
@@ -161,14 +161,15 @@ const addVideo = async (req, res) => {
 
         // Insert video metadata (without binary data) into the database
         const insertQuery = `
-        INSERT INTO videos (title, s3_key, position, duration)
-        VALUES ($1, $2, $3, $4) RETURNING id
+        INSERT INTO videos (title, s3_key, position, duration, level)
+        VALUES ($1, $2, $3, $4, $5) RETURNING id
       `;
         const result = await db.query(insertQuery, [
             title,
             s3_key,
             position,
             duration,
+            level,
         ]);
         const newVideoId = result.rows[0].id;
 
@@ -178,6 +179,7 @@ const addVideo = async (req, res) => {
             position,
             s3_key,
             duration,
+            level,
             message: "Video added successfully",
         });
     } catch (error) {
@@ -288,6 +290,7 @@ const getVideos = async (req, res) => {
             v.title, 
             v.position, 
             v.duration, 
+            v.level,
             COALESCE(uv.watched_duration >= v.duration, false) AS watched
         FROM videos v
         LEFT JOIN user_video_watch uv 

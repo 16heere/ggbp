@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const HomePage = () => {
+    const navigate = useNavigate();
     const reviews = [
         {
             name: "Rajan Rama",
@@ -33,10 +34,9 @@ const HomePage = () => {
     ];
 
     useEffect(() => {
-        if (window.Trustpilot) {
-            window.Trustpilot.loadFromElement(
-                document.querySelector(".trustpilot-widget")
-            );
+        const trustpilotElement = document.querySelector(".trustpilot-widget");
+        if (window.Trustpilot && trustpilotElement) {
+            window.Trustpilot.loadFromElement(trustpilotElement);
         }
     }, []);
 
@@ -52,10 +52,9 @@ const HomePage = () => {
                             protecting users from scams and misinformation often
                             found on social media
                         </p>
-                        <Link to="/subscribe">
-                            {" "}
-                            <button>Get Started</button>
-                        </Link>
+                        <button onClick={() => navigate("/subscribe")}>
+                            Get Involved
+                        </button>
                     </div>
                 </div>
             </div>
@@ -189,6 +188,83 @@ const HomePage = () => {
                 >
                     Trustpilot
                 </a>
+            </div>
+            <div className="section-divider"></div>
+
+            <div className="more-info-container">
+                <h3>AND MUCH MORE</h3>
+                <div className="more-info">
+                    <div className="more-info-point">
+                        <img
+                            src="/assets/live-stream.png"
+                            alt="Live Streams"
+                            className="info-image-large"
+                        />
+                        <div className="info-content">
+                            <h4>Live Streams</h4>
+                            <p>
+                                Join live sessions with crypto experts and gain
+                                actionable insights.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="more-info-point">
+                        <img
+                            src="/assets/weekly-outlooks.png"
+                            alt="Weekly Outlooks"
+                            className="info-image-large"
+                        />
+                        <div className="info-content">
+                            <h4>Weekly Outlooks</h4>
+                            <p>
+                                Prepare with weekly market trends and key
+                                opportunities.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="more-info-point">
+                        <img
+                            src="/assets/coin-picks.png"
+                            alt="Coin Picks"
+                            className="info-image-large"
+                        />
+                        <div className="info-content">
+                            <h4>Coin Picks</h4>
+                            <p>
+                                Access handpicked coin recommendations for
+                                maximum growth.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="more-info-point">
+                        <img
+                            src="/assets/market-analysis.png"
+                            alt="Market Analysis"
+                            className="info-image-large"
+                        />
+                        <div className="info-content">
+                            <h4>Market Analysis</h4>
+                            <p>
+                                Clear analysis of trends and macroeconomic
+                                factors.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="more-info-point">
+                        <img
+                            src="/assets/portfolio-tips.png"
+                            alt="Personalized Portfolio Tips"
+                            className="info-image-large"
+                        />
+                        <div className="info-content">
+                            <h4>Personalized Portfolio Tips</h4>
+                            <p>
+                                Receive tailored advice to optimize your
+                                portfolio.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

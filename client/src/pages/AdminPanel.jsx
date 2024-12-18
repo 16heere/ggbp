@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 const AdminPanel = ({ videos, setVideos }) => {
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
+    const [newVideoLevel, setNewVideoLevel] = useState("beginner");
     const [loading, setLoading] = useState(false);
 
     const handleAddVideo = async () => {
@@ -147,6 +148,15 @@ const AdminPanel = ({ videos, setVideos }) => {
                     onChange={handleFileChange}
                     className="add-video-input"
                 />
+                <select
+                    value={newVideoLevel}
+                    onChange={(e) => setNewVideoLevel(e.target.value)}
+                    required
+                >
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
                 <button
                     onClick={handleAddVideo}
                     className="add-video-button"

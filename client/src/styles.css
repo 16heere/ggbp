@@ -641,13 +641,14 @@ video {
 
 .course p {
     flex: 1;
-    width: 35%;
+    width: 40%;
+    font-size: 1.2rem;
     text-align: center;
     z-index: 1; /* Ensure it stays above the background */
     margin-top: 15px;
 }
 
-.course a {
+.course button {
     margin: 0;
     padding: 10px 15px;
     font-size: 1.3rem;
@@ -662,23 +663,10 @@ video {
     transition: all 0.3s ease; /* Smooth transitions for hover effects */
 }
 
-.course a button {
-    border: none;
-    background-color: transparent; /* Transparent to inherit background color */
-    color: inherit; /* Inherit text color */
-    cursor: pointer;
-    font-size: inherit; /* Inherit font size */
-    padding: 0; /* Remove default button padding */
-}
-
-.course a:hover {
-    background-color: rgba(255, 72, 0, 0.562);
+.course button:hover {
+    background-color: rgb(255, 255, 255);
     transform: scale(1.05);
-    color: white;
-}
-
-.course a:hover button {
-    color: white; /* Ensure text color stays consistent */
+    color: black;
 }
 
 .login-page {
@@ -746,10 +734,10 @@ video {
 
 .course-info-points {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-    gap: 30px; /* Space between grid items */
-    max-width: 800px; /* Optional: Control the overall width */
-    margin: 0 auto; /* Center the grid */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px; /* Reduce gap for smaller screens */
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .course-info-point-circle {
@@ -849,12 +837,6 @@ hr {
     filter: invert(1); /* Make icons white */
     width: 30px;
     height: 30px;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    top: 50%;
-    transform: translateY(-50%);
 }
 
 /* Responsive Design */
@@ -1233,4 +1215,139 @@ hr {
     border-radius: 8px; /* Optional for rounded corners */
     transition: box-shadow 0.3s ease-in-out;
     cursor: pointer;
+}
+
+/* General Styling for More Info Section */
+.more-info-container {
+    width: 100vw;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.more-info-container h3 {
+    width: 100%;
+    font-size: 2rem; /* Adjust as needed */
+    font-weight: bold; /* Optional */
+    background: linear-gradient(
+        90deg,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    ); /* Gradient colors */
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; /* Make the rest of the text transparent */
+    text-align: center; /* Optional: center the text */
+}
+
+.more-info {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(200px, 1fr)
+    ); /* Flexible grid */
+    max-width: 1400px;
+    width: 100%;
+    gap: 40px; /* Increased spacing */
+    padding: 50px 20px;
+    background: #f9fafb; /* Subtle light gray */
+    border-radius: 12px;
+    text-align: center;
+    margin: 50px auto;
+}
+
+.more-info-point {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    overflow: hidden; /* To ensure the image and content stay contained */
+}
+
+.more-info-point:hover {
+    transform: translateY(-8px); /* Lift effect on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.info-image-large {
+    width: 200px; /* Larger image size */
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 80px; /* Circular shape */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s ease-in-out; /* Smooth zoom on hover */
+}
+
+.more-info-point:hover .info-image-large {
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+.info-content {
+    margin-top: 15px; /* Space between image and text */
+}
+
+.info-content h4 {
+    font-size: 1.4rem; /* Larger heading size */
+    font-weight: bold;
+    color: #333; /* Dark text for contrast */
+    margin-bottom: 10px;
+}
+
+.info-content p {
+    font-size: 1rem; /* Slightly larger for readability */
+    color: #555;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .course-info {
+        padding: 30px 15px; /* Adjust padding */
+    }
+
+    .course-info-point {
+        padding: 15px; /* Reduce padding for smaller cards */
+    }
+
+    .course-info-point h4 {
+        font-size: 1rem;
+    }
+
+    .course-info-point p {
+        font-size: 0.9rem;
+    }
+}
+
+.course-info {
+    width: 100vw;
+}
+
+.reviews {
+    width: 100vw;
+}
+
+.carousel {
+    width: 100%;
+}
+
+.section-divider {
+    width: 100vw;
+    margin: 50px auto; /* Center the divider */
+    border-top: 2px solid rgba(0, 0, 0, 0.1); /* Subtle line */
+    opacity: 0.7;
+}
+
+.level-section {
+    margin-bottom: 20px;
+}
+
+.level-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #4f46e5;
 }
