@@ -63,7 +63,7 @@ const HomePage = () => {
                             alt="Education"
                             className="course-image"
                         />
-                        <h2 className="course-info-point-circle">1</h2>
+                        {/* <h2 className="course-info-point-circle">1</h2> */}
                         <h4>Education</h4>
                         <p>
                             Elevate your investing skills to the next level.
@@ -77,7 +77,7 @@ const HomePage = () => {
                             alt="Insights"
                             className="course-image"
                         />
-                        <h2 className="course-info-point-circle">2</h2>
+                        {/* <h2 className="course-info-point-circle">2</h2> */}
                         <h4>Insights You Can Trust</h4>
                         <p>
                             Discover and invest in opportunities backed by
@@ -90,7 +90,7 @@ const HomePage = () => {
                             alt="Market Analysis"
                             className="course-image"
                         />
-                        <h2 className="course-info-point-circle">3</h2>
+                        {/* <h2 className="course-info-point-circle">3</h2> */}
                         <h4>Market Analysis</h4>
                         <p>
                             Safeguard your investments against unpredictable
@@ -103,7 +103,7 @@ const HomePage = () => {
                             alt="Network"
                             className="course-image"
                         />
-                        <h2 className="course-info-point-circle">4</h2>
+                        {/* <h2 className="course-info-point-circle">4</h2> */}
                         <h4>Network</h4>
                         <p>
                             Collaborate and learn alongside the sharpest minds
