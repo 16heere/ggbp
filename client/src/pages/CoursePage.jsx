@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CourseProgress from "../components/CourseProgress";
@@ -16,6 +16,25 @@ const CoursePage = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+
+    const fetchVideos = useCallback(async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            console.log(response.data);
+            setVideos(response.data);
+            if (!selectedVideo && response.data.length > 0) {
+                openVideo(response.data[0]);
+            }
+        } catch (error) {
+            console.error("Failed to fetch videos:", error.message);
+        }
+    }, [selectedVideo]);
 
     useEffect(() => {
         const adjustSidebarPosition = () => {
@@ -52,26 +71,7 @@ const CoursePage = () => {
             fetchVideos();
             fetchProgress();
         }
-    }, [loading]);
-
-    const fetchVideos = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const response = await axios.get(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            console.log(response.data);
-            setVideos(response.data);
-            if (!selectedVideo && response.data.length > 0) {
-                openVideo(response.data[0]);
-            }
-        } catch (error) {
-            console.error("Failed to fetch videos:", error.message);
-        }
-    };
+    }, [loading, fetchVideos]);
 
     const fetchProgress = async () => {
         try {
