@@ -35,11 +35,22 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            if (response.data == null) {
-                setQuizzes(null);
-            } else {
-                setQuizzes(response.data);
-            }
+            const groupedQuizzes = response.data.reduce((acc, item) => {
+                const { title, ...question } = item;
+                acc[title] = acc[title] || [];
+                acc[title].push(question);
+                return acc;
+            }, {});
+
+            // Convert grouped quizzes to array format
+            const quizArray = Object.entries(groupedQuizzes).map(
+                ([title, questions]) => ({
+                    title,
+                    questions,
+                })
+            );
+
+            setQuizzes(quizArray);
         } catch (error) {
             console.error("Failed to fetch quizzes:", error.message);
         }
@@ -115,26 +126,24 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             const token = localStorage.getItem("token");
             const quiz = quizzes.find((q) => q.title === quizTitle);
             if (!quiz) {
-                alert("Quiz not found");
+                alert("Quiz not found.");
                 return;
             }
 
             const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quiz.questions[0].id}/questions`,
+                `${process.env.REACT_APP_API_ENDPOINT}/quizzes/${quiz.questions[0].id}/questions`,
                 { ...newQuestion, videoId: selectedVideoId, title: quizTitle },
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
 
+            // Add the new question to the local state
             setQuizzes(
-                quizzes.map((quiz) =>
-                    quiz.title === quizTitle
-                        ? {
-                              ...quiz,
-                              questions: [...quiz.questions, response.data],
-                          }
-                        : quiz
+                quizzes.map((q) =>
+                    q.title === quizTitle
+                        ? { ...q, questions: [...q.questions, response.data] }
+                        : q
                 )
             );
             setNewQuestion({ question: "", options: [], answer: "" });
@@ -420,83 +429,70 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                         />
                         <button onClick={handleAddQuiz}>Add Quiz</button>
                     </div>
-                    {quizzes.length > 0 && (
-                        <div>
-                            {quizzes.map((quiz) => (
-                                <div key={quiz.title} className="quiz-item">
-                                    <h4>{quiz.title}</h4>
+                    {quizzes.map((quiz) => (
+                        <div key={quiz.title} className="quiz-item">
+                            <h4>{quiz.title}</h4>
+                            <button
+                                onClick={() => handleRemoveQuiz(quiz.title)}
+                            >
+                                Remove Quiz
+                            </button>
+                            <div>
+                                <h5>Questions</h5>
+                                {quiz.questions.map((q) => (
+                                    <p key={q.id}>{q.question}</p>
+                                ))}
+                                <div>
+                                    <input
+                                        type="text"
+                                        placeholder="New Question"
+                                        value={newQuestion.question}
+                                        onChange={(e) =>
+                                            setNewQuestion({
+                                                ...newQuestion,
+                                                question: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    {newQuestion.options.map((option, idx) => (
+                                        <input
+                                            key={idx}
+                                            type="text"
+                                            placeholder={`Option ${idx + 1}`}
+                                            value={option}
+                                            onChange={(e) =>
+                                                updateOption(
+                                                    idx,
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                    ))}
+                                    <button onClick={addOption}>
+                                        Add Option
+                                    </button>
+                                    <input
+                                        type="text"
+                                        placeholder="Correct Answer"
+                                        value={newQuestion.answer}
+                                        onChange={(e) =>
+                                            setNewQuestion({
+                                                ...newQuestion,
+                                                answer: e.target.value,
+                                            })
+                                        }
+                                    />
                                     <button
                                         onClick={() =>
-                                            handleRemoveQuiz(quiz.title)
+                                            handleAddQuestion(quiz.title)
                                         }
                                     >
-                                        Remove Quiz
+                                        Add Question
                                     </button>
-                                    <div>
-                                        <h5>Questions</h5>
-                                        {quiz.map((q) => (
-                                            <p key={q.id}>{q.question}</p>
-                                        ))}
-                                        <div>
-                                            <input
-                                                type="text"
-                                                placeholder="New Question"
-                                                value={newQuestion.question}
-                                                onChange={(e) =>
-                                                    setNewQuestion({
-                                                        ...newQuestion,
-                                                        question:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                            />
-                                            {newQuestion.options.map(
-                                                (option, idx) => (
-                                                    <input
-                                                        key={idx}
-                                                        type="text"
-                                                        placeholder={`Option ${
-                                                            idx + 1
-                                                        }`}
-                                                        value={option}
-                                                        onChange={(e) =>
-                                                            updateOption(
-                                                                idx,
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                )
-                                            )}
-                                            <button onClick={addOption}>
-                                                Add Option
-                                            </button>
-                                            <input
-                                                type="text"
-                                                placeholder="Correct Answer"
-                                                value={newQuestion.answer}
-                                                onChange={(e) =>
-                                                    setNewQuestion({
-                                                        ...newQuestion,
-                                                        answer: e.target.value,
-                                                    })
-                                                }
-                                            />
-                                            <button
-                                                onClick={() =>
-                                                    handleAddQuestion(
-                                                        quiz.title
-                                                    )
-                                                }
-                                            >
-                                                Add Question
-                                            </button>
-                                        </div>
-                                    </div>
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    )}
+                    ))}
                 </div>
             )}
         </div>
