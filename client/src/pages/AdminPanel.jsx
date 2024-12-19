@@ -95,8 +95,10 @@ const AdminPanel = ({ videos, setVideos }) => {
         const newPositions = updatedVideos.map((video, index) => ({
             id: video.id,
             position: index + 1,
+            level: source.droppableId, // Include level in the payload
         }));
 
+        // Update the main videos state
         const updatedLevels = videos.map((video) =>
             video.level === source.droppableId
                 ? newPositions.find((p) => p.id === video.id)

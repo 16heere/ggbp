@@ -347,33 +347,44 @@ const getVideoById = async (req, res) => {
 };
 
 const updateVideoPositions = async (req, res) => {
-    const { positions } = req.body; // Array of { id, position }
+    const { positions } = req.body; // Array of { id, position, level }
 
     if (!Array.isArray(positions)) {
         return res
             .status(400)
             .json({ message: "Positions must be an array of objects" });
     }
+
     let client;
 
     try {
         client = await db.connect(); // Use transactions for atomic updates
         await client.query("BEGIN");
 
-        // Temporarily clear positions to avoid unique constraint conflicts
-        for (const { id } of positions) {
-            await client.query(
-                "UPDATE videos SET position = NULL WHERE id = $1",
-                [id]
-            );
-        }
+        // Group positions by level to handle each level independently
+        const groupedPositions = positions.reduce((acc, curr) => {
+            acc[curr.level] = acc[curr.level] || [];
+            acc[curr.level].push(curr);
+            return acc;
+        }, {});
 
-        // Set new positions
-        for (const { id, position } of positions) {
+        for (const [level, levelPositions] of Object.entries(
+            groupedPositions
+        )) {
+            // Temporarily clear positions for this level to avoid unique constraint violations
+            const idsToClear = levelPositions.map((p) => p.id);
             await client.query(
-                "UPDATE videos SET position = $1 WHERE id = $2",
-                [position, id]
+                "UPDATE videos SET position = NULL WHERE id = ANY($1::int[]) AND level = $2",
+                [idsToClear, level]
             );
+
+            // Update positions for this level
+            for (const { id, position } of levelPositions) {
+                await client.query(
+                    "UPDATE videos SET position = $1 WHERE id = $2 AND level = $3",
+                    [position, id, level]
+                );
+            }
         }
 
         await client.query("COMMIT");
