@@ -28,12 +28,12 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         try {
             const token = localStorage.getItem("token");
             const response = await axios.get(
-                `${process.env.REACT_APP_API_ENDPOINT}/videos/${videoId}/quizzes`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            setQuizzes(response.data.length < 1 ? null : response.data); // Expecting grouped quizzes by title
+            setQuizzes(response.data.length < 1 ? null : response.data);
         } catch (error) {
             console.error("Failed to fetch quizzes:", error.message);
         }
@@ -50,7 +50,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         try {
             const token = localStorage.getItem("token");
             const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/quizzes`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
                 {
                     title: newQuizTitle,
                     videoId: selectedVideoId,
@@ -83,7 +83,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             }
 
             await axios.delete(
-                `${process.env.REACT_APP_API_ENDPOINT}/quizzes/${quizId}`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizId}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
@@ -114,7 +114,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             }
 
             const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/quizzes/${quiz.questions[0].id}/questions`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quiz.questions[0].id}/questions`,
                 { ...newQuestion, videoId: selectedVideoId, title: quizTitle },
                 {
                     headers: { Authorization: `Bearer ${token}` },
