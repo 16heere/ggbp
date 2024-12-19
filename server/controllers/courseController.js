@@ -334,7 +334,6 @@ const getVideoById = async (req, res) => {
                 Expires: 3600,
             });
         }
-        console.log(powerpointSignedUrl);
 
         // Return the signed URL as JSON (instead of sending binary data)
         res.status(200).json({

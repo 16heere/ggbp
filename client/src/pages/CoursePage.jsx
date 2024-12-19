@@ -39,7 +39,7 @@ const CoursePage = () => {
                 setSelectedVideo({
                     ...video,
                     url: response.data.url,
-                    powerpointUrl: response.data.url,
+                    powerpointUrl: response.data.powerpointUrl,
                 });
             } catch (error) {
                 console.error("Failed to load video:", error.message);
