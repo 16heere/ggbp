@@ -33,6 +33,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
+            console.log(response.data);
             setQuizzes(response.data.length < 1 ? null : response.data);
         } catch (error) {
             console.error("Failed to fetch quizzes:", error.message);
