@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-const AdminPanel = ({ videos, setVideos }) => {
+const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
@@ -85,42 +85,42 @@ const AdminPanel = ({ videos, setVideos }) => {
         if (!result.destination) return;
 
         const { source, destination } = result;
-        if (source.droppableId !== destination.droppableId) return;
 
-        const updatedVideos = Array.from(groupedVideos[source.droppableId]);
-        const [movedVideo] = updatedVideos.splice(source.index, 1);
+        if (
+            source.index === destination.index &&
+            source.droppableId === destination.droppableId
+        ) {
+            return;
+        }
+
+        const updatedVideos = [...videos];
+
+        // Optimistically update the UI
+        const movedVideo = updatedVideos[source.index];
+        updatedVideos.splice(source.index, 1);
         updatedVideos.splice(destination.index, 0, movedVideo);
 
-        const newPositions = updatedVideos.map((video, index) => ({
-            id: video.id,
-            position: index + 1,
-            level: source.droppableId,
-        }));
-
-        console.log("New Positions Payload:", newPositions);
+        setVideos(updatedVideos);
 
         try {
             const token = localStorage.getItem("token");
-            await axios.post(
+            const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
-                { positions: newPositions },
+                {
+                    positions: updatedVideos.map((video, index) => ({
+                        id: video.id,
+                        position: index + 1,
+                        level: video.level,
+                    })),
+                },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            setVideos((prev) =>
-                prev.map((video) =>
-                    newPositions.find((p) => p.id === video.id)
-                        ? {
-                              ...video,
-                              position: newPositions.find(
-                                  (p) => p.id === video.id
-                              ).position,
-                          }
-                        : video
-                )
-            );
+            setVideos(response.data.videos); // Use the response to ensure the final state is accurate
         } catch (error) {
             console.error("Failed to update video order:", error.message);
+            alert("Failed to update video order. Refreshing...");
+            fetchVideos(); // Reload videos from the API to ensure consistency
         }
     };
 

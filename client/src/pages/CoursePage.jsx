@@ -171,7 +171,11 @@ const CoursePage = () => {
     return (
         <div className="course-page">
             {user?.isAdmin && (
-                <AdminPanel videos={videos} setVideos={setVideos} />
+                <AdminPanel
+                    videos={videos}
+                    setVideos={setVideos}
+                    fetchVideos={fetchVideos}
+                />
             )}
             <div
                 className={`sidebar ${sidebarOpen ? "" : "closed"}`}

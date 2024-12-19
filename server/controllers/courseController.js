@@ -362,7 +362,6 @@ const updateVideoPositions = async (req, res) => {
         client = await db.connect(); // Use transactions for atomic updates
         await client.query("BEGIN");
 
-        // Group positions by level to handle each level independently
         const groupedPositions = positions.reduce((acc, curr) => {
             acc[curr.level] = acc[curr.level] || [];
             acc[curr.level].push(curr);
@@ -372,20 +371,19 @@ const updateVideoPositions = async (req, res) => {
         for (const [level, levelPositions] of Object.entries(
             groupedPositions
         )) {
-            // Lock all rows in the current level to prevent concurrent updates
             await client.query(
                 "SELECT id FROM videos WHERE level = $1 FOR UPDATE",
                 [level]
             );
 
-            // Temporarily clear positions for all videos in the level
-            const tempPosition = -100000; // Use a consistent temporary placeholder
+            // Temporarily clear positions
+            const tempPosition = -100000;
             await client.query(
                 "UPDATE videos SET position = position + $1 WHERE level = $2",
                 [tempPosition, level]
             );
 
-            // Reassign positions for all videos in the level
+            // Reassign positions
             for (const { id, position } of levelPositions) {
                 await client.query(
                     "UPDATE videos SET position = $1 WHERE id = $2 AND level = $3",
@@ -395,10 +393,19 @@ const updateVideoPositions = async (req, res) => {
         }
 
         await client.query("COMMIT");
-        res.status(200).json({ message: "Positions updated successfully" });
+
+        // Fetch the updated videos
+        const updatedVideos = await client.query(
+            "SELECT * FROM videos ORDER BY level, position"
+        );
+
+        res.status(200).json({
+            message: "Positions updated successfully",
+            videos: updatedVideos.rows,
+        });
     } catch (error) {
         console.error("Error updating video positions:", error.message);
-        await client.query("ROLLBACK"); // Rollback on error
+        await client.query("ROLLBACK");
         res.status(500).json({ message: "Server error" });
     } finally {
         client.release();
