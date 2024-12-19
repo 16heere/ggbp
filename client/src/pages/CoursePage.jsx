@@ -140,6 +140,12 @@ const CoursePage = () => {
     };
 
     const unsubscribe = async () => {
+        const confirmUnsubscribe = window.confirm(
+            "Are you sure you want to unsubscribe? This action cannot be undone."
+        );
+        if (!confirmUnsubscribe) {
+            return;
+        }
         try {
             const token = localStorage.getItem("token");
             await axios.post(
