@@ -165,7 +165,7 @@ const addVideo = async (req, res) => {
       `;
         const result = await db.query(insertQuery, [
             title,
-            s3_key,
+            videoKey,
             position,
             duration,
             level,
