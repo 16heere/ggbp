@@ -35,7 +35,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(response);
             if (response.data == null) {
                 setQuizzes(null);
             } else {
