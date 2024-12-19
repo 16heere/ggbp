@@ -10,6 +10,10 @@ const {
     getUserProgress,
     updateWatchedSeconds,
     unsubscribeUser,
+    getQuiz,
+    addQuiz,
+    addQuizAttempt,
+    removeQuiz,
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminOnly } = require("../middleware/adminMiddleware");
@@ -49,6 +53,11 @@ router.get("/user-progress", protect, getUserProgress); // Protect this route
 router.get("/videos", protect, getVideos);
 router.post("/videos/watched", protect, updateWatchedSeconds);
 router.get("/videos/:id", protect, getVideoById);
+
+router.get("/videos/:videoId/quiz", protect, getQuiz);
+router.post("/quizzes", protect, adminOnly, addQuiz);
+router.post("/quizzes/:quizId/attempt", protect, adminOnly, addQuizAttempt);
+router.delete("/quizzes/:quizId", protect, adminOnly, removeQuiz);
 // Admin routes
 router.post(
     "/videos",

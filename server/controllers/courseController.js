@@ -206,7 +206,7 @@ const removeVideo = async (req, res) => {
     try {
         // 1. Fetch the video details first to get s3_key and duration
         const videoResult = await db.query(
-            "SELECT s3_key, duration, position FROM videos WHERE id = $1",
+            "SELECT s3_key, duration, position, level FROM videos WHERE id = $1",
             [id]
         );
 
@@ -214,13 +214,39 @@ const removeVideo = async (req, res) => {
             return res.status(404).json({ message: "Video not found" });
         }
 
-        const { s3_key, duration, position } = videoResult.rows[0];
+        const { s3_key, duration, position, level } = videoResult.rows[0];
 
         // 2. Find all users who watched this video
         const usersWhoWatched = await db.query(
             "SELECT user_id FROM user_video_watch WHERE video_id = $1",
             [id]
         );
+
+        // 3. Delete quizzes associated with the video
+        const quizResult = await db.query(
+            "SELECT id FROM quizzes WHERE video_id = $1",
+            [id]
+        );
+        const quizIds = quizResult.rows.map((row) => row.id);
+
+        // Delete user attempts for the quizzes
+        if (quizIds.length > 0) {
+            await db.query(
+                "DELETE FROM quiz_attempts WHERE quiz_id = ANY($1::uuid[])",
+                [quizIds]
+            );
+
+            // Delete questions for the quizzes
+            await db.query(
+                "DELETE FROM quiz_questions WHERE quiz_id = ANY($1::uuid[])",
+                [quizIds]
+            );
+
+            // Delete quizzes
+            await db.query("DELETE FROM quizzes WHERE id = ANY($1::uuid[])", [
+                quizIds,
+            ]);
+        }
 
         // 3. Delete references from user_video_watch
         await db.query("DELETE FROM user_video_watch WHERE video_id = $1;", [
@@ -241,8 +267,8 @@ const removeVideo = async (req, res) => {
         }
 
         await db.query(
-            "UPDATE videos SET position = position - 1 WHERE position > $1;",
-            [position]
+            "UPDATE videos SET position = position - 1 WHERE position > $1 AND level = $2;",
+            [position, level]
         );
 
         // 5. Update watched_seconds for each user who watched this video
@@ -493,6 +519,122 @@ const resubscribeUser = async (req, res) => {
     }
 };
 
+const addQuiz = async (req, res) => {
+    const { videoId, title, questions } = req.body;
+
+    try {
+        const quizResult = await db.query(
+            "INSERT INTO quizzes (video_id, title) VALUES ($1, $2) RETURNING id",
+            [videoId, title]
+        );
+
+        const quizId = quizResult.rows[0].id;
+
+        for (const question of questions) {
+            await db.query(
+                "INSERT INTO quiz_questions (quiz_id, question, options, correct_option) VALUES ($1, $2, $3, $4)",
+                [
+                    quizId,
+                    question.text,
+                    JSON.stringify(question.options),
+                    question.correctOption,
+                ]
+            );
+        }
+
+        res.status(201).json({ message: "Quiz added successfully" });
+    } catch (error) {
+        console.error("Error adding quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getQuiz = async (req, res) => {
+    const { videoId } = req.params;
+
+    try {
+        const quiz = await db.query(
+            "SELECT * FROM quizzes WHERE video_id = $1",
+            [videoId]
+        );
+
+        if (!quiz.rows.length) {
+            return res.status(404).json({ message: "Quiz not found" });
+        }
+
+        const questions = await db.query(
+            "SELECT * FROM quiz_questions WHERE quiz_id = $1",
+            [quiz.rows[0].id]
+        );
+
+        res.status(200).json({
+            quiz: quiz.rows[0],
+            questions: questions.rows,
+        });
+    } catch (error) {
+        console.error("Error fetching quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const addQuizAttempt = async (req, res) => {
+    const { quizId } = req.params;
+    const { userId, answers } = req.body;
+
+    try {
+        const questions = await db.query(
+            "SELECT id, correct_option FROM quiz_questions WHERE quiz_id = $1",
+            [quizId]
+        );
+
+        let score = 0;
+
+        questions.rows.forEach((question) => {
+            if (answers[question.id] === question.correct_option) {
+                score++;
+            }
+        });
+
+        await db.query(
+            "INSERT INTO quiz_attempts (user_id, quiz_id, score) VALUES ($1, $2, $3)",
+            [userId, quizId, score]
+        );
+
+        res.status(200).json({ score, total: questions.rows.length });
+    } catch (error) {
+        console.error("Error submitting quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const removeQuiz = async (req, res) => {
+    const { quizId } = req.params;
+
+    try {
+        await db.query("BEGIN");
+
+        // Delete user attempts associated with the quiz
+        await db.query("DELETE FROM quiz_attempts WHERE quiz_id = $1", [
+            quizId,
+        ]);
+
+        // Delete questions associated with the quiz
+        await db.query("DELETE FROM quiz_questions WHERE quiz_id = $1", [
+            quizId,
+        ]);
+
+        // Delete the quiz
+        await db.query("DELETE FROM quizzes WHERE id = $1", [quizId]);
+
+        await db.query("COMMIT");
+        res.status(200).json({ message: "Quiz removed successfully" });
+    } catch (error) {
+        await db.query("ROLLBACK");
+        console.error("Error removing quiz:", error.message);
+        res.status(500).json({ message: "Failed to remove quiz" });
+    }
+};
+
 module.exports = {
     loginUser,
     subscribeUser,
@@ -507,4 +649,8 @@ module.exports = {
     updateWatchedSeconds,
     unsubscribeUser,
     resubscribeUser,
+    addQuiz,
+    addQuizAttempt,
+    getQuiz,
+    removeQuiz,
 };

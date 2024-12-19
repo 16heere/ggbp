@@ -10,6 +10,7 @@ import { FaAngleRight, FaBars } from "react-icons/fa";
 const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [videos, setVideos] = useState([]);
+    const [quiz, setQuiz] = useState(null);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [sidebarRight, setSidebarRight] = useState(0);
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -57,7 +58,21 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            setVideos(response.data);
+
+            const videosWithQuizzes = await Promise.all(
+                response.data.map(async (video) => {
+                    try {
+                        const quizResponse = await axios.get(
+                            `${process.env.REACT_APP_API_ENDPOINT}/videos/${video.id}/quiz`
+                        );
+                        return { ...video, quiz: quizResponse.data.quiz };
+                    } catch {
+                        return { ...video, quiz: null };
+                    }
+                })
+            );
+
+            setVideos(videosWithQuizzes);
             if (!selectedVideo && response.data.length > 0) {
                 openVideo(response.data[0]);
             }
@@ -65,6 +80,23 @@ const CoursePage = () => {
             console.error("Failed to fetch videos:", error.message);
         }
     }, [selectedVideo, openVideo]);
+
+    useEffect(() => {
+        const fetchQuiz = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_ENDPOINT}/videos/${selectedVideo.id}/quiz`
+                );
+                setQuiz(response.data);
+            } catch (error) {
+                console.error("Failed to fetch quiz:", error.message);
+            }
+        };
+
+        if (selectedVideo) {
+            fetchQuiz();
+        }
+    }, [selectedVideo]);
 
     useEffect(() => {
         const adjustSidebarPosition = () => {
@@ -159,6 +191,20 @@ const CoursePage = () => {
             navigate("/");
         } catch (error) {
             console.error("Failed to unsubscribe:", error.message);
+        }
+    };
+
+    const submitQuiz = async (answers) => {
+        try {
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/quizzes/${quiz.quiz.id}/attempt`,
+                { userId: user.id, answers }
+            );
+            alert(
+                `You scored ${response.data.score} out of ${response.data.total}`
+            );
+        } catch (error) {
+            console.error("Failed to submit quiz:", error.message);
         }
     };
 
@@ -265,7 +311,37 @@ const CoursePage = () => {
                     </div>
                 )}
             </div>
-            {/* Display the selected video on the page */}
+            {quiz && (
+                <div className="quiz-container">
+                    <h3>{quiz.quiz.title}</h3>
+                    {quiz.questions.map((question, index) => (
+                        <div key={question.id}>
+                            <p>{`${index + 1}. ${question.question}`}</p>
+                            {question.options.map((option, optionIndex) => (
+                                <label key={optionIndex}>
+                                    <input
+                                        type="radio"
+                                        name={`question-${question.id}`}
+                                        value={optionIndex}
+                                        onChange={(e) =>
+                                            setAnswers((prev) => ({
+                                                ...prev,
+                                                [question.id]: parseInt(
+                                                    e.target.value
+                                                ),
+                                            }))
+                                        }
+                                    />
+                                    {option}
+                                </label>
+                            ))}
+                        </div>
+                    ))}
+                    <button onClick={() => submitQuiz(answers)}>
+                        Submit Quiz
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

@@ -7,6 +7,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
     const [newPowerPoint, setNewPowerPoint] = useState(null);
+    const [quizQuestions, setQuizQuestions] = useState([
+        { question: "", options: ["", "", "", ""], answer: "" },
+    ]);
+
     const [loading, setLoading] = useState(false);
     const levels = ["beginner", "intermediate", "advanced"];
 
@@ -21,12 +25,22 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             return;
         }
 
+        if (
+            quizQuestions.some(
+                (q) => !q.question || q.options.some((o) => !o) || !q.answer
+            )
+        ) {
+            alert("Please complete all quiz questions, options, and answers.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("title", newVideo.title);
         formData.append("video", newVideo.file);
         formData.append("position", videos.length + 1);
         formData.append("duration", videoDuration);
         formData.append("level", newVideoLevel);
+        formData.append("quiz", JSON.stringify(quizQuestions));
 
         if (newPowerPoint) {
             formData.append("powerpoint", newPowerPoint);
@@ -56,6 +70,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             ]);
             setNewVideo({ title: "", file: null });
             setNewPowerPoint(null);
+            setQuizQuestions([
+                { question: "", options: ["", "", "", ""], answer: "" },
+            ]);
             document.getElementById("file-input").value = "";
             document.getElementById("powerpoint-input").value = "";
         } catch (error) {
@@ -65,7 +82,83 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         }
     };
 
+    const handleQuizChange = (index, field, value) => {
+        const updatedQuestions = [...quizQuestions];
+        if (field === "question") {
+            updatedQuestions[index].question = value;
+        } else if (field.startsWith("option")) {
+            const optionIndex = parseInt(field.replace("option", ""), 10);
+            updatedQuestions[index].options[optionIndex] = value;
+        } else if (field === "answer") {
+            updatedQuestions[index].answer = value;
+        }
+        setQuizQuestions(updatedQuestions);
+    };
+
+    const addQuestion = () => {
+        setQuizQuestions((prev) => [
+            ...prev,
+            { question: "", options: ["", "", "", ""], answer: "" },
+        ]);
+    };
+
+    const removeQuestion = (index) => {
+        setQuizQuestions((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleAddQuiz = async (videoId, quiz) => {
+        try {
+            const token = localStorage.getItem("token");
+            await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/quizzes`,
+                { videoId, ...quiz },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            alert("Quiz added successfully!");
+            setQuizDetails({
+                videoId: "",
+                title: "",
+                questions: [
+                    { question: "", options: ["", "", "", ""], answer: "" },
+                ],
+            });
+            fetchVideos();
+        } catch (error) {
+            console.error("Failed to add quiz:", error.message);
+        }
+    };
+
+    const handleRemoveQuiz = async (quizId) => {
+        if (
+            !window.confirm(
+                "Are you sure you want to delete this quiz? This action cannot be undone."
+            )
+        ) {
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete(
+                `${process.env.REACT_APP_API_ENDPOINT}/quizzes/${quizId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            alert("Quiz removed successfully!");
+            fetchVideos(); // Update videos and quizzes after removal
+        } catch (error) {
+            console.error("Failed to remove quiz:", error.message);
+        }
+    };
+
     const handleRemoveVideo = async (videoId) => {
+        if (
+            !window.confirm(
+                "Are you sure you want to delete this video? This action cannot be undone."
+            )
+        ) {
+            return;
+        }
+
         try {
             const token = localStorage.getItem("token");
             await axios.delete(
@@ -195,6 +288,54 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     accept=".pptx"
                     onChange={(e) => setNewPowerPoint(e.target.files[0])} // Handle PowerPoint upload
                 />
+                <h3>Quiz Questions</h3>
+                {quizQuestions.map((question, index) => (
+                    <div key={index} className="question-form">
+                        <input
+                            type="text"
+                            placeholder={`Question ${index + 1}`}
+                            value={question.question}
+                            onChange={(e) =>
+                                handleQuizChange(
+                                    index,
+                                    "question",
+                                    e.target.value
+                                )
+                            }
+                        />
+                        {question.options.map((option, i) => (
+                            <input
+                                key={i}
+                                type="text"
+                                placeholder={`Option ${i + 1}`}
+                                value={option}
+                                onChange={(e) =>
+                                    handleQuizChange(
+                                        index,
+                                        `option${i}`,
+                                        e.target.value
+                                    )
+                                }
+                            />
+                        ))}
+                        <input
+                            type="text"
+                            placeholder="Answer"
+                            value={question.answer}
+                            onChange={(e) =>
+                                handleQuizChange(
+                                    index,
+                                    "answer",
+                                    e.target.value
+                                )
+                            }
+                        />
+                        <button onClick={() => removeQuestion(index)}>
+                            Remove
+                        </button>
+                    </div>
+                ))}
+                <button onClick={addQuestion}>Add Question</button>
                 <button
                     onClick={handleAddVideo}
                     className="add-video-button"
