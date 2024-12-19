@@ -2,7 +2,7 @@ import React from "react";
 
 const CourseProgress = ({ progress }) => {
     return (
-        <div>
+        <div className="course-progress-container">
             <h3 className="course-progress-title">Course Progress</h3>
             <div>
                 <progress value={Math.floor(progress)} max="100"></progress>

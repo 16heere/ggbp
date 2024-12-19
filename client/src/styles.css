@@ -1482,3 +1482,7 @@ hr {
 .level-dropdown[open] .level-summary::after {
     transform: rotate(90deg);
 }
+
+.course-progress-container {
+    padding: 30px 30px 0 30px;
+}
