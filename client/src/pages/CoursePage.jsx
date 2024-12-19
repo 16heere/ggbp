@@ -57,8 +57,12 @@ const CoursePage = () => {
 
     const fetchQuizForVideo = async (videoId) => {
         try {
+            const token = localStorage.getItem("token");
             const response = await axios.get(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
             );
             setQuiz(response.data); // Assume `setQuiz` updates quiz state
         } catch (error) {
