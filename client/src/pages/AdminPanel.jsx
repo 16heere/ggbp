@@ -434,7 +434,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                     </button>
                                     <div>
                                         <h5>Questions</h5>
-                                        {quiz.questions.map((q) => (
+                                        {quiz.map((q) => (
                                             <p key={q.id}>{q.question}</p>
                                         ))}
                                         <div>
