@@ -33,7 +33,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            if (response.data == null || response.data.length < 1) {
+            if (response.data == null) {
                 setQuizzes(null);
             } else {
                 setQuizzes(response.data);
