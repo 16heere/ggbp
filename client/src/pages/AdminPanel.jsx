@@ -131,7 +131,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             }
 
             const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/quizzes/${quiz.questions[0].id}/questions`,
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quiz.questions[0].id}/questions`,
                 { ...newQuestion, videoId: selectedVideoId, title: quizTitle },
                 {
                     headers: { Authorization: `Bearer ${token}` },
