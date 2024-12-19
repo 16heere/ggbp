@@ -177,43 +177,44 @@ const CoursePage = () => {
                     fetchVideos={fetchVideos}
                 />
             )}
-            <div
-                className={`sidebar ${sidebarOpen ? "" : "closed"}`}
-                style={{ right: `calc(-${sidebarRight}px - 20px)` }}
-            >
+            <div className={`sidebar ${sidebarOpen ? "" : "closed"}`}>
                 <FaAngleRight
                     size={30}
                     className="sidebar-toggle-icon fa-angle-right"
                     color="purple"
                     onClick={() => setSidebarOpen(false)}
                 />
-
                 <div className="video-list">
                     <CourseProgress progress={progress} />
                     {Object.entries(groupedVideos).map(
                         ([level, levelVideos]) => (
                             <div key={level} className="level-section">
-                                <h3>
-                                    {level.charAt(0).toUpperCase() +
-                                        level.slice(1)}
-                                </h3>
-                                <ol>
-                                    {levelVideos.map((video) => (
-                                        <li
-                                            key={video.id}
-                                            className={`video-item ${
-                                                selectedVideo?.id === video.id
-                                                    ? "active"
-                                                    : ""
-                                            } ${
-                                                video.watched ? "watched" : ""
-                                            }`}
-                                            onClick={() => openVideo(video)}
-                                        >
-                                            {video.title}
-                                        </li>
-                                    ))}
-                                </ol>
+                                <details className="level-dropdown">
+                                    <summary className="level-summary">
+                                        {level.charAt(0).toUpperCase() +
+                                            level.slice(1)}
+                                    </summary>
+                                    <ul className="video-list">
+                                        {levelVideos.map((video) => (
+                                            <li
+                                                key={video.id}
+                                                className={`video-item ${
+                                                    selectedVideo?.id ===
+                                                    video.id
+                                                        ? "active"
+                                                        : ""
+                                                } ${
+                                                    video.watched
+                                                        ? "watched"
+                                                        : ""
+                                                }`}
+                                                onClick={() => openVideo(video)}
+                                            >
+                                                {video.title}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </details>
                             </div>
                         )
                     )}
