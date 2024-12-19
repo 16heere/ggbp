@@ -64,12 +64,7 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(response);
-            if (response.data == null) {
-                setQuiz(null);
-            } else {
-                setQuiz(response.data);
-            } // Assume `setQuiz` updates quiz state
+            setQuiz(response.data);
         } catch (error) {
             console.error("Failed to fetch quiz:", error.message);
         }
@@ -296,7 +291,7 @@ const CoursePage = () => {
                         <h3>Quiz: {quiz.title}</h3>
                         <ul>
                             {console.log(quiz)}
-                            {quiz.questions.map((q) => (
+                            {quiz.map((q) => (
                                 <li key={q.id}>
                                     <p>{q.question}</p>
                                     {q.options.map((option, idx) => (
