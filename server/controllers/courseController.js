@@ -494,15 +494,27 @@ const resubscribeUser = async (req, res) => {
 };
 
 const createQuiz = async (req, res) => {
-    const { title, videoId } = req.body;
+    const { title, videoId, questions } = req.body;
     try {
         const query = `
-            INSERT INTO quizzes (title, video_id)
-            VALUES ($1, $2)
-            RETURNING id, title, video_id
+            INSERT INTO quizzes (video_id, title, question, options, answer)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING id, video_id, title, question, options, answer
         `;
-        const result = await db.query(query, [title, videoId]);
-        res.status(201).json(result.rows[0]);
+
+        const insertedQuestions = [];
+        for (const { question, options, answer } of questions) {
+            const result = await db.query(query, [
+                videoId,
+                title,
+                question,
+                JSON.stringify(options),
+                answer,
+            ]);
+            insertedQuestions.push(result.rows[0]);
+        }
+
+        res.status(201).json(insertedQuestions);
     } catch (error) {
         console.error("Error creating quiz:", error.message);
         res.status(500).json({ message: "Server error" });
@@ -510,15 +522,30 @@ const createQuiz = async (req, res) => {
 };
 
 const updateQuiz = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; // id represents one of the quiz rows
     const { title } = req.body;
+
     try {
-        const query = `UPDATE quizzes SET title = $1 WHERE id = $2 RETURNING id, title`;
-        const result = await db.query(query, [title, id]);
-        if (result.rowCount === 0) {
+        // Fetch the original quiz's video_id and title
+        const quizQuery = `SELECT video_id, title FROM quizzes WHERE id = $1`;
+        const quizResult = await db.query(quizQuery, [id]);
+
+        if (quizResult.rows.length === 0) {
             return res.status(404).json({ message: "Quiz not found" });
         }
-        res.status(200).json(result.rows[0]);
+
+        const { video_id, title: oldTitle } = quizResult.rows[0];
+
+        // Update all rows for this quiz (matching video_id and oldTitle)
+        const updateQuery = `
+            UPDATE quizzes
+            SET title = $1
+            WHERE video_id = $2 AND title = $3
+            RETURNING id, title
+        `;
+        const result = await db.query(updateQuery, [title, video_id, oldTitle]);
+
+        res.status(200).json(result.rows);
     } catch (error) {
         console.error("Error updating quiz:", error.message);
         res.status(500).json({ message: "Server error" });
@@ -527,8 +554,24 @@ const updateQuiz = async (req, res) => {
 
 const deleteQuiz = async (req, res) => {
     const { id } = req.params;
+
     try {
-        await db.query("DELETE FROM quizzes WHERE id = $1", [id]);
+        // Fetch the quiz's video_id and title
+        const quizQuery = `SELECT video_id, title FROM quizzes WHERE id = $1`;
+        const quizResult = await db.query(quizQuery, [id]);
+
+        if (quizResult.rows.length === 0) {
+            return res.status(404).json({ message: "Quiz not found" });
+        }
+
+        const { video_id, title } = quizResult.rows[0];
+
+        // Delete all rows for this quiz
+        await db.query(
+            `DELETE FROM quizzes WHERE video_id = $1 AND title = $2`,
+            [video_id, title]
+        );
+
         res.status(200).json({ message: "Quiz deleted successfully" });
     } catch (error) {
         console.error("Error deleting quiz:", error.message);
@@ -537,20 +580,22 @@ const deleteQuiz = async (req, res) => {
 };
 
 const addQuestion = async (req, res) => {
-    const { id } = req.params;
-    const { question, options, answer } = req.body;
+    const { videoId, title, question, options, answer } = req.body;
+
     try {
         const query = `
-            INSERT INTO quizzes (question, options, answer, video_id)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO quizzes (video_id, title, question, options, answer)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING id, question, options, answer
         `;
         const result = await db.query(query, [
+            videoId,
+            title,
             question,
             JSON.stringify(options),
             answer,
-            id,
         ]);
+
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error("Error adding question:", error.message);
@@ -560,9 +605,20 @@ const addQuestion = async (req, res) => {
 
 const getQuizzesByVideo = async (req, res) => {
     const { videoId } = req.params;
+
     try {
         const query = `
-            SELECT * FROM quizzes WHERE video_id = $1
+            SELECT title, ARRAY_AGG(
+                JSON_BUILD_OBJECT(
+                    'id', id,
+                    'question', question,
+                    'options', options,
+                    'answer', answer
+                )
+            ) AS questions
+            FROM quizzes
+            WHERE video_id = $1
+            GROUP BY title
         `;
         const result = await db.query(query, [videoId]);
         res.status(200).json(result.rows);
