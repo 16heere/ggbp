@@ -11,6 +11,7 @@ const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [videos, setVideos] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarRight, setSidebarRight] = useState(0);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -64,6 +65,27 @@ const CoursePage = () => {
             console.error("Failed to fetch videos:", error.message);
         }
     }, [selectedVideo, openVideo]);
+
+    useEffect(() => {
+        const adjustSidebarPosition = () => {
+            const container = document.querySelector(".container");
+            if (container) {
+                const containerStyle = window.getComputedStyle(container);
+                const marginRight = parseFloat(containerStyle.marginRight) || 0;
+                setSidebarRight(marginRight);
+            }
+        };
+
+        adjustSidebarPosition();
+        window.addEventListener("resize", adjustSidebarPosition);
+
+        return () =>
+            window.removeEventListener("resize", adjustSidebarPosition);
+    }, []);
+
+    useEffect(() => {
+        console.log("Selected video updated:", selectedVideo);
+    }, [selectedVideo]);
 
     useEffect(() => {
         if (user !== null && user !== undefined) {
@@ -155,7 +177,10 @@ const CoursePage = () => {
                     fetchVideos={fetchVideos}
                 />
             )}
-            <div className={`sidebar ${sidebarOpen ? "" : "closed"}`}>
+            <div
+                className={`sidebar ${sidebarOpen ? "" : "closed"}`}
+                style={{ right: `calc(-${sidebarRight}px - 20px)` }}
+            >
                 <FaAngleRight
                     size={30}
                     className="sidebar-toggle-icon fa-angle-right"
