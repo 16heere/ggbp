@@ -97,6 +97,8 @@ const AdminPanel = ({ videos, setVideos }) => {
             level: source.droppableId,
         }));
 
+        console.log("New Positions Payload:", newPositions);
+
         try {
             const token = localStorage.getItem("token");
             await axios.post(
