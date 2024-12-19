@@ -290,6 +290,7 @@ const CoursePage = () => {
                     <div className="quiz-container">
                         <h3>Quiz: {quiz.title}</h3>
                         <ul>
+                            {console.log(quiz)}
                             {quiz.questions.map((q) => (
                                 <li key={q.id}>
                                     <p>{q.question}</p>
