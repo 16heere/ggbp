@@ -611,7 +611,6 @@ const getQuizzesByVideo = async (req, res) => {
             SELECT title, question, options, answer 
             FROM quizzes
             WHERE video_id = $1
-            GROUP BY title
         `;
         const result = await db.query(query, [videoId]);
         console.log(result.rows);
