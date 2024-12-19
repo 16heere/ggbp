@@ -10,6 +10,13 @@ const {
     getUserProgress,
     updateWatchedSeconds,
     unsubscribeUser,
+    createQuiz,
+    updateQuiz,
+    deleteQuiz,
+    addQuestion,
+    updateQuestion,
+    deleteQuestion,
+    getQuizzesByVideo,
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminOnly } = require("../middleware/adminMiddleware");
@@ -74,9 +81,6 @@ router.put("/quizzes/:id", protect, adminOnly, updateQuiz);
 router.delete("/quizzes/:id", protect, adminOnly, deleteQuiz);
 
 router.post("/quizzes/:id/questions", protect, adminOnly, addQuestion);
-router.put("/questions/:id", protect, adminOnly, updateQuestion);
-router.delete("/questions/:id", protect, adminOnly, deleteQuestion);
-
 router.get("/videos/:videoId/quizzes", protect, getQuizzesByVideo);
 
 module.exports = router;

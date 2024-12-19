@@ -586,4 +586,9 @@ module.exports = {
     updateWatchedSeconds,
     unsubscribeUser,
     resubscribeUser,
+    createQuiz,
+    updateQuiz,
+    deleteQuiz,
+    addQuestion,
+    getQuizzesByVideo,
 };
