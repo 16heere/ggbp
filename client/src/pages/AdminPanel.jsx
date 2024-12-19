@@ -91,27 +91,11 @@ const AdminPanel = ({ videos, setVideos }) => {
         const [movedVideo] = updatedVideos.splice(source.index, 1);
         updatedVideos.splice(destination.index, 0, movedVideo);
 
-        // Update positions locally
         const newPositions = updatedVideos.map((video, index) => ({
             id: video.id,
             position: index + 1,
-            level: source.droppableId, // Include level in the payload
+            level: source.droppableId,
         }));
-
-        // Update the main videos state
-        const updatedLevels = videos.map((video) =>
-            video.level === source.droppableId
-                ? newPositions.find((p) => p.id === video.id)
-                    ? {
-                          ...video,
-                          position: newPositions.find((p) => p.id === video.id)
-                              .position,
-                      }
-                    : video
-                : video
-        );
-
-        setVideos(updatedLevels);
 
         try {
             const token = localStorage.getItem("token");
@@ -119,6 +103,19 @@ const AdminPanel = ({ videos, setVideos }) => {
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
                 { positions: newPositions },
                 { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            setVideos((prev) =>
+                prev.map((video) =>
+                    newPositions.find((p) => p.id === video.id)
+                        ? {
+                              ...video,
+                              position: newPositions.find(
+                                  (p) => p.id === video.id
+                              ).position,
+                          }
+                        : video
+                )
             );
         } catch (error) {
             console.error("Failed to update video order:", error.message);

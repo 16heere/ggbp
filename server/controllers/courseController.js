@@ -371,14 +371,19 @@ const updateVideoPositions = async (req, res) => {
         for (const [level, levelPositions] of Object.entries(
             groupedPositions
         )) {
-            // Temporarily clear positions for this level to avoid unique constraint violations
-            const idsToClear = levelPositions.map((p) => p.id);
+            // Lock all rows in the current level to prevent concurrent updates
             await client.query(
-                "UPDATE videos SET position = NULL WHERE id = ANY($1::int[]) AND level = $2",
-                [idsToClear, level]
+                "SELECT id FROM videos WHERE level = $1 FOR UPDATE",
+                [level]
             );
 
-            // Update positions for this level
+            // Temporarily clear positions for all videos in the level
+            await client.query(
+                "UPDATE videos SET position = NULL WHERE level = $1",
+                [level]
+            );
+
+            // Reassign positions for all videos in the level
             for (const { id, position } of levelPositions) {
                 await client.query(
                     "UPDATE videos SET position = $1 WHERE id = $2 AND level = $3",
