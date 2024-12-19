@@ -64,6 +64,7 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
+            console.log(response);
             if (response.data == null) {
                 setQuiz(null);
             } else {
