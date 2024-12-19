@@ -64,8 +64,7 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(response.data);
-            setQuiz(response.data); // Assume `setQuiz` updates quiz state
+            setQuiz(response.data.length < 1 ? null : response.data); // Assume `setQuiz` updates quiz state
         } catch (error) {
             console.error("Failed to fetch quiz:", error.message);
         }
