@@ -6,6 +6,7 @@ const AdminPanel = ({ videos, setVideos }) => {
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
+    const [newPowerPoint, setNewPowerPoint] = useState(null);
     const [loading, setLoading] = useState(false);
     const levels = ["beginner", "intermediate", "advanced"];
 
@@ -26,6 +27,10 @@ const AdminPanel = ({ videos, setVideos }) => {
         formData.append("position", videos.length + 1);
         formData.append("duration", videoDuration);
         formData.append("level", newVideoLevel);
+
+        if (newPowerPoint) {
+            formData.append("powerpoint", newPowerPoint);
+        }
 
         setLoading(true);
         try {
@@ -50,7 +55,9 @@ const AdminPanel = ({ videos, setVideos }) => {
                 },
             ]);
             setNewVideo({ title: "", file: null });
+            setNewPowerPoint(null);
             document.getElementById("file-input").value = "";
+            document.getElementById("powerpoint-input").value = "";
         } catch (error) {
             console.error("Failed to add video:", error.message);
         } finally {
@@ -181,6 +188,12 @@ const AdminPanel = ({ videos, setVideos }) => {
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
                 </select>
+                <input
+                    type="file"
+                    id="powerpoint-input"
+                    accept=".pptx"
+                    onChange={(e) => setNewPowerPoint(e.target.files[0])} // Handle PowerPoint upload
+                />
                 <button
                     onClick={handleAddVideo}
                     className="add-video-button"

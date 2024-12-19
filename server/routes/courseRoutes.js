@@ -24,7 +24,13 @@ const upload = multer({
         bucket: "ggbp", // Your Spaces bucket
         acl: "private",
         key: function (req, file, cb) {
-            cb(null, `videos/${Date.now()}-${file.originalname}`);
+            if (file.fieldname === "video") {
+                cb(null, `videos/${Date.now()}-${file.originalname}`);
+            } else if (file.fieldname === "powerpoint") {
+                cb(null, `powerpoints/${Date.now()}-${file.originalname}`);
+            } else {
+                cb(new Error("Invalid field name for file upload."));
+            }
         },
     }),
 });
@@ -44,7 +50,16 @@ router.get("/videos", protect, getVideos);
 router.post("/videos/watched", protect, updateWatchedSeconds);
 router.get("/videos/:id", protect, getVideoById);
 // Admin routes
-router.post("/videos", protect, adminOnly, upload.single("video"), addVideo); // Add a video
+router.post(
+    "/videos",
+    protect,
+    adminOnly,
+    upload.fields([
+        { name: "video", maxCount: 1 },
+        { name: "powerpoint", maxCount: 1 },
+    ]),
+    addVideo
+); // Add a video
 router.delete("/videos/:id", protect, adminOnly, removeVideo); // Remove a video
 router.post(
     "/videos/update-position",

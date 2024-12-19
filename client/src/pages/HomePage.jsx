@@ -120,76 +120,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            <div className="reviews">
-                <h2>What Our Users Say</h2>
-                <div
-                    id="carouselExampleControls"
-                    className="carousel slide"
-                    data-bs-ride="carousel"
-                    data-bs-interval="10000"
-                >
-                    <div className="carousel-inner">
-                        {reviews.map((review, index) => (
-                            <div
-                                className={`carousel-item ${
-                                    index === 0 ? "active" : ""
-                                }`}
-                                key={index}
-                            >
-                                <div className="review text-center">
-                                    <p className="review-content">
-                                        "{review.content}"
-                                    </p>
-                                    <h3 className="review-author">
-                                        - {review.name}
-                                    </h3>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    <button
-                        className="carousel-control-prev"
-                        type="button"
-                        data-bs-target="#carouselExampleControls"
-                        data-bs-slide="prev"
-                    >
-                        <span
-                            className="carousel-control-prev-icon"
-                            aria-hidden="true"
-                        ></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button
-                        className="carousel-control-next"
-                        type="button"
-                        data-bs-target="#carouselExampleControls"
-                        data-bs-slide="next"
-                    >
-                        <span
-                            className="carousel-control-next-icon"
-                            aria-hidden="true"
-                        ></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-            <div
-                class="trustpilot-widget"
-                data-locale="en-GB"
-                data-template-id="56278e9abfbbba0bdcd568bc"
-                data-businessunit-id="6761cdf3148b1d5d425fd96b"
-                data-style-height="52px"
-                data-style-width="100%"
-            >
-                <a
-                    href="https://uk.trustpilot.com/review/ggbp.org.uk"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    Trustpilot
-                </a>
-            </div>
-            <div className="section-divider"></div>
 
             <div className="more-info-container">
                 <h3>AND MUCH MORE</h3>
@@ -264,6 +194,78 @@ const HomePage = () => {
                             </p>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className="section-divider"></div>
+            <div className="reviews-container">
+                <div className="reviews">
+                    <h3 className="reviews-title">What Our Users Say</h3>
+                    <div
+                        id="carouselExampleControls"
+                        className="carousel slide"
+                        data-bs-ride="carousel"
+                        data-bs-interval="10000"
+                    >
+                        <div className="carousel-inner">
+                            {reviews.map((review, index) => (
+                                <div
+                                    className={`carousel-item ${
+                                        index === 0 ? "active" : ""
+                                    }`}
+                                    key={index}
+                                >
+                                    <div className="review text-center">
+                                        <p className="review-content">
+                                            "{review.content}"
+                                        </p>
+                                        <h3 className="review-author">
+                                            - {review.name}
+                                        </h3>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            className="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselExampleControls"
+                            data-bs-slide="prev"
+                        >
+                            <span
+                                className="carousel-control-prev-icon"
+                                aria-hidden="true"
+                            ></span>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button
+                            className="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselExampleControls"
+                            data-bs-slide="next"
+                        >
+                            <span
+                                className="carousel-control-next-icon"
+                                aria-hidden="true"
+                            ></span>
+                            <span className="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="trustpilot-widget"
+                    data-locale="en-GB"
+                    data-template-id="56278e9abfbbba0bdcd568bc"
+                    data-businessunit-id="6761cdf3148b1d5d425fd96b"
+                    data-style-height="52px"
+                    data-style-width="100%"
+                >
+                    <a
+                        href="https://uk.trustpilot.com/review/ggbp.org.uk"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        Trustpilot
+                    </a>
                 </div>
             </div>
         </div>

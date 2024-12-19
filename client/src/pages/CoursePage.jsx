@@ -226,10 +226,21 @@ const CoursePage = () => {
             )}
             <div className={`video-container ${sidebarOpen ? "" : "expanded"}`}>
                 {selectedVideo && (
-                    <VideoPlayer
-                        video={selectedVideo}
-                        onWatched={onVideoWatched}
-                    />
+                    <div>
+                        <VideoPlayer
+                            video={selectedVideo}
+                            onWatched={onVideoWatched}
+                        />
+                        {selectedVideo.powerpointUrl && (
+                            <a
+                                href={selectedVideo.powerpointUrl}
+                                download
+                                className="download-powerpoint-button"
+                            >
+                                Download PowerPoint
+                            </a>
+                        )}
+                    </div>
                 )}
             </div>
             {/* Display the selected video on the page */}

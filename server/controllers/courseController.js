@@ -1,12 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../models/db");
-const {
-    s3,
-    GetObjectCommand,
-    PutObjectCommand,
-    DeleteObjectCommand,
-} = require("../config/digitalOceanConfig");
+const { s3 } = require("../config/digitalOceanConfig");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 // Generate JWT token
@@ -145,10 +140,12 @@ const addVideo = async (req, res) => {
             .status(403)
             .json({ message: "Access denied: Admin privileges required" });
     }
-    console.log(req.body);
 
     const { title, position, duration, level } = req.body;
-    const videoFile = req.file; // multer-s3 provides this, the file is already on Spaces
+    const videoFile = req.files.video ? req.files.video[0] : null; // Get video file
+    const powerpointFile = req.files.powerpoint
+        ? req.files.powerpoint[0]
+        : null;
 
     if (!title || !videoFile || position === undefined) {
         return res
@@ -158,12 +155,13 @@ const addVideo = async (req, res) => {
 
     try {
         // videoFile.key will be something like "videos/1632840923-YourVideoName.mp4"
-        const s3_key = videoFile.key;
+        const videoKey = videoFile.key;
+        const powerpointKey = powerpointFile ? powerpointFile.key : null;
 
         // Insert video metadata (without binary data) into the database
         const insertQuery = `
-        INSERT INTO videos (title, s3_key, position, duration, level)
-        VALUES ($1, $2, $3, $4, $5) RETURNING id
+        INSERT INTO videos (title, s3_key, position, duration, level, powerpoint_key)
+        VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
       `;
         const result = await db.query(insertQuery, [
             title,
@@ -171,6 +169,7 @@ const addVideo = async (req, res) => {
             position,
             duration,
             level,
+            powerpointKey,
         ]);
         const newVideoId = result.rows[0].id;
 
@@ -179,6 +178,7 @@ const addVideo = async (req, res) => {
             title,
             position,
             s3_key,
+            powerpoint_key: powerpointKey,
             duration,
             level,
             message: "Video added successfully",
@@ -291,7 +291,8 @@ const getVideos = async (req, res) => {
             v.title, 
             v.position, 
             v.duration, 
-            v.level,
+            v.level, 
+            v.powerpoint_key,
             COALESCE(uv.watched_duration >= v.duration, false) AS watched
         FROM videos v
         LEFT JOIN user_video_watch uv 
@@ -310,22 +311,35 @@ const getVideoById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const query = "SELECT s3_key FROM videos WHERE id = $1";
+        const query = "SELECT s3_key, powerpoint_key FROM videos WHERE id = $1";
         const result = await db.query(query, [id]);
 
         if (result.rows.length === 0) {
             return res.status(404).json({ message: "Video not found" });
         }
 
-        const { s3_key } = result.rows[0];
+        const { s3_key, powerpoint_key } = result.rows[0];
 
         const signedUrl = s3.getSignedUrl("getObject", {
             Bucket: "ggbp",
             Key: s3_key,
             Expires: 3600,
         });
+
+        let powerpointSignedUrl = null;
+        if (powerpoint_key) {
+            powerpointSignedUrl = await s3.getSignedUrlPromise("getObject", {
+                Bucket: "ggbp",
+                Key: powerpoint_key,
+                Expires: 3600,
+            });
+        }
+
         // Return the signed URL as JSON (instead of sending binary data)
-        res.status(200).json({ url: signedUrl });
+        res.status(200).json({
+            url: signedUrl,
+            powerpointUrl: powerpointSignedUrl,
+        });
     } catch (error) {
         console.error("Error fetching video:", error.message);
         res.status(500).json({ message: "Server error" });
