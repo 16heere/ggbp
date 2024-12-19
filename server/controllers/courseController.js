@@ -608,19 +608,13 @@ const getQuizzesByVideo = async (req, res) => {
 
     try {
         const query = `
-            SELECT title, ARRAY_AGG(
-                JSON_BUILD_OBJECT(
-                    'id', id,
-                    'question', question,
-                    'options', options,
-                    'answer', answer
-                )
-            ) AS questions
+            SELECT title, question, options, answer 
             FROM quizzes
             WHERE video_id = $1
             GROUP BY title
         `;
         const result = await db.query(query, [videoId]);
+        console.log(result.rows);
         res.status(200).json(result.rows);
     } catch (error) {
         console.error("Error fetching quizzes:", error.message);
