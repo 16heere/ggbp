@@ -21,7 +21,11 @@ const CoursePage = () => {
         async (video) => {
             if (!video) return;
             if (selectedVideo?.id === video.id) {
-                setSelectedVideo({ ...video, url: selectedVideo.url });
+                setSelectedVideo({
+                    ...video,
+                    url: selectedVideo.url,
+                    powerpointUrl: selectedVideo.powerpointUrl,
+                });
                 return;
             }
             try {
@@ -32,7 +36,11 @@ const CoursePage = () => {
                         headers: { Authorization: `Bearer ${token}` },
                     }
                 );
-                setSelectedVideo({ ...video, url: response.data.url });
+                setSelectedVideo({
+                    ...video,
+                    url: response.data.url,
+                    powerpointUrl: response.data.url,
+                });
             } catch (error) {
                 console.error("Failed to load video:", error.message);
             }
@@ -83,7 +91,7 @@ const CoursePage = () => {
         if (user !== null && user !== undefined) {
             setLoading(false);
             if (!user.isSubscribed) {
-                navigate("/"); // Redirect if not subscribed
+                navigate("/");
             }
         }
     }, [user, navigate]);

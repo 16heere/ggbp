@@ -177,7 +177,7 @@ const addVideo = async (req, res) => {
             id: newVideoId,
             title,
             position,
-            s3_key,
+            s3_key: videoKey,
             powerpoint_key: powerpointKey,
             duration,
             level,
