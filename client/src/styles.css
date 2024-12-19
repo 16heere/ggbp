@@ -989,7 +989,7 @@ hr {
     right: -20px;
     height: 100%; /* Full height */
     width: 300px; /* Default width */
-    background-color: #f8f9fa; /* Light gray background */
+    background-color: #fff; /* Light gray background */
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1); /* Shadow for better visibility */
     overflow-y: auto; /* Scroll within sidebar if content overflows */
     transition: transform 0.3s ease-in-out, width 0.3s ease-in-out; /* Smooth transition for toggling */
