@@ -378,9 +378,10 @@ const updateVideoPositions = async (req, res) => {
             );
 
             // Temporarily clear positions for all videos in the level
+            const tempPosition = -100000; // Placeholder value
             await client.query(
-                "UPDATE videos SET position = NULL WHERE level = $1",
-                [level]
+                "UPDATE videos SET position = position + $1 WHERE level = $2",
+                [tempPosition, level]
             );
 
             // Reassign positions for all videos in the level
