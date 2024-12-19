@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [quizzes, setQuizzes] = useState([]);
+    const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
     const [newQuizTitle, setNewQuizTitle] = useState("");
     const [newQuestion, setNewQuestion] = useState({
@@ -23,7 +24,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         return groups;
     }, {});
 
-    const fetchQuizzes = async (videoId) => {
+    const fetchQuizzes = async (videoId, videoTitle) => {
+        setSelectedVideoName(videoTitle);
         setSelectedVideoId(videoId);
         try {
             const token = localStorage.getItem("token");
@@ -387,7 +389,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                                             onClick={
                                                                 () =>
                                                                     fetchQuizzes(
-                                                                        video.id
+                                                                        video.id,
+                                                                        video.title
                                                                     ) // Call fetchQuizzes here
                                                             }
                                                         >
@@ -407,7 +410,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             </DragDropContext>
             {selectedVideoId && (
                 <div className="quiz-management">
-                    <h3>Quiz Management for Selected Video</h3>
+                    <h3>Quiz Management for {selectVideoName}</h3>
                     <div className="add-quiz-form">
                         <input
                             type="text"
