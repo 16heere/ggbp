@@ -587,7 +587,8 @@ video {
 .first-info {
     color: #fff;
     width: 100vw; /* Makes sure the background spans the full viewport width */
-    height: 450px; /* Matches the height of the section */
+    min-height: 500px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -601,20 +602,6 @@ video {
         rgba(0, 74, 173, 255)
     );
 }
-
-/* .first-info::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url("../public/assets/home-img.webp");
-    background-size: contain;
-    opacity: 0.3; 
-    z-index: -1;
-    pointer-events: none; 
-} */
 
 .first-info h1 {
     font-size: 4rem;
@@ -642,7 +629,7 @@ video {
 .course p {
     flex: 1;
     width: 40%;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     text-align: center;
     z-index: 1; /* Ensure it stays above the background */
     margin-top: 15px;
