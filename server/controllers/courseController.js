@@ -395,10 +395,18 @@ const updateVideoPositions = async (req, res) => {
         await client.query("COMMIT");
 
         // Fetch the updated videos
-        const updatedVideos = await client.query(
-            "SELECT * FROM videos ORDER BY level, position"
-        );
-
+        const updatedVideos = await client.query(`
+            SELECT * 
+            FROM videos
+            ORDER BY 
+                CASE 
+                    WHEN level = 'beginner' THEN 1
+                    WHEN level = 'intermediate' THEN 2
+                    WHEN level = 'advanced' THEN 3
+                    ELSE 4 -- Optional: for unexpected levels
+                END,
+                position
+        `);
         res.status(200).json({
             message: "Positions updated successfully",
             videos: updatedVideos.rows,
