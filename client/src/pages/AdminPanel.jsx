@@ -7,6 +7,12 @@ const AdminPanel = ({ videos, setVideos }) => {
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
     const [loading, setLoading] = useState(false);
+    const levels = ["beginner", "intermediate", "advanced"];
+
+    const groupedVideos = levels.reduce((groups, level) => {
+        groups[level] = videos.filter((video) => video.level === level);
+        return groups;
+    }, {});
 
     const handleAddVideo = async () => {
         if (!newVideo.title || !newVideo.file) {
@@ -71,22 +77,38 @@ const AdminPanel = ({ videos, setVideos }) => {
     const handleDragEnd = async (result) => {
         if (!result.destination) return;
 
-        const reorderedVideos = Array.from(videos);
-        const [movedVideo] = reorderedVideos.splice(result.source.index, 1);
-        reorderedVideos.splice(result.destination.index, 0, movedVideo);
+        const { source, destination } = result;
+        if (source.droppableId !== destination.droppableId) return;
+
+        const updatedVideos = Array.from(groupedVideos[source.droppableId]);
+        const [movedVideo] = updatedVideos.splice(source.index, 1);
+        updatedVideos.splice(destination.index, 0, movedVideo);
 
         // Update positions locally
-        const updatedPositions = reorderedVideos.map((video, index) => ({
+        const newPositions = updatedVideos.map((video, index) => ({
             id: video.id,
             position: index + 1,
         }));
-        setVideos(reorderedVideos);
+
+        const updatedLevels = videos.map((video) =>
+            video.level === source.droppableId
+                ? newPositions.find((p) => p.id === video.id)
+                    ? {
+                          ...video,
+                          position: newPositions.find((p) => p.id === video.id)
+                              .position,
+                      }
+                    : video
+                : video
+        );
+
+        setVideos(updatedLevels);
 
         try {
             const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
-                { positions: updatedPositions },
+                { positions: newPositions },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
         } catch (error) {
@@ -169,45 +191,55 @@ const AdminPanel = ({ videos, setVideos }) => {
             </div>
             {loading && <div className="loading-spinner"></div>}
             <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="video-list">
-                    {(provided) => (
-                        <ul
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            className="video-list"
-                        >
-                            {videos.map((video, index) => (
-                                <Draggable
-                                    key={video.id}
-                                    draggableId={`${video.id}`}
-                                    index={index}
+                {levels.map((level) => (
+                    <div key={level} className="video-section">
+                        <h3>
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </h3>
+                        <Droppable droppableId={level}>
+                            {(provided) => (
+                                <ul
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                    className="video-list"
                                 >
-                                    {(provided) => (
-                                        <li
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            className="video-list-item"
-                                        >
-                                            <span className="video-title">
-                                                {video.title}
-                                            </span>
-                                            <button
-                                                onClick={() =>
-                                                    handleRemoveVideo(video.id)
-                                                }
-                                                className="remove-video-button"
+                                    {groupedVideos[level].map(
+                                        (video, index) => (
+                                            <Draggable
+                                                key={video.id}
+                                                draggableId={`${video.id}`}
+                                                index={index}
                                             >
-                                                Remove
-                                            </button>
-                                        </li>
+                                                {(provided) => (
+                                                    <li
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="video-list-item"
+                                                    >
+                                                        <span>
+                                                            {video.title}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleRemoveVideo(
+                                                                    video.id
+                                                                )
+                                                            }
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </li>
+                                                )}
+                                            </Draggable>
+                                        )
                                     )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </ul>
-                    )}
-                </Droppable>
+                                    {provided.placeholder}
+                                </ul>
+                            )}
+                        </Droppable>
+                    </div>
+                ))}
             </DragDropContext>
         </div>
     );
