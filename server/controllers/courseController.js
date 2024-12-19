@@ -493,6 +493,85 @@ const resubscribeUser = async (req, res) => {
     }
 };
 
+const createQuiz = async (req, res) => {
+    const { title, videoId } = req.body;
+    try {
+        const query = `
+            INSERT INTO quizzes (title, video_id)
+            VALUES ($1, $2)
+            RETURNING id, title, video_id
+        `;
+        const result = await db.query(query, [title, videoId]);
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error creating quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const updateQuiz = async (req, res) => {
+    const { id } = req.params;
+    const { title } = req.body;
+    try {
+        const query = `UPDATE quizzes SET title = $1 WHERE id = $2 RETURNING id, title`;
+        const result = await db.query(query, [title, id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: "Quiz not found" });
+        }
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error updating quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const deleteQuiz = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query("DELETE FROM quizzes WHERE id = $1", [id]);
+        res.status(200).json({ message: "Quiz deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const addQuestion = async (req, res) => {
+    const { id } = req.params;
+    const { question, options, answer } = req.body;
+    try {
+        const query = `
+            INSERT INTO quizzes (question, options, answer, video_id)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, question, options, answer
+        `;
+        const result = await db.query(query, [
+            question,
+            JSON.stringify(options),
+            answer,
+            id,
+        ]);
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error adding question:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getQuizzesByVideo = async (req, res) => {
+    const { videoId } = req.params;
+    try {
+        const query = `
+            SELECT * FROM quizzes WHERE video_id = $1
+        `;
+        const result = await db.query(query, [videoId]);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error("Error fetching quizzes:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 module.exports = {
     loginUser,
     subscribeUser,

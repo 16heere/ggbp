@@ -3,6 +3,14 @@ import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
+    const [quizzes, setQuizzes] = useState([]);
+    const [selectedVideoId, setSelectedVideoId] = useState(null);
+    const [newQuizTitle, setNewQuizTitle] = useState("");
+    const [newQuestion, setNewQuestion] = useState({
+        question: "",
+        options: [],
+        answer: "",
+    });
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
@@ -14,6 +22,116 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         groups[level] = videos.filter((video) => video.level === level);
         return groups;
     }, {});
+
+    const fetchQuizzes = async (videoId) => {
+        setSelectedVideoId(videoId);
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            setQuizzes(response.data);
+        } catch (error) {
+            console.error("Failed to fetch quizzes:", error.message);
+        }
+    };
+
+    // Add a new quiz
+    const handleAddQuiz = async () => {
+        if (!newQuizTitle || !selectedVideoId) {
+            alert("Quiz title and video selection are required.");
+            return;
+        }
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
+                { title: newQuizTitle, videoId: selectedVideoId },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            setQuizzes([...quizzes, response.data]);
+            setNewQuizTitle("");
+        } catch (error) {
+            console.error("Failed to add quiz:", error.message);
+        }
+    };
+
+    // Remove a quiz
+    const handleRemoveQuiz = async (quizId) => {
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizId}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            setQuizzes(quizzes.filter((quiz) => quiz.id !== quizId));
+        } catch (error) {
+            console.error("Failed to remove quiz:", error.message);
+        }
+    };
+
+    // Add a question to a quiz
+    const handleAddQuestion = async (quizId) => {
+        if (
+            !newQuestion.question ||
+            !newQuestion.options.length ||
+            !newQuestion.answer
+        ) {
+            alert("Complete all fields for the question.");
+            return;
+        }
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizId}/questions`,
+                newQuestion,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            setQuizzes(
+                quizzes.map((quiz) =>
+                    quiz.id === quizId
+                        ? {
+                              ...quiz,
+                              questions: [...quiz.questions, response.data],
+                          }
+                        : quiz
+                )
+            );
+            setNewQuestion({ question: "", options: [], answer: "" });
+        } catch (error) {
+            console.error("Failed to add question:", error.message);
+        }
+    };
+
+    // Handle adding options to the question
+    const addOption = () => {
+        setNewQuestion((prev) => ({
+            ...prev,
+            options: [...prev.options, ""],
+        }));
+    };
+
+    const updateOption = (index, value) => {
+        const updatedOptions = [...newQuestion.options];
+        updatedOptions[index] = value;
+        setNewQuestion((prev) => ({ ...prev, options: updatedOptions }));
+    };
+
+    const removeOption = (index) => {
+        const updatedOptions = newQuestion.options.filter(
+            (_, i) => i !== index
+        );
+        setNewQuestion((prev) => ({ ...prev, options: updatedOptions }));
+    };
 
     const handleAddVideo = async () => {
         if (!newVideo.title || !newVideo.file) {
@@ -243,6 +361,16 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                                         >
                                                             Remove
                                                         </button>
+                                                        <button
+                                                            onClick={
+                                                                () =>
+                                                                    fetchQuizzes(
+                                                                        video.id
+                                                                    ) // Call fetchQuizzes here
+                                                            }
+                                                        >
+                                                            Manage Quizzes
+                                                        </button>
                                                     </li>
                                                 )}
                                             </Draggable>
@@ -255,6 +383,159 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     </div>
                 ))}
             </DragDropContext>
+            {selectedVideoId && (
+                <div className="quiz-management">
+                    <h3>Quiz Management for Selected Video</h3>
+
+                    {/* Add New Quiz */}
+                    <div className="add-quiz-form">
+                        <input
+                            type="text"
+                            placeholder="Quiz Title"
+                            value={newQuizTitle}
+                            onChange={(e) => setNewQuizTitle(e.target.value)}
+                            className="quiz-input"
+                        />
+                        <button
+                            onClick={handleAddQuiz}
+                            className="add-quiz-button"
+                        >
+                            Add Quiz
+                        </button>
+                    </div>
+
+                    {/* Display Existing Quizzes */}
+                    {quizzes.length > 0 ? (
+                        <div className="quizzes-list">
+                            <h4>Existing Quizzes</h4>
+                            <ul>
+                                {quizzes.map((quiz) => (
+                                    <li key={quiz.id} className="quiz-item">
+                                        <div className="quiz-header">
+                                            <span>{quiz.title}</span>
+                                            <button
+                                                onClick={() =>
+                                                    handleRemoveQuiz(quiz.id)
+                                                }
+                                                className="remove-quiz-button"
+                                            >
+                                                Remove Quiz
+                                            </button>
+                                        </div>
+
+                                        {/* Add Question Form */}
+                                        <div className="add-question-form">
+                                            <input
+                                                type="text"
+                                                placeholder="Question"
+                                                value={newQuestion.question}
+                                                onChange={(e) =>
+                                                    setNewQuestion((prev) => ({
+                                                        ...prev,
+                                                        question:
+                                                            e.target.value,
+                                                    }))
+                                                }
+                                                className="question-input"
+                                            />
+                                            {newQuestion.options.map(
+                                                (option, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="option-item"
+                                                    >
+                                                        <input
+                                                            type="text"
+                                                            placeholder={`Option ${
+                                                                index + 1
+                                                            }`}
+                                                            value={option}
+                                                            onChange={(e) =>
+                                                                updateOption(
+                                                                    index,
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            className="option-input"
+                                                        />
+                                                        <button
+                                                            onClick={() =>
+                                                                removeOption(
+                                                                    index
+                                                                )
+                                                            }
+                                                            className="remove-option-button"
+                                                        >
+                                                            X
+                                                        </button>
+                                                    </div>
+                                                )
+                                            )}
+                                            <button
+                                                onClick={addOption}
+                                                className="add-option-button"
+                                            >
+                                                Add Option
+                                            </button>
+                                            <input
+                                                type="text"
+                                                placeholder="Correct Answer"
+                                                value={newQuestion.answer}
+                                                onChange={(e) =>
+                                                    setNewQuestion((prev) => ({
+                                                        ...prev,
+                                                        answer: e.target.value,
+                                                    }))
+                                                }
+                                                className="answer-input"
+                                            />
+                                            <button
+                                                onClick={() =>
+                                                    handleAddQuestion(quiz.id)
+                                                }
+                                                className="add-question-button"
+                                            >
+                                                Add Question
+                                            </button>
+                                        </div>
+
+                                        {/* Display Questions for the Quiz */}
+                                        <div className="questions-list">
+                                            <h5>Questions</h5>
+                                            {quiz.questions &&
+                                            quiz.questions.length > 0 ? (
+                                                <ul>
+                                                    {quiz.questions.map(
+                                                        (question) => (
+                                                            <li
+                                                                key={
+                                                                    question.id
+                                                                }
+                                                                className="question-item"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        question.question
+                                                                    }
+                                                                </span>
+                                                            </li>
+                                                        )
+                                                    )}
+                                                </ul>
+                                            ) : (
+                                                <p>No questions added yet.</p>
+                                            )}
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : (
+                        <p>No quizzes found for this video.</p>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

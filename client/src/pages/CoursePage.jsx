@@ -10,6 +10,7 @@ import { FaAngleRight, FaBars } from "react-icons/fa";
 const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [videos, setVideos] = useState([]);
+    const [quiz, setQuiz] = useState();
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [sidebarRight, setSidebarRight] = useState(0);
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -47,6 +48,23 @@ const CoursePage = () => {
         },
         [selectedVideo]
     );
+
+    useEffect(() => {
+        if (selectedVideo) {
+            fetchQuizForVideo(selectedVideo.id);
+        }
+    }, [selectedVideo]);
+
+    const fetchQuizForVideo = async (videoId) => {
+        try {
+            const response = await axios.get(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`
+            );
+            setQuiz(response.data); // Assume `setQuiz` updates quiz state
+        } catch (error) {
+            console.error("Failed to fetch quiz:", error.message);
+        }
+    };
 
     const fetchVideos = useCallback(async () => {
         try {
@@ -262,6 +280,21 @@ const CoursePage = () => {
                                 Download PowerPoint
                             </a>
                         )}
+                    </div>
+                )}
+                {quiz && (
+                    <div className="quiz-container">
+                        <h3>Quiz: {quiz.title}</h3>
+                        <ul>
+                            {quiz.questions.map((q) => (
+                                <li key={q.id}>
+                                    <p>{q.question}</p>
+                                    {q.options.map((option, idx) => (
+                                        <button key={idx}>{option}</button>
+                                    ))}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 )}
             </div>
