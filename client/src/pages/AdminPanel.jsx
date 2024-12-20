@@ -9,11 +9,11 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     ]);
     const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
-    const [newQuestion, setNewQuestion] = useState({
-        question: "",
-        options: [],
-        answer: "",
-    });
+    // const [newQuestion, setNewQuestion] = useState({
+    //     question: "",
+    //     options: [],
+    //     answer: "",
+    // });
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
@@ -62,7 +62,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             );
             setQuestions(response.data);
             setQuizzes([...quizzes, response.data]);
-            setNewQuestion({ question: "", options: [], answer: "" });
         } catch (error) {
             console.error("Failed to add quiz:", error.message);
         }
@@ -103,112 +102,112 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     };
 
     // Add a new quiz
-    const handleAddQuiz = async () => {
-        if (!selectedVideoId) {
-            alert("Quiz title and video selection are required.");
-            return;
-        }
+    // const handleAddQuiz = async () => {
+    //     if (!selectedVideoId) {
+    //         alert("Quiz title and video selection are required.");
+    //         return;
+    //     }
 
-        const sampleQuestions = [newQuestion]; // Assuming one question for simplicity
-        try {
-            const token = localStorage.getItem("token");
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
-                {
-                    videoId: selectedVideoId,
-                    questions: sampleQuestions,
-                },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            setQuizzes([...quizzes, response.data]);
-            setNewQuestion({ question: "", options: [], answer: "" });
-        } catch (error) {
-            console.error("Failed to add quiz:", error.message);
-        }
-    };
+    //     const sampleQuestions = [newQuestion]; // Assuming one question for simplicity
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const response = await axios.post(
+    //             `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
+    //             {
+    //                 videoId: selectedVideoId,
+    //                 questions: sampleQuestions,
+    //             },
+    //             {
+    //                 headers: { Authorization: `Bearer ${token}` },
+    //             }
+    //         );
+    //         setQuizzes([...quizzes, response.data]);
+    //         setNewQuestion({ question: "", options: [], answer: "" });
+    //     } catch (error) {
+    //         console.error("Failed to add quiz:", error.message);
+    //     }
+    // };
 
     // Remove a quiz
-    const handleRemoveQuiz = async (quizTitle) => {
-        try {
-            const token = localStorage.getItem("token");
-            const quizToRemove = quizzes.find(
-                (quiz) => quiz.title === quizTitle
-            );
-            const quizId = quizToRemove?.questions[0]?.id; // Use any question ID in the quiz group
+    // const handleRemoveQuiz = async (quizTitle) => {
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const quizToRemove = quizzes.find(
+    //             (quiz) => quiz.title === quizTitle
+    //         );
+    //         const quizId = quizToRemove?.questions[0]?.id; // Use any question ID in the quiz group
 
-            if (!quizId) {
-                alert("Quiz not found");
-                return;
-            }
+    //         if (!quizId) {
+    //             alert("Quiz not found");
+    //             return;
+    //         }
 
-            await axios.delete(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizId}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            setQuizzes(quizzes.filter((quiz) => quiz.title !== quizTitle));
-        } catch (error) {
-            console.error("Failed to remove quiz:", error.message);
-        }
-    };
+    //         await axios.delete(
+    //             `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizId}`,
+    //             {
+    //                 headers: { Authorization: `Bearer ${token}` },
+    //             }
+    //         );
+    //         setQuizzes(quizzes.filter((quiz) => quiz.title !== quizTitle));
+    //     } catch (error) {
+    //         console.error("Failed to remove quiz:", error.message);
+    //     }
+    // };
 
     // Add a question to a quiz
-    const handleAddQuestion = async (quizTitle) => {
-        if (
-            !newQuestion.question ||
-            !newQuestion.options.length ||
-            !newQuestion.answer
-        ) {
-            alert("Complete all fields for the question.");
-            return;
-        }
+    // const handleAddQuestion = async (quizTitle) => {
+    //     if (
+    //         !newQuestion.question ||
+    //         !newQuestion.options.length ||
+    //         !newQuestion.answer
+    //     ) {
+    //         alert("Complete all fields for the question.");
+    //         return;
+    //     }
 
-        try {
-            const token = localStorage.getItem("token");
-            const quiz = quizzes.find((q) => q.title === quizTitle);
-            if (!quiz) {
-                alert("Quiz not found.");
-                return;
-            }
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const quiz = quizzes.find((q) => q.title === quizTitle);
+    //         if (!quiz) {
+    //             alert("Quiz not found.");
+    //             return;
+    //         }
 
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quiz.questions[0].id}/questions`,
-                { ...newQuestion, videoId: selectedVideoId, title: quizTitle },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
+    //         const response = await axios.post(
+    //             `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quiz.questions[0].id}/questions`,
+    //             { ...newQuestion, videoId: selectedVideoId, title: quizTitle },
+    //             {
+    //                 headers: { Authorization: `Bearer ${token}` },
+    //             }
+    //         );
 
-            // Add the new question to the local state
-            setQuizzes(
-                quizzes.map((q) =>
-                    q.title === quizTitle
-                        ? { ...q, questions: [...q.questions, response.data] }
-                        : q
-                )
-            );
-            setNewQuestion({ question: "", options: [], answer: "" });
-        } catch (error) {
-            console.error("Failed to add question:", error.message);
-        }
-    };
+    //         // Add the new question to the local state
+    //         setQuizzes(
+    //             quizzes.map((q) =>
+    //                 q.title === quizTitle
+    //                     ? { ...q, questions: [...q.questions, response.data] }
+    //                     : q
+    //             )
+    //         );
+    //         setNewQuestion({ question: "", options: [], answer: "" });
+    //     } catch (error) {
+    //         console.error("Failed to add question:", error.message);
+    //     }
+    // };
 
     // Handle adding options to the question
-    const addOption = () => {
-        setNewQuestion((prev) => ({
-            ...prev,
-            options: [...prev.options, ""],
-        }));
-    };
+    // const addOption = () => {
+    //     setNewQuestion((prev) => ({
+    //         ...prev,
+    //         options: [...prev.options, ""],
+    //     }));
+    // };
 
-    const updateOption = (index, value) => {
-        const updatedOptions = [...newQuestion.options];
-        updatedOptions[index] = value;
-        setNewQuestion((prev) => ({ ...prev, options: updatedOptions }));
-    };
+    // const updateOption = (index, value) => {
+    //     const updatedOptions = [...newQuestion.options];
+    //     updatedOptions[index] = value;
+    //     setNewQuestion((prev) => ({ ...prev, options: updatedOptions }));
+    // };
 
     const handleAddVideo = async () => {
         if (!newVideo.title || !newVideo.file) {
