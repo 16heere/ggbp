@@ -95,18 +95,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 return acc;
             }, {});
 
-            console.log(groupedQuizzes);
-            // Convert grouped quizzes to array format
-            const quizArray = Object.entries(groupedQuizzes).map(
-                ([quizId, questions]) => ({
-                    quizId,
-                    questions,
-                })
-            );
-
-            console.log(quizArray);
-
-            setQuizzes(quizArray);
+            setQuizzes(groupedQuizzes);
         } catch (error) {
             console.error("Failed to fetch quizzes:", error.message);
         }
