@@ -7,6 +7,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [questions, setQuestions] = useState([
         { question: "", options: ["", "", "", ""], answer: "" },
     ]);
+    const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
     const [newQuizTitle, setNewQuizTitle] = useState("");
     const [newQuestion, setNewQuestion] = useState({
@@ -53,7 +54,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         alert("Quiz added successfully!");
         setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
     };
-    const fetchQuizzes = async (videoId) => {
+    const fetchQuizzes = async (videoId, videoTitle) => {
+        setSelectedVideoName(videoTitle);
         setSelectedVideoId(videoId);
         try {
             const token = localStorage.getItem("token");
@@ -384,7 +386,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             </div>
             <button
                 onClick={() => {
-                    handleAddQuiz();
+                    setShowQuizPanel(true);
+                    if (setShowQuizPanel) {
+                        handleAddQuiz();
+                    }
                     handleRemoveQuiz();
                     handleAddQuestion();
                     addOption();
@@ -435,7 +440,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                                             onClick={
                                                                 () =>
                                                                     fetchQuizzes(
-                                                                        video.id
+                                                                        video.id,
+                                                                        video.title
                                                                     ) // Call fetchQuizzes here
                                                             }
                                                         >
