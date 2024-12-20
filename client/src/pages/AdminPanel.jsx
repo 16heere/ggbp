@@ -9,7 +9,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     ]);
     const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
-    const [newQuizTitle, setNewQuizTitle] = useState("");
     const [newQuestion, setNewQuestion] = useState({
         question: "",
         options: [],
@@ -48,8 +47,25 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             { question: "", options: ["", "", "", ""], answer: "" },
         ]);
     };
-    const submitQuiz = () => {
-        console.log("Quiz submitted:", questions);
+    const submitQuiz = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
+                {
+                    videoId: selectedVideoId,
+                    questions: questions,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            setQuestions(response.data);
+            setQuizzes([...quizzes, response.data]);
+            setNewQuestion({ question: "", options: [], answer: "" });
+        } catch (error) {
+            console.error("Failed to add quiz:", error.message);
+        }
         // Replace this with your API call to submit the quiz
         alert("Quiz added successfully!");
         setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
@@ -88,7 +104,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
     // Add a new quiz
     const handleAddQuiz = async () => {
-        if (!newQuizTitle || !selectedVideoId) {
+        if (!selectedVideoId) {
             alert("Quiz title and video selection are required.");
             return;
         }
@@ -99,7 +115,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
                 {
-                    title: newQuizTitle,
                     videoId: selectedVideoId,
                     questions: sampleQuestions,
                 },
@@ -108,7 +123,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 }
             );
             setQuizzes([...quizzes, response.data]);
-            setNewQuizTitle("");
             setNewQuestion({ question: "", options: [], answer: "" });
         } catch (error) {
             console.error("Failed to add quiz:", error.message);
@@ -384,15 +398,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     {loading ? "Uploading..." : "Add Video"}
                 </button>
             </div>
-            <button
-                onClick={() => {
-                    handleAddQuiz();
-                    handleRemoveQuiz();
-                    handleAddQuestion();
-                    addOption();
-                    updateOption();
-                }}
-            ></button>
             {loading && <div className="loading-spinner"></div>}
             <DragDropContext onDragEnd={handleDragEnd}>
                 {levels.map((level) => (
