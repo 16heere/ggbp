@@ -479,7 +479,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                     key={quiz.quizVideoId}
                                     style={{ marginBottom: "30px" }}
                                 >
-                                    {console.log(quiz + " " + quizIndex)}
+                                    {console.log(quiz)}
                                     <h3>
                                         Quiz for Video ID: {selectedVideoId}
                                     </h3>
