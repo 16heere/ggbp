@@ -498,8 +498,8 @@ const createQuiz = async (req, res) => {
     try {
         const query = `
             INSERT INTO quizzes (video_id, question, options, answer)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING id, video_id, title, question, options, answer
+            VALUES ($1, $2, $3, $4)
+            RETURNING id, video_id, question, options, answer
         `;
 
         const insertedQuestions = [];
