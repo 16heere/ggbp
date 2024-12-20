@@ -49,6 +49,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     };
 
     const removeSubmittedQuestion = (quizIndex, questionIndex) => {
+        console.log(quizIndex);
         const updatedQuizzes = [...quizzes];
         updatedQuizzes[quizIndex].questions.splice(questionIndex, 1);
         setQuizzes(updatedQuizzes);
@@ -479,7 +480,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                     style={{ marginBottom: "30px" }}
                                 >
                                     <h3>
-                                        Quiz for Video ID: {quiz.quizVideoId}
+                                        Quiz for Video ID: {selectedVideoId}
                                     </h3>
                                     {quiz.questions.map(
                                         (question, questionIndex) => (
