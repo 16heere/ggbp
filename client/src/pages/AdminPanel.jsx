@@ -89,19 +89,21 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 }
             );
             const groupedQuizzes = response.data.reduce((acc, item) => {
-                const { quizVideoId, ...question } = item;
-                acc[quizVideoId] = acc[quizVideoId] || [];
-                acc[quizVideoId].push(question);
+                const { quizId, ...question } = item;
+                acc[quizId] = acc[quizId] || [];
+                acc[quizId].push(question);
                 return acc;
             }, {});
 
             // Convert grouped quizzes to array format
             const quizArray = Object.entries(groupedQuizzes).map(
-                ([quizVideoId, questions]) => ({
-                    quizVideoId,
+                ([quizId, questions]) => ({
+                    quizId,
                     questions,
                 })
             );
+
+            console.log(quizArray);
 
             setQuizzes(quizArray);
         } catch (error) {

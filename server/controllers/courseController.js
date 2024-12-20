@@ -586,7 +586,7 @@ const getQuizzesByVideo = async (req, res) => {
 
     try {
         const query = `
-            SELECT question, options, answer 
+            SELECT id as quizId, question, options, answer 
             FROM quizzes
             WHERE video_id = $1
         `;
