@@ -9,11 +9,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     ]);
     const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
-    // const [newQuestion, setNewQuestion] = useState({
-    //     question: "",
-    //     options: [],
-    //     answer: "",
-    // });
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
@@ -47,6 +42,18 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             { question: "", options: ["", "", "", ""], answer: "" },
         ]);
     };
+
+    const removeQuestion = (index) => {
+        const updatedQuestions = questions.filter((_, i) => i !== index);
+        setQuestions(updatedQuestions);
+    };
+
+    const removeSubmittedQuestion = (quizIndex, questionIndex) => {
+        const updatedQuizzes = [...quizzes];
+        updatedQuizzes[quizIndex].questions.splice(questionIndex, 1);
+        setQuizzes(updatedQuizzes);
+    };
+
     const submitQuiz = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -463,6 +470,162 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             {selectedVideoId && (
                 <div className="quiz-management">
                     <h3>Quiz Management for {selectVideoName}</h3>
+                    <hr />
+                    {quizzes.length > 0 && (
+                        <div>
+                            <h2>Submitted Quizzes</h2>
+                            {quizzes.map((quiz, quizIndex) => (
+                                <div
+                                    key={quiz.quizVideoId}
+                                    style={{ marginBottom: "30px" }}
+                                >
+                                    <h3>
+                                        Quiz for Video ID: {quiz.quizVideoId}
+                                    </h3>
+                                    {quiz.questions.map(
+                                        (question, questionIndex) => (
+                                            <div
+                                                key={questionIndex}
+                                                style={{
+                                                    border: "1px solid #ccc",
+                                                    padding: "10px",
+                                                    marginBottom: "10px",
+                                                }}
+                                            >
+                                                <p>
+                                                    <strong>
+                                                        Question{" "}
+                                                        {questionIndex + 1}:
+                                                    </strong>{" "}
+                                                    {question.question}
+                                                </p>
+                                                <ul>
+                                                    {question.options.map(
+                                                        (
+                                                            option,
+                                                            optionIndex
+                                                        ) => (
+                                                            <li
+                                                                key={
+                                                                    optionIndex
+                                                                }
+                                                            >
+                                                                {option}
+                                                            </li>
+                                                        )
+                                                    )}
+                                                </ul>
+                                                <p>
+                                                    <strong>Answer:</strong>{" "}
+                                                    {question.answer}
+                                                </p>
+                                                <button
+                                                    onClick={() =>
+                                                        removeSubmittedQuestion(
+                                                            quizIndex,
+                                                            questionIndex
+                                                        )
+                                                    }
+                                                    style={{
+                                                        marginTop: "10px",
+                                                        padding: "5px 10px",
+                                                        backgroundColor: "red",
+                                                        color: "white",
+                                                        border: "none",
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
+                                                    Remove Question
+                                                </button>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div>
+                        <h2>Unsubmitted Quiz</h2>
+                        {questions.map((q, index) => (
+                            <div key={index} style={{ marginBottom: "20px" }}>
+                                <label>Question {index + 1}:</label>
+                                <input
+                                    type="text"
+                                    value={q.question}
+                                    onChange={(e) =>
+                                        handleQuestionChange(
+                                            index,
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="Enter question"
+                                    style={{
+                                        display: "block",
+                                        margin: "10px 0",
+                                        width: "300px",
+                                    }}
+                                />
+                                <div>
+                                    {q.options.map((option, optionIndex) => (
+                                        <div key={optionIndex}>
+                                            <label>
+                                                Option {optionIndex + 1}:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={option}
+                                                onChange={(e) =>
+                                                    handleOptionChange(
+                                                        index,
+                                                        optionIndex,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder={`Enter option ${
+                                                    optionIndex + 1
+                                                }`}
+                                                style={{
+                                                    margin: "5px 0",
+                                                    width: "200px",
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                <label>Answer:</label>
+                                <input
+                                    type="text"
+                                    value={q.answer}
+                                    onChange={(e) =>
+                                        handleAnswerChange(
+                                            index,
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="Enter correct answer"
+                                    style={{
+                                        display: "block",
+                                        margin: "10px 0",
+                                        width: "200px",
+                                    }}
+                                />
+                                <button
+                                    onClick={() => removeQuestion(index)}
+                                    style={{
+                                        marginTop: "10px",
+                                        padding: "5px 10px",
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Remove Question
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+
                     <div style={{ margin: "20px" }}>
                         <h1>Add Quiz</h1>
                         {questions.map((q, index) => (
@@ -528,6 +691,19 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                         width: "200px",
                                     }}
                                 />
+                                <button
+                                    onClick={() => removeQuestion(index)}
+                                    style={{
+                                        marginTop: "10px",
+                                        padding: "5px 10px",
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Remove Question
+                                </button>
                             </div>
                         ))}
                         <button
