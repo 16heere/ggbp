@@ -4,6 +4,10 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [quizzes, setQuizzes] = useState([]);
+    const [questions, setQuestions] = useState([
+        { question: "", options: ["", "", "", ""], answer: "" },
+    ]);
+    const [showQuizPanel, setShowQuizPanel] = false;
     const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
     const [newQuizTitle, setNewQuizTitle] = useState("");
@@ -24,6 +28,33 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         return groups;
     }, {});
 
+    const handleQuestionChange = (index, value) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions[index].question = value;
+        setQuestions(updatedQuestions);
+    };
+    const handleOptionChange = (questionIndex, optionIndex, value) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions[questionIndex].options[optionIndex] = value;
+        setQuestions(updatedQuestions);
+    };
+    const handleAnswerChange = (index, value) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions[index].answer = value;
+        setQuestions(updatedQuestions);
+    };
+    const addQuestion = () => {
+        setQuestions([
+            ...questions,
+            { question: "", options: ["", "", "", ""], answer: "" },
+        ]);
+    };
+    const submitQuiz = () => {
+        console.log("Quiz submitted:", questions);
+        // Replace this with your API call to submit the quiz
+        alert("Quiz added successfully!");
+        setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
+    };
     const fetchQuizzes = async (videoId, videoTitle) => {
         setSelectedVideoName(videoTitle);
         setSelectedVideoId(videoId);
@@ -36,16 +67,16 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 }
             );
             const groupedQuizzes = response.data.reduce((acc, item) => {
-                const { title, ...question } = item;
-                acc[title] = acc[title] || [];
-                acc[title].push(question);
+                const { quizVideoId, ...question } = item;
+                acc[quizVideoId] = acc[quizVideoId] || [];
+                acc[quizVideoId].push(question);
                 return acc;
             }, {});
 
             // Convert grouped quizzes to array format
             const quizArray = Object.entries(groupedQuizzes).map(
-                ([title, questions]) => ({
-                    title,
+                ([quizVideoId, questions]) => ({
+                    quizVideoId,
                     questions,
                 })
             );
@@ -420,79 +451,86 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             {selectedVideoId && (
                 <div className="quiz-management">
                     <h3>Quiz Management for {selectVideoName}</h3>
-                    <div className="add-quiz-form">
-                        <input
-                            type="text"
-                            placeholder="Quiz Title"
-                            value={newQuizTitle}
-                            onChange={(e) => setNewQuizTitle(e.target.value)}
-                        />
-                        <button onClick={handleAddQuiz}>Add Quiz</button>
-                    </div>
-                    {quizzes.map((quiz) => (
-                        <div key={quiz.title} className="quiz-item">
-                            <h4>{quiz.title}</h4>
-                            <button
-                                onClick={() => handleRemoveQuiz(quiz.title)}
-                            >
-                                Remove Quiz
-                            </button>
-                            <div>
-                                <h5>Questions</h5>
-                                {quiz.questions.map((q) => (
-                                    <p key={q.id}>{q.question}</p>
-                                ))}
+                    <div style={{ margin: "20px" }}>
+                        <h1>Add Quiz</h1>
+                        {questions.map((q, index) => (
+                            <div key={index} style={{ marginBottom: "20px" }}>
+                                <label>Question {index + 1}:</label>
+                                <input
+                                    type="text"
+                                    value={q.question}
+                                    onChange={(e) =>
+                                        handleQuestionChange(
+                                            index,
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="Enter question"
+                                    style={{
+                                        display: "block",
+                                        margin: "10px 0",
+                                        width: "300px",
+                                    }}
+                                />
                                 <div>
-                                    <input
-                                        type="text"
-                                        placeholder="New Question"
-                                        value={newQuestion.question}
-                                        onChange={(e) =>
-                                            setNewQuestion({
-                                                ...newQuestion,
-                                                question: e.target.value,
-                                            })
-                                        }
-                                    />
-                                    {newQuestion.options.map((option, idx) => (
-                                        <input
-                                            key={idx}
-                                            type="text"
-                                            placeholder={`Option ${idx + 1}`}
-                                            value={option}
-                                            onChange={(e) =>
-                                                updateOption(
-                                                    idx,
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
+                                    {q.options.map((option, optionIndex) => (
+                                        <div key={optionIndex}>
+                                            <label>
+                                                Option {optionIndex + 1}:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={option}
+                                                onChange={(e) =>
+                                                    handleOptionChange(
+                                                        index,
+                                                        optionIndex,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder={`Enter option ${
+                                                    optionIndex + 1
+                                                }`}
+                                                style={{
+                                                    margin: "5px 0",
+                                                    width: "200px",
+                                                }}
+                                            />
+                                        </div>
                                     ))}
-                                    <button onClick={addOption}>
-                                        Add Option
-                                    </button>
-                                    <input
-                                        type="text"
-                                        placeholder="Correct Answer"
-                                        value={newQuestion.answer}
-                                        onChange={(e) =>
-                                            setNewQuestion({
-                                                ...newQuestion,
-                                                answer: e.target.value,
-                                            })
-                                        }
-                                    />
-                                    <button
-                                        onClick={() =>
-                                            handleAddQuestion(quiz.title)
-                                        }
-                                    >
-                                        Add Question
-                                    </button>
                                 </div>
+                                <label>Answer:</label>
+                                <input
+                                    type="text"
+                                    value={q.answer}
+                                    onChange={(e) =>
+                                        handleAnswerChange(
+                                            index,
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="Enter correct answer"
+                                    style={{
+                                        display: "block",
+                                        margin: "10px 0",
+                                        width: "200px",
+                                    }}
+                                />
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                        <button
+                            onClick={addQuestion}
+                            style={{ margin: "10px", padding: "10px 20px" }}
+                        >
+                            Add Another Question
+                        </button>
+                        <button
+                            onClick={submitQuiz}
+                            style={{ padding: "10px 20px" }}
+                        >
+                            Add Quiz
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
