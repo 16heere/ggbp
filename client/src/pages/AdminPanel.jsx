@@ -386,10 +386,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             </div>
             <button
                 onClick={() => {
-                    setShowQuizPanel(true);
-                    if (setShowQuizPanel) {
-                        handleAddQuiz();
-                    }
+                    handleAddQuiz();
                     handleRemoveQuiz();
                     handleAddQuestion();
                     addOption();
