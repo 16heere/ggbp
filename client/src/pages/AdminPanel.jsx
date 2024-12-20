@@ -470,7 +470,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             {selectedVideoId && (
                 <div className="quiz-management">
                     <h3>Quiz Management for {selectVideoName}</h3>
-                    <hr />
                     {quizzes.length > 0 && (
                         <div>
                             <h2>Submitted Quizzes</h2>
@@ -544,88 +543,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                             ))}
                         </div>
                     )}
-                    <div>
-                        <h2>Unsubmitted Quiz</h2>
-                        {questions.map((q, index) => (
-                            <div key={index} style={{ marginBottom: "20px" }}>
-                                <label>Question {index + 1}:</label>
-                                <input
-                                    type="text"
-                                    value={q.question}
-                                    onChange={(e) =>
-                                        handleQuestionChange(
-                                            index,
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="Enter question"
-                                    style={{
-                                        display: "block",
-                                        margin: "10px 0",
-                                        width: "300px",
-                                    }}
-                                />
-                                <div>
-                                    {q.options.map((option, optionIndex) => (
-                                        <div key={optionIndex}>
-                                            <label>
-                                                Option {optionIndex + 1}:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={option}
-                                                onChange={(e) =>
-                                                    handleOptionChange(
-                                                        index,
-                                                        optionIndex,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder={`Enter option ${
-                                                    optionIndex + 1
-                                                }`}
-                                                style={{
-                                                    margin: "5px 0",
-                                                    width: "200px",
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                <label>Answer:</label>
-                                <input
-                                    type="text"
-                                    value={q.answer}
-                                    onChange={(e) =>
-                                        handleAnswerChange(
-                                            index,
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="Enter correct answer"
-                                    style={{
-                                        display: "block",
-                                        margin: "10px 0",
-                                        width: "200px",
-                                    }}
-                                />
-                                <button
-                                    onClick={() => removeQuestion(index)}
-                                    style={{
-                                        marginTop: "10px",
-                                        padding: "5px 10px",
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Remove Question
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-
+                    <h2>Unsubmitted Quiz</h2>
                     <div style={{ margin: "20px" }}>
                         <h1>Add Quiz</h1>
                         {questions.map((q, index) => (
