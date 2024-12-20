@@ -89,16 +89,17 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 }
             );
             const groupedQuizzes = response.data.reduce((acc, item) => {
+                console.log(item);
                 const { quizId, ...question } = item;
                 acc[quizId] = acc[quizId] || [];
                 acc[quizId].push(question);
                 return acc;
             }, {});
 
+            console.log(groupedQuizzes);
             // Convert grouped quizzes to array format
             const quizArray = Object.entries(groupedQuizzes).map(
-                ([quizId, questions]) => ({
-                    quizId,
+                ([questions]) => ({
                     questions,
                 })
             );
