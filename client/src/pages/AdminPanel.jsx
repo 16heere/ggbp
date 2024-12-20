@@ -7,7 +7,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [questions, setQuestions] = useState([
         { question: "", options: ["", "", "", ""], answer: "" },
     ]);
-    const [showQuizPanel, setShowQuizPanel] = false;
     const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
     const [newQuizTitle, setNewQuizTitle] = useState("");
@@ -55,7 +54,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         alert("Quiz added successfully!");
         setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
     };
-    const fetchQuizzes = async (videoId, videoTitle) => {
+    const fetchQuizzes = async (videoId) => {
         setSelectedVideoName(videoTitle);
         setSelectedVideoId(videoId);
         try {
@@ -385,6 +384,18 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     {loading ? "Uploading..." : "Add Video"}
                 </button>
             </div>
+            <button
+                onClick={() => {
+                    setShowQuizPanel(true);
+                    if (setShowQuizPanel) {
+                        handleAddQuiz();
+                    }
+                    handleRemoveQuiz();
+                    handleAddQuestion();
+                    addOption();
+                    updateOption();
+                }}
+            ></button>
             {loading && <div className="loading-spinner"></div>}
             <DragDropContext onDragEnd={handleDragEnd}>
                 {levels.map((level) => (
@@ -429,8 +440,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                                             onClick={
                                                                 () =>
                                                                     fetchQuizzes(
-                                                                        video.id,
-                                                                        video.title
+                                                                        video.id
                                                                     ) // Call fetchQuizzes here
                                                             }
                                                         >
