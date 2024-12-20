@@ -7,7 +7,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [questions, setQuestions] = useState([
         { question: "", options: ["", "", "", ""], answer: "" },
     ]);
-    const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
     const [newQuizTitle, setNewQuizTitle] = useState("");
     const [newQuestion, setNewQuestion] = useState({
@@ -55,7 +54,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
     };
     const fetchQuizzes = async (videoId) => {
-        setSelectedVideoName(videoTitle);
         setSelectedVideoId(videoId);
         try {
             const token = localStorage.getItem("token");
@@ -386,10 +384,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             </div>
             <button
                 onClick={() => {
-                    setShowQuizPanel(true);
-                    if (setShowQuizPanel) {
-                        handleAddQuiz();
-                    }
+                    handleAddQuiz();
                     handleRemoveQuiz();
                     handleAddQuestion();
                     addOption();
