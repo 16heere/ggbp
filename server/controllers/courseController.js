@@ -495,12 +495,15 @@ const resubscribeUser = async (req, res) => {
 
 const createQuiz = async (req, res) => {
     const { videoId, questions } = req.body;
+
     try {
         const query = `
             INSERT INTO quizzes (video_id, question, options, answer)
             VALUES ($1, $2, $3, $4)
             RETURNING id, video_id, question, options, answer
         `;
+        const quizAttemptQuery = `DELETE from quiz_attempts WHERE video_id = $1`;
+        await db.query(quizAttemptQuery, [video_id]);
 
         const insertedQuestions = [];
         for (const { question, options, answer } of questions) {
@@ -530,7 +533,6 @@ const updateQuiz = async (req, res) => {
     try {
         // Fetch the original quiz's video_id and title
         const quizQuery = `SELECT video_id FROM quizzes WHERE id = $1`;
-        const quizAttemptQuery = `DELETE from quiz_attempts WHERE video_id = $1`;
         const quizResult = await db.query(quizQuery, [id]);
 
         if (quizResult.rows.length === 0) {
@@ -538,7 +540,6 @@ const updateQuiz = async (req, res) => {
         }
 
         const { video_id, title: oldTitle } = quizResult.rows[0];
-        await db.query(quizAttemptQuery, [video_id]);
         // Update all rows for this quiz (matching video_id and oldTitle)
         const updateQuery = `
             UPDATE quizzes
