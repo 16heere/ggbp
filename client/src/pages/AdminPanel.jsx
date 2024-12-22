@@ -7,9 +7,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [questions, setQuestions] = useState([
         { question: "", options: ["", "", "", ""], answer: "" },
     ]);
-    const [questionsArray, setQuestionArray] = useState([]);
-    const [selectVideoName, setSelectedVideoName] = useState(null);
-    const [selectedVideoId, setSelectedVideoId] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState({
+        id: null,
+        name: null,
+    });
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
     const [newVideoLevel, setNewVideoLevel] = useState("beginner");
@@ -49,43 +50,35 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         setQuestions(updatedQuestions);
     };
 
-    const removeSubmittedQuestion = (quizIndex, questionIndex) => {
-        console.log(quizIndex);
-        const updatedQuizzes = [...quizzes];
-        updatedQuizzes[quizIndex].questions.splice(questionIndex, 1);
+    const removeSubmittedQuestion = (quizid) => {
+        const updatedQuizzes = quizzes.filter((quiz) => quiz.quizid !== quizid);
         setQuizzes(updatedQuizzes);
     };
 
     const submitQuiz = async () => {
-        if (
-            questions === null ||
-            questions.question === "" ||
-            questions.answer === ""
-        ) {
-            alert("Quiz is not fully completed");
-            return;
-        }
-        questions.options.forEach((option) => {
-            if (option === "") {
-                alert("Quiz is not fully completed");
-                return;
-            }
-        });
+        const incomplete = questions.some(
+            (q) => !q.question || !q.answer || q.options.includes("")
+        );
+        if (incomplete)
+            return alert("Please complete all fields before submitting!");
 
         try {
             const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
                 {
-                    videoId: selectedVideoId,
-                    questions: questions,
+                    videoId: selectedVideo.id,
+                    questions,
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            setQuestions(response.data);
-            setQuizzes([...quizzes, response.data]);
+            setQuizzes([...quizzes, ...response.data]); // Append new questions
+            setQuestions([
+                { question: "", options: ["", "", "", ""], answer: "" },
+            ]);
+            alert("Quiz added successfully!");
         } catch (error) {
             console.error("Failed to add quiz:", error.message);
         }
@@ -94,8 +87,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
     };
     const fetchQuizzes = async (videoId, videoTitle) => {
-        setSelectedVideoName(videoTitle);
-        setSelectedVideoId(videoId);
+        setSelectedVideo({ id: videoId, name: videoTitle });
+
         try {
             const token = localStorage.getItem("token");
             const response = await axios.get(
@@ -104,22 +97,14 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            const groupedQuizzes = response.data.reduce((acc, item) => {
-                const { quizId, ...question } = item;
-                acc[quizId] = acc[quizId] || [];
-                acc[quizId].push(question);
-                return acc;
-            }, {});
-
-            const questionsArray = response.data.map((item) => ({
-                quizid: item.quizid,
-                question: item.question,
-                options: item.options,
-                answer: item.answer,
+            const fetchedQuizzes = response.data.map((quiz) => ({
+                quizid: quiz.quizid,
+                question: quiz.question,
+                options: quiz.options,
+                answer: quiz.answer,
             }));
 
-            setQuestionArray(questionsArray);
-            setQuizzes(groupedQuizzes);
+            setQuizzes(fetchedQuizzes);
         } catch (error) {
             console.error("Failed to fetch quizzes:", error.message);
         }
@@ -484,177 +469,94 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     </div>
                 ))}
             </DragDropContext>
-            {selectedVideoId && (
+            {selectedVideo.id && (
                 <div className="quiz-management">
-                    <h3>Quiz Management for {selectVideoName}</h3>
+                    <h3>Quiz Management for {selectedVideo.name}</h3>
 
-                    {questionsArray.length > 0 && (
-                        <div>
-                            <h2>Submitted Quizzes</h2>
-                            {questionsArray.map((quiz, quizIndex) => (
-                                <div
-                                    key={quiz.quizId}
-                                    style={{ marginBottom: "30px" }}
-                                >
-                                    {console.log(quiz)}
-                                    <h3>
-                                        Quiz for Video ID: {selectedVideoId}
-                                    </h3>
-                                    {quiz.questions.map(
-                                        (question, questionIndex) => (
-                                            <div
-                                                key={questionIndex}
-                                                style={{
-                                                    border: "1px solid #ccc",
-                                                    padding: "10px",
-                                                    marginBottom: "10px",
-                                                }}
-                                            >
-                                                <p>
-                                                    <strong>
-                                                        Question{" "}
-                                                        {questionIndex + 1}:
-                                                    </strong>{" "}
-                                                    {question.question}
-                                                </p>
-                                                <ul>
-                                                    {question.options.map(
-                                                        (
-                                                            option,
-                                                            optionIndex
-                                                        ) => (
-                                                            <li
-                                                                key={
-                                                                    optionIndex
-                                                                }
-                                                            >
-                                                                {option}
-                                                            </li>
-                                                        )
-                                                    )}
-                                                </ul>
-                                                <p>
-                                                    <strong>Answer:</strong>{" "}
-                                                    {question.answer}
-                                                </p>
-                                                <button
-                                                    onClick={() =>
-                                                        removeSubmittedQuestion(
-                                                            quizIndex,
-                                                            questionIndex
-                                                        )
-                                                    }
-                                                    style={{
-                                                        marginTop: "10px",
-                                                        padding: "5px 10px",
-                                                        backgroundColor: "red",
-                                                        color: "white",
-                                                        border: "none",
-                                                        cursor: "pointer",
-                                                    }}
-                                                >
-                                                    Remove Question
-                                                </button>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                            ))}
+                    {quizzes.map((quiz) => (
+                        <div
+                            key={quiz.quizid}
+                            style={{
+                                border: "1px solid #ccc",
+                                padding: "10px",
+                                marginBottom: "10px",
+                            }}
+                        >
+                            <p>
+                                <strong>Question:</strong> {quiz.question}
+                            </p>
+                            <ul>
+                                {quiz.options.map((option, index) => (
+                                    <li key={index}>{option}</li>
+                                ))}
+                            </ul>
+                            <p>
+                                <strong>Answer:</strong> {quiz.answer}
+                            </p>
+                            <button
+                                onClick={() =>
+                                    removeSubmittedQuestion(quiz.quizid)
+                                }
+                                style={{
+                                    backgroundColor: "red",
+                                    color: "white",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                Remove Question
+                            </button>
                         </div>
-                    )}
+                    ))}
                     <h2>Unsubmitted Quiz</h2>
                     <div style={{ margin: "20px" }}>
                         <h1>Add Quiz</h1>
+                        <h4>Unsubmitted Quiz</h4>
                         {questions.map((q, index) => (
                             <div key={index} style={{ marginBottom: "20px" }}>
-                                <label>Question {index + 1}:</label>
                                 <input
                                     type="text"
                                     value={q.question}
-                                    onChange={(e) =>
-                                        handleQuestionChange(
-                                            index,
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="Enter question"
-                                    style={{
-                                        display: "block",
-                                        margin: "10px 0",
-                                        width: "300px",
+                                    onChange={(e) => {
+                                        const updated = [...questions];
+                                        updated[index].question =
+                                            e.target.value;
+                                        setQuestions(updated);
                                     }}
+                                    placeholder="Enter question"
                                 />
                                 <div>
-                                    {q.options.map((option, optionIndex) => (
-                                        <div key={optionIndex}>
-                                            <label>
-                                                Option {optionIndex + 1}:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={option}
-                                                onChange={(e) =>
-                                                    handleOptionChange(
-                                                        index,
-                                                        optionIndex,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                placeholder={`Enter option ${
-                                                    optionIndex + 1
-                                                }`}
-                                                style={{
-                                                    margin: "5px 0",
-                                                    width: "200px",
-                                                }}
-                                            />
-                                        </div>
+                                    {q.options.map((option, optIndex) => (
+                                        <input
+                                            key={optIndex}
+                                            type="text"
+                                            value={option}
+                                            onChange={(e) => {
+                                                const updated = [...questions];
+                                                updated[index].options[
+                                                    optIndex
+                                                ] = e.target.value;
+                                                setQuestions(updated);
+                                            }}
+                                            placeholder={`Option ${
+                                                optIndex + 1
+                                            }`}
+                                        />
                                     ))}
                                 </div>
-                                <label>Answer:</label>
                                 <input
                                     type="text"
                                     value={q.answer}
-                                    onChange={(e) =>
-                                        handleAnswerChange(
-                                            index,
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="Enter correct answer"
-                                    style={{
-                                        display: "block",
-                                        margin: "10px 0",
-                                        width: "200px",
+                                    onChange={(e) => {
+                                        const updated = [...questions];
+                                        updated[index].answer = e.target.value;
+                                        setQuestions(updated);
                                     }}
+                                    placeholder="Correct Answer"
                                 />
-                                <button
-                                    onClick={() => removeQuestion(index)}
-                                    style={{
-                                        marginTop: "10px",
-                                        padding: "5px 10px",
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Remove Question
-                                </button>
                             </div>
                         ))}
-                        <button
-                            onClick={addQuestion}
-                            style={{ margin: "10px", padding: "10px 20px" }}
-                        >
-                            Add Another Question
-                        </button>
-                        <button
-                            onClick={submitQuiz}
-                            style={{ padding: "10px 20px" }}
-                        >
-                            Add Quiz
-                        </button>
+                        <button onClick={addQuestion}>Add Question</button>
+                        <button onClick={submitQuiz}>Submit Quiz</button>
                     </div>
                 </div>
             )}
