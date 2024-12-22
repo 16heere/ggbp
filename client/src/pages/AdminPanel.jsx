@@ -57,15 +57,15 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
     const submitQuiz = async () => {
         if (
-            questions == null ||
-            questions.question == "" ||
-            questions.answer == ""
+            questions === null ||
+            questions.question === "" ||
+            questions.answer === ""
         ) {
             alert("Quiz is not fully completed");
             return;
         }
         questions.options.forEach((option) => {
-            if (option == "") {
+            if (option === "") {
                 alert("Quiz is not fully completed");
                 return;
             }
