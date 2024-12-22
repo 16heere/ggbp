@@ -227,6 +227,12 @@ const removeVideo = async (req, res) => {
             id,
         ]);
 
+        //delete ref from quizzes
+        await db.query("DELETE FROM quizzes WHERE video_id = $1", [id]);
+
+        //delete ref from quiz_attempts
+        await db.query("DELETE FROM quizzes WHERE video_id = $1", [id]);
+
         // 4. Delete from videos table
         const deleteResult = await db.query(
             "DELETE FROM videos WHERE id = $1 RETURNING id;",

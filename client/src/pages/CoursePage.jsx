@@ -176,7 +176,7 @@ const CoursePage = () => {
         if (selectedVideo?.watched) {
             fetchQuizForVideo(selectedVideo.id);
         }
-    }, [selectedVideo?.watched]);
+    }, [selectedVideo]);
 
     const unsubscribe = async () => {
         const confirmUnsubscribe = window.confirm(
