@@ -205,6 +205,7 @@ const CoursePage = () => {
         // Fetch the user's previous attempt for this quiz
         const fetchQuizAttempt = async () => {
             try {
+                setScore(0);
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`,
@@ -219,7 +220,7 @@ const CoursePage = () => {
                 }
             } catch (error) {
                 if (error.response?.status === 404) {
-                    console.log("No previous quiz attempt found.");
+                    return;
                 } else {
                     console.error(
                         "Failed to fetch quiz attempt:",
@@ -409,7 +410,7 @@ const CoursePage = () => {
                 )}
                 {quiz && (
                     <div className="quiz-container">
-                        {selectedVideo?.watched ? (
+                        {selectedVideo?.watched && quiz ? (
                             completed ? (
                                 <div>
                                     <h4>Quiz Completed!</h4>
