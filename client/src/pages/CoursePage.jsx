@@ -278,8 +278,7 @@ const CoursePage = () => {
         try {
             const token = localStorage.getItem("token");
             await axios.delete(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempts`,
-                { videoId: selectedVideo.id },
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempts/${selectedVideo.id}`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }

@@ -633,7 +633,7 @@ const setQuizAttempt = async (req, res) => {
 
 const deleteQuizAttempt = async (req, res) => {
     const userId = req.user.id;
-    const { videoId } = req.body;
+    const { videoId } = req.params;
 
     try {
         // Delete all rows for this quiz
