@@ -538,7 +538,7 @@ const updateQuiz = async (req, res) => {
         }
 
         const { video_id, title: oldTitle } = quizResult.rows[0];
-        const quizAttemptResult = await db.query(quizAttemptQuery, [video_id]);
+        await db.query(quizAttemptQuery, [video_id]);
         // Update all rows for this quiz (matching video_id and oldTitle)
         const updateQuery = `
             UPDATE quizzes
