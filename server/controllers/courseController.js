@@ -631,6 +631,24 @@ const setQuizAttempt = async (req, res) => {
     }
 };
 
+const deleteQuizAttempt = async (req, res) => {
+    const userId = req.user.id;
+    const { videoId } = req.body;
+
+    try {
+        // Delete all rows for this quiz
+        await db.query(
+            `DELETE FROM quiz_attempts WHERE user_id = $1 AND video_id = $2`,
+            [userId, videoId]
+        );
+
+        res.status(200).json({ message: "Quiz deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting quiz:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 module.exports = {
     loginUser,
     subscribeUser,
@@ -651,4 +669,5 @@ module.exports = {
     getQuizzesByVideo,
     getQuizAttempt,
     setQuizAttempt,
+    deleteQuizAttempt,
 };

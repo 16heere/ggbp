@@ -277,8 +277,11 @@ const CoursePage = () => {
         // Reset quiz in the database
         try {
             await axios.delete(
-                `${process.env.REACT_APP_API_ENDPOINT}/quiz/attempts`,
-                { data: { userId: user.id, quizId: quiz[0].quizId } }
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempts`,
+                { videoId: selectedVideo.id },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
             );
 
             setUserAnswers([]);
