@@ -215,7 +215,7 @@ const CoursePage = () => {
         };
 
         fetchQuizAttempt();
-    }, [quiz, user.id]);
+    }, [quiz, user.id, selectedVideo.id]);
 
     const handleAnswerClick = (questionIndex, selectedOption) => {
         const updatedAnswers = [...userAnswers];
