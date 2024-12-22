@@ -70,10 +70,14 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(response.data);
-            setQuiz(response.data);
+            if (response.data.length === 0) {
+                setQuiz(null);
+            } else {
+                setQuiz(response.data);
+            }
         } catch (error) {
             console.error("Failed to fetch quiz:", error.message);
+            setQuiz(null);
         }
     };
 
@@ -409,9 +413,9 @@ const CoursePage = () => {
                         )}
                     </div>
                 )}
-                {quiz && (
+                {quiz && quiz.length > 0 && (
                     <div className="quiz-container">
-                        {selectedVideo?.watched && quiz ? (
+                        {selectedVideo?.watched ? (
                             completed ? (
                                 <div>
                                     <h4>Quiz Completed!</h4>
