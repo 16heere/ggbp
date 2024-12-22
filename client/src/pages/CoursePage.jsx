@@ -276,6 +276,7 @@ const CoursePage = () => {
     const handleResetQuiz = async () => {
         // Reset quiz in the database
         try {
+            const token = localStorage.getItem("token");
             await axios.delete(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempts`,
                 { videoId: selectedVideo.id },
@@ -289,6 +290,7 @@ const CoursePage = () => {
             setAnsweredQuestions(0);
             setScoreSent(false);
             setScore(null);
+            setCompleted(false);
         } catch (error) {
             console.error("Failed to reset quiz:", error.message);
         }
