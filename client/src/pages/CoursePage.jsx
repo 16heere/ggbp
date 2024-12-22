@@ -11,6 +11,7 @@ const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [userAnswers, setUserAnswers] = useState([]);
     const [feedback, setFeedback] = useState([]);
+    const [completed, setCompleted] = useState(false);
     const [scoreSent, setScoreSent] = useState(false);
     const [answeredQuestions, setAnsweredQuestions] = useState(0);
     const [videos, setVideos] = useState([]);
@@ -203,6 +204,7 @@ const CoursePage = () => {
 
                 if (response.data) {
                     setScore(response.data.score);
+                    setCompleted(true);
                 }
             } catch (error) {
                 if (error.response?.status === 404) {
@@ -264,8 +266,8 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-
             alert("Score saved successfully!");
+            setCompleted(true);
         } catch (error) {
             console.error("Failed to save score:", error.message);
         }
@@ -393,98 +395,94 @@ const CoursePage = () => {
                 )}
                 {quiz && (
                     <div className="quiz-container">
-                        <h3>Quiz</h3>
-                        <ul>
-                            {quiz.map((q, questionIndex) => (
-                                <li
-                                    key={q.quizid}
-                                    style={{
-                                        marginBottom: "20px",
-                                        padding: "10px",
-                                        border: "1px solid #ccc",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    <p>
-                                        <strong>
-                                            Question {questionIndex + 1}:
-                                        </strong>{" "}
-                                        {q.question}
-                                    </p>
-                                    <div>
-                                        {q.options.map((option, idx) => (
-                                            <button
-                                                key={idx}
-                                                onClick={() =>
-                                                    handleAnswerClick(
-                                                        questionIndex,
-                                                        option
-                                                    )
-                                                }
-                                                disabled={
-                                                    questionIndex >
-                                                        answeredQuestions ||
-                                                    userAnswers[
-                                                        questionIndex
-                                                    ] !== undefined
-                                                }
-                                                style={{
-                                                    margin: "5px",
-                                                    padding: "10px 20px",
-                                                    backgroundColor:
-                                                        userAnswers[
-                                                            questionIndex
-                                                        ] === option
-                                                            ? "#d3d3d3"
-                                                            : "#f0f0f0",
-                                                    border: "1px solid #ccc",
-                                                    cursor:
-                                                        questionIndex >
-                                                        answeredQuestions
-                                                            ? "not-allowed"
-                                                            : "pointer",
-                                                }}
-                                            >
-                                                {option}
-                                            </button>
-                                        ))}
-                                    </div>
-                                    {feedback[questionIndex] && (
-                                        <p
-                                            style={{
-                                                color:
-                                                    feedback[questionIndex] ===
-                                                    "Correct!"
-                                                        ? "green"
-                                                        : "red",
-                                                marginTop: "10px",
-                                            }}
-                                        >
-                                            {feedback[questionIndex]}
-                                        </p>
-                                    )}
-                                </li>
-                            ))}
-                        </ul>
-
-                        {answeredQuestions === quiz.length && (
-                            <div style={{ marginTop: "20px" }}>
+                        {completed ? (
+                            <div>
                                 <h4>Quiz Completed!</h4>
                                 <p>
                                     Your Score: {score}/{quiz.length}
                                 </p>
-                                <button
-                                    onClick={handleResetQuiz}
-                                    style={{
-                                        padding: "10px 20px",
-                                        backgroundColor: "gray",
-                                        color: "white",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    Retry Quiz
-                                </button>
+                                <p>You've already completed this quiz.</p>
+                            </div>
+                        ) : (
+                            <div>
+                                <h3>Quiz</h3>
+                                <ul>
+                                    {quiz.map((q, questionIndex) => (
+                                        <li
+                                            key={q.quizid}
+                                            style={{
+                                                marginBottom: "20px",
+                                                padding: "10px",
+                                                border: "1px solid #ccc",
+                                                borderRadius: "5px",
+                                            }}
+                                        >
+                                            <p>
+                                                <strong>
+                                                    Question {questionIndex + 1}
+                                                    :
+                                                </strong>{" "}
+                                                {q.question}
+                                            </p>
+                                            <div>
+                                                {q.options.map(
+                                                    (option, idx) => (
+                                                        <button
+                                                            key={idx}
+                                                            onClick={() =>
+                                                                handleAnswerClick(
+                                                                    questionIndex,
+                                                                    option
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                questionIndex >
+                                                                    answeredQuestions ||
+                                                                userAnswers[
+                                                                    questionIndex
+                                                                ] !== undefined
+                                                            }
+                                                            style={{
+                                                                margin: "5px",
+                                                                padding:
+                                                                    "10px 20px",
+                                                                backgroundColor:
+                                                                    userAnswers[
+                                                                        questionIndex
+                                                                    ] === option
+                                                                        ? "#d3d3d3"
+                                                                        : "#f0f0f0",
+                                                                border: "1px solid #ccc",
+                                                                cursor:
+                                                                    questionIndex >
+                                                                    answeredQuestions
+                                                                        ? "not-allowed"
+                                                                        : "pointer",
+                                                            }}
+                                                        >
+                                                            {option}
+                                                        </button>
+                                                    )
+                                                )}
+                                            </div>
+                                            {feedback[questionIndex] && (
+                                                <p
+                                                    style={{
+                                                        color:
+                                                            feedback[
+                                                                questionIndex
+                                                            ] === "Correct!"
+                                                                ? "green"
+                                                                : "red",
+                                                        marginTop: "10px",
+                                                    }}
+                                                >
+                                                    {feedback[questionIndex]}
+                                                </p>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         )}
                     </div>
