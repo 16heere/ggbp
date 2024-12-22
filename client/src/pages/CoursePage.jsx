@@ -193,6 +193,9 @@ const CoursePage = () => {
         // Fetch the user's previous attempt for this quiz
         const fetchQuizAttempt = async () => {
             try {
+                console.log(
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`
+                );
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`,
