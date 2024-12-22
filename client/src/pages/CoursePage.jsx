@@ -192,6 +192,8 @@ const CoursePage = () => {
         if (!user || !selectedVideo) return;
         // Fetch the user's previous attempt for this quiz
         const fetchQuizAttempt = async () => {
+            console.log(user);
+            console.log(selectedVideo);
             try {
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
