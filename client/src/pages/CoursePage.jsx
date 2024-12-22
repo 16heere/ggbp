@@ -224,7 +224,6 @@ const CoursePage = () => {
     const handleAnswerClick = (questionIndex, selectedOption) => {
         const updatedAnswers = [...userAnswers];
         updatedAnswers[questionIndex] = selectedOption;
-        console.log(updatedAnswers);
         setUserAnswers(updatedAnswers);
 
         // Check if the selected option is correct
@@ -249,7 +248,6 @@ const CoursePage = () => {
             return answer === quiz[index].answer ? score + 1 : score;
         }, 0);
 
-        console.log("Calculated Score:", calculatedScore);
         const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
 
         try {
