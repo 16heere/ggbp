@@ -243,9 +243,11 @@ const CoursePage = () => {
     };
 
     const handleSendScore = async (answers) => {
-        console.log(answers);
-        const calculatedScore = answers.filter((ans) => ans.isCorrect).length;
-        console.log(calculatedScore);
+        const calculatedScore = answers.reduce((score, answer, index) => {
+            return answer === quiz[index].answer ? score + 1 : score;
+        }, 0);
+
+        console.log("Calculated Score:", calculatedScore);
         const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
 
         try {
