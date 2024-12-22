@@ -195,10 +195,14 @@ const CoursePage = () => {
             console.log(user);
             console.log(selectedVideo);
             try {
+                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
                     {
                         params: { userId: user.id, videoId: selectedVideo.id },
+                    },
+                    {
+                        headers: { Authorization: `Bearer ${token}` },
                     }
                 );
 
@@ -247,6 +251,7 @@ const CoursePage = () => {
         const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
 
         try {
+            const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
                 {
@@ -254,6 +259,10 @@ const CoursePage = () => {
                     videoId: selectedVideo.id, // Assuming you know the video ID
                     score: calculatedScore,
                     totalQuestions,
+                },
+
+                {
+                    headers: { Authorization: `Bearer ${token}` },
                 }
             );
 
