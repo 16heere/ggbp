@@ -193,9 +193,6 @@ const CoursePage = () => {
         // Fetch the user's previous attempt for this quiz
         const fetchQuizAttempt = async () => {
             try {
-                console.log(
-                    `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`
-                );
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`,
@@ -225,6 +222,7 @@ const CoursePage = () => {
     const handleAnswerClick = (questionIndex, selectedOption) => {
         const updatedAnswers = [...userAnswers];
         updatedAnswers[questionIndex] = selectedOption;
+        console.log(updatedAnswers);
         setUserAnswers(updatedAnswers);
 
         // Check if the selected option is correct
@@ -246,6 +244,7 @@ const CoursePage = () => {
 
     const handleSendScore = async (answers) => {
         const calculatedScore = answers.filter((ans) => ans.isCorrect).length;
+        console.log(calculatedScore);
         const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
 
         try {
