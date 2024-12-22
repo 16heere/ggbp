@@ -81,7 +81,7 @@ router.delete("/quizzes/:id", protect, adminOnly, deleteQuiz);
 
 router.get("/videos/:videoId/quizzes", protect, getQuizzesByVideo);
 
-router.get("/quiz-attempt", protect, getQuizAttempt);
+router.get("/quiz-attempt/:videoId", protect, getQuizAttempt);
 router.post("/quiz-attempt", protect, setQuizAttempt);
 
 module.exports = router;

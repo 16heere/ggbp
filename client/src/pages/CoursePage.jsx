@@ -195,11 +195,7 @@ const CoursePage = () => {
             try {
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
-                    `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
-                    {
-                        userId: user.id,
-                        videoId: selectedVideo.id,
-                    },
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`,
                     {
                         headers: { Authorization: `Bearer ${token}` },
                     }
@@ -259,7 +255,6 @@ const CoursePage = () => {
                     score: calculatedScore,
                     totalQuestions,
                 },
-
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
