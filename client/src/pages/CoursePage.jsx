@@ -201,7 +201,6 @@ const CoursePage = () => {
 
                 if (response.data) {
                     setScore(response.data.score);
-                    setCompleted(true);
                 }
             } catch (error) {
                 if (error.response?.status === 404) {
@@ -216,7 +215,7 @@ const CoursePage = () => {
         };
 
         fetchQuizAttempt();
-    }, [quiz, userId]);
+    }, [quiz, user.id]);
 
     const handleAnswerClick = (questionIndex, selectedOption) => {
         const updatedAnswers = [...userAnswers];
@@ -266,7 +265,7 @@ const CoursePage = () => {
         try {
             await axios.delete(
                 `${process.env.REACT_APP_API_ENDPOINT}/quiz/attempts`,
-                { data: { userId, quizId: quiz[0].quizId } }
+                { data: { userId: user.id, quizId: quiz[0].quizId } }
             );
 
             setUserAnswers([]);
