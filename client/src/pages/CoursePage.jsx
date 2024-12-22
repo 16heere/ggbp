@@ -161,11 +161,22 @@ const CoursePage = () => {
                     video.id === videoId ? { ...video, watched: true } : video
                 )
             );
+
+            if (selectedVideo && selectedVideo.id === videoId) {
+                setSelectedVideo((prev) => ({ ...prev, watched: true }));
+            }
+
             fetchProgress();
         } catch (error) {
             console.error("Failed to update watched seconds:", error.message);
         }
     };
+
+    useEffect(() => {
+        if (selectedVideo?.watched) {
+            fetchQuizForVideo(selectedVideo.id);
+        }
+    }, [selectedVideo?.watched]);
 
     const unsubscribe = async () => {
         const confirmUnsubscribe = window.confirm(
