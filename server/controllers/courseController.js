@@ -558,21 +558,8 @@ const deleteQuiz = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Fetch the quiz's video_id and title
-        const quizQuery = `SELECT video_id FROM quizzes WHERE id = $1`;
-        const quizResult = await db.query(quizQuery, [id]);
-
-        if (quizResult.rows.length === 0) {
-            return res.status(404).json({ message: "Quiz not found" });
-        }
-
-        const { video_id } = quizResult.rows[0];
-
         // Delete all rows for this quiz
-        await db.query(`DELETE FROM quizzes WHERE video_id = $1`, [
-            video_id,
-            title,
-        ]);
+        await db.query(`DELETE FROM quizzes WHERE id = $1`, [id]);
 
         res.status(200).json({ message: "Quiz deleted successfully" });
     } catch (error) {

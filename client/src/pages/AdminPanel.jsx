@@ -49,9 +49,27 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         setQuestions(updatedQuestions);
     };
 
-    const removeSubmittedQuestion = (quizid) => {
-        const updatedQuizzes = quizzes.filter((quiz) => quiz.quizid !== quizid);
-        setQuizzes(updatedQuizzes);
+    const removeSubmittedQuestion = async (quizid) => {
+        if (!quizid) {
+            alert("Quiz not found");
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizid}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            const updatedQuizzes = quizzes.filter(
+                (quiz) => quiz.quizid !== quizid
+            );
+            setQuizzes(updatedQuizzes);
+        } catch (error) {
+            console.error("Failed to remove quiz:", error.message);
+        }
     };
 
     const submitQuiz = async () => {
