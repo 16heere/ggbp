@@ -7,7 +7,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [questions, setQuestions] = useState([
         { question: "", options: ["", "", "", ""], answer: "" },
     ]);
-    const [questionsArray, setQuestionArray] = useState();
+    const [questionsArray, setQuestionArray] = useState([]);
     const [selectVideoName, setSelectedVideoName] = useState(null);
     const [selectedVideoId, setSelectedVideoId] = useState(null);
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
@@ -487,6 +487,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             {selectedVideoId && (
                 <div className="quiz-management">
                     <h3>Quiz Management for {selectVideoName}</h3>
+
                     {questionsArray.length > 0 && (
                         <div>
                             <h2>Submitted Quizzes</h2>
