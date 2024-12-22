@@ -14,6 +14,8 @@ const {
     updateQuiz,
     deleteQuiz,
     getQuizzesByVideo,
+    getQuizAttempt,
+    setQuizAttempt,
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminOnly } = require("../middleware/adminMiddleware");
@@ -78,5 +80,8 @@ router.put("/quizzes/:id", protect, adminOnly, updateQuiz);
 router.delete("/quizzes/:id", protect, adminOnly, deleteQuiz);
 
 router.get("/videos/:videoId/quizzes", protect, getQuizzesByVideo);
+
+router.get("/quiz-attempt", protect, getQuizAttempt);
+router.post("/quiz-attempt", protect, setQuizAttempt);
 
 module.exports = router;

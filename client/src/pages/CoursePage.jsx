@@ -11,7 +11,7 @@ const CoursePage = () => {
     const [progress, setProgress] = useState(0);
     const [userAnswers, setUserAnswers] = useState([]);
     const [feedback, setFeedback] = useState([]);
-
+    const [scoreSent, setScoreSent] = useState(false);
     const [answeredQuestions, setAnsweredQuestions] = useState(0);
     const [videos, setVideos] = useState([]);
     const [quiz, setQuiz] = useState();
@@ -21,6 +21,7 @@ const CoursePage = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [score, setScore] = useState(null);
 
     const openVideo = useCallback(
         async (video) => {
@@ -187,6 +188,35 @@ const CoursePage = () => {
             console.error("Failed to unsubscribe:", error.message);
         }
     };
+    useEffect(() => {
+        // Fetch the user's previous attempt for this quiz
+        const fetchQuizAttempt = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
+                    {
+                        params: { userId: user.id, videoId: selectedVideo.id },
+                    }
+                );
+
+                if (response.data) {
+                    setScore(response.data.score);
+                    setCompleted(true);
+                }
+            } catch (error) {
+                if (error.response?.status === 404) {
+                    console.log("No previous quiz attempt found.");
+                } else {
+                    console.error(
+                        "Failed to fetch quiz attempt:",
+                        error.message
+                    );
+                }
+            }
+        };
+
+        fetchQuizAttempt();
+    }, [quiz, userId]);
 
     const handleAnswerClick = (questionIndex, selectedOption) => {
         const updatedAnswers = [...userAnswers];
@@ -203,9 +233,51 @@ const CoursePage = () => {
         if (questionIndex === answeredQuestions) {
             setAnsweredQuestions(answeredQuestions + 1);
         }
+
+        // Automatically send score when the last question is answered
+        if (questionIndex === quiz.length - 1 && !scoreSent) {
+            handleSendScore(updatedAnswers);
+        }
     };
 
-    const score = feedback.filter((f) => f === "Correct!").length;
+    const handleSendScore = async (answers) => {
+        const calculatedScore = answers.filter((ans) => ans.isCorrect).length;
+        const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
+
+        try {
+            await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
+                {
+                    userId: user.id, // Assuming you have user data
+                    videoId: selectedVideo.id, // Assuming you know the video ID
+                    score: calculatedScore,
+                    totalQuestions,
+                }
+            );
+
+            alert("Score saved successfully!");
+        } catch (error) {
+            console.error("Failed to save score:", error.message);
+        }
+    };
+
+    const handleResetQuiz = async () => {
+        // Reset quiz in the database
+        try {
+            await axios.delete(
+                `${process.env.REACT_APP_API_ENDPOINT}/quiz/attempts`,
+                { data: { userId, quizId: quiz[0].quizId } }
+            );
+
+            setUserAnswers([]);
+            setFeedback([]);
+            setAnsweredQuestions(0);
+            setScoreSent(false);
+            setScore(null);
+        } catch (error) {
+            console.error("Failed to reset quiz:", error.message);
+        }
+    };
 
     if (loading) {
         return <p>Loading...</p>;
@@ -315,7 +387,7 @@ const CoursePage = () => {
                         <ul>
                             {quiz.map((q, questionIndex) => (
                                 <li
-                                    key={q.id}
+                                    key={q.quizid}
                                     style={{
                                         marginBottom: "20px",
                                         padding: "10px",
@@ -384,12 +456,25 @@ const CoursePage = () => {
                                 </li>
                             ))}
                         </ul>
+
                         {answeredQuestions === quiz.length && (
                             <div style={{ marginTop: "20px" }}>
                                 <h4>Quiz Completed!</h4>
                                 <p>
                                     Your Score: {score}/{quiz.length}
                                 </p>
+                                <button
+                                    onClick={handleResetQuiz}
+                                    style={{
+                                        padding: "10px 20px",
+                                        backgroundColor: "gray",
+                                        color: "white",
+                                        border: "none",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    Retry Quiz
+                                </button>
                             </div>
                         )}
                     </div>

@@ -586,6 +586,51 @@ const getQuizzesByVideo = async (req, res) => {
     }
 };
 
+const getQuizAttempt = async (req, res) => {
+    const { userId, videoId } = req.query;
+
+    try {
+        const query = `
+            SELECT * FROM quiz_attempts
+            WHERE user_id = $1 AND video_id = $2;
+        `;
+        const values = [userId, videoId];
+        const result = await db.query(query, values);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No quiz attempt found." });
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error("Error fetching quiz attempt:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+const setQuizAttempt = async (req, res) => {
+    const { userId, videoId, score, totalQuestions } = req.body;
+
+    try {
+        const query = `
+        INSERT INTO quiz_attempts (user_id, video_id, score, total_questions)
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (user_id, video_id)
+        DO UPDATE SET score = $3, total_questions = $4, completed_at = NOW()
+        RETURNING *;
+    `;
+        const values = [userId, videoId, score, totalQuestions];
+        const result = await db.query(query, values);
+
+        res.status(201).json({
+            message: "Quiz score saved successfully!",
+            attempt: result.rows[0],
+        });
+    } catch (error) {
+        console.error("Error saving quiz score:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 module.exports = {
     loginUser,
     subscribeUser,
@@ -604,4 +649,6 @@ module.exports = {
     updateQuiz,
     deleteQuiz,
     getQuizzesByVideo,
+    getQuizAttempt,
+    setQuizAttempt,
 };
