@@ -34,15 +34,12 @@ const protect = async (req, res, next) => {
                 });
             }
 
-            console.log(user);
-
             // Attach user info to the request
             req.user = {
                 id: decoded.id,
                 isAdmin: user.is_admin,
                 isSubscribed: user.status,
             };
-            console.log("NEXT");
             next(); // Proceed to the next middleware or route
         } catch (error) {
             console.error("Authorization error:", error.message);

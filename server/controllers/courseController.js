@@ -587,15 +587,15 @@ const getQuizzesByVideo = async (req, res) => {
 };
 
 const getQuizAttempt = async (req, res) => {
-    const { userId, videoId } = req.query;
+    const { userId, videoId } = req.body;
+    console.log(userId + " " + videoId);
 
     try {
         const query = `
             SELECT * FROM quiz_attempts
             WHERE user_id = $1 AND video_id = $2;
         `;
-        const values = [userId, videoId];
-        const result = await db.query(query, values);
+        const result = await db.query(query, [userId, videoId]);
 
         if (result.rows.length === 0) {
             return res.status(404).json({ message: "No quiz attempt found." });

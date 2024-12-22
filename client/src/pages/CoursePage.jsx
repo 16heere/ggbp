@@ -198,7 +198,8 @@ const CoursePage = () => {
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
                     {
-                        params: { userId: user.id, videoId: selectedVideo.id },
+                        userId: user.id,
+                        videoId: selectedVideo.id,
                     },
                     {
                         headers: { Authorization: `Bearer ${token}` },
