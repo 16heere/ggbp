@@ -243,6 +243,7 @@ const CoursePage = () => {
     };
 
     const handleSendScore = async (answers) => {
+        console.log(answers);
         const calculatedScore = answers.filter((ans) => ans.isCorrect).length;
         console.log(calculatedScore);
         const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
