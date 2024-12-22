@@ -588,7 +588,6 @@ const getQuizzesByVideo = async (req, res) => {
 
 const getQuizAttempt = async (req, res) => {
     const { userId, videoId } = req.query;
-    console.log(userId);
 
     try {
         const query = `
