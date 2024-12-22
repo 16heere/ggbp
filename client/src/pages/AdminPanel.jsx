@@ -110,6 +110,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 return acc;
             }, {});
 
+            console.log(groupedQuizzes);
+
             setQuizzes(groupedQuizzes);
         } catch (error) {
             console.error("Failed to fetch quizzes:", error.message);
@@ -478,7 +480,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             {selectedVideoId && (
                 <div className="quiz-management">
                     <h3>Quiz Management for {selectVideoName}</h3>
-                    {console.log(quizzes)}
                     {quizzes.length > 0 && (
                         <div>
                             <h2>Submitted Quizzes</h2>
