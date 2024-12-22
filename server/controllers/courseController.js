@@ -503,7 +503,7 @@ const createQuiz = async (req, res) => {
             RETURNING id, video_id, question, options, answer
         `;
         const quizAttemptQuery = `DELETE from quiz_attempts WHERE video_id = $1`;
-        await db.query(quizAttemptQuery, [video_id]);
+        await db.query(quizAttemptQuery, [videoId]);
 
         const insertedQuestions = [];
         for (const { question, options, answer } of questions) {
