@@ -398,100 +398,116 @@ const CoursePage = () => {
                 )}
                 {quiz && (
                     <div className="quiz-container">
-                        {completed ? (
-                            <div>
-                                <h4>Quiz Completed!</h4>
-                                <p>
-                                    Your Score: {score}/{quiz.length}
-                                </p>
-                                <butto
-                                    onClick={() => {
-                                        handleResetQuiz();
-                                    }}
-                                >
-                                    Reset Quiz
-                                </butto>
-                            </div>
-                        ) : (
-                            <div>
-                                <h3>Quiz</h3>
-                                <ul>
-                                    {quiz.map((q, questionIndex) => (
-                                        <li
-                                            key={q.quizid}
-                                            style={{
-                                                marginBottom: "20px",
-                                                padding: "10px",
-                                                border: "1px solid #ccc",
-                                                borderRadius: "5px",
-                                            }}
-                                        >
-                                            <p>
-                                                <strong>
-                                                    Question {questionIndex + 1}
-                                                    :
-                                                </strong>{" "}
-                                                {q.question}
-                                            </p>
-                                            <div>
-                                                {q.options.map(
-                                                    (option, idx) => (
-                                                        <button
-                                                            key={idx}
-                                                            onClick={() =>
-                                                                handleAnswerClick(
-                                                                    questionIndex,
-                                                                    option
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                questionIndex >
-                                                                    answeredQuestions ||
-                                                                userAnswers[
-                                                                    questionIndex
-                                                                ] !== undefined
-                                                            }
-                                                            style={{
-                                                                margin: "5px",
-                                                                padding:
-                                                                    "10px 20px",
-                                                                backgroundColor:
+                        {selectedVideo?.watched ? (
+                            completed ? (
+                                <div>
+                                    <h4>Quiz Completed!</h4>
+                                    <p>
+                                        Your Score: {score}/{quiz.length}
+                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            handleResetQuiz();
+                                        }}
+                                    >
+                                        Reset Quiz
+                                    </button>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h3>Quiz</h3>
+                                    <ul>
+                                        {quiz.map((q, questionIndex) => (
+                                            <li
+                                                key={q.quizid}
+                                                style={{
+                                                    marginBottom: "20px",
+                                                    padding: "10px",
+                                                    border: "1px solid #ccc",
+                                                    borderRadius: "5px",
+                                                }}
+                                            >
+                                                <p>
+                                                    <strong>
+                                                        Question{" "}
+                                                        {questionIndex + 1}:
+                                                    </strong>{" "}
+                                                    {q.question}
+                                                </p>
+                                                <div>
+                                                    {q.options.map(
+                                                        (option, idx) => (
+                                                            <button
+                                                                key={idx}
+                                                                onClick={() =>
+                                                                    handleAnswerClick(
+                                                                        questionIndex,
+                                                                        option
+                                                                    )
+                                                                }
+                                                                disabled={
+                                                                    questionIndex >
+                                                                        answeredQuestions ||
                                                                     userAnswers[
                                                                         questionIndex
-                                                                    ] === option
-                                                                        ? "#d3d3d3"
-                                                                        : "#f0f0f0",
-                                                                border: "1px solid #ccc",
-                                                                cursor:
-                                                                    questionIndex >
-                                                                    answeredQuestions
-                                                                        ? "not-allowed"
-                                                                        : "pointer",
-                                                            }}
-                                                        >
-                                                            {option}
-                                                        </button>
-                                                    )
-                                                )}
-                                            </div>
-                                            {feedback[questionIndex] && (
-                                                <p
-                                                    style={{
-                                                        color:
+                                                                    ] !==
+                                                                        undefined
+                                                                }
+                                                                style={{
+                                                                    margin: "5px",
+                                                                    padding:
+                                                                        "10px 20px",
+                                                                    backgroundColor:
+                                                                        userAnswers[
+                                                                            questionIndex
+                                                                        ] ===
+                                                                        option
+                                                                            ? "#d3d3d3"
+                                                                            : "#f0f0f0",
+                                                                    border: "1px solid #ccc",
+                                                                    cursor:
+                                                                        questionIndex >
+                                                                        answeredQuestions
+                                                                            ? "not-allowed"
+                                                                            : "pointer",
+                                                                }}
+                                                            >
+                                                                {option}
+                                                            </button>
+                                                        )
+                                                    )}
+                                                </div>
+                                                {feedback[questionIndex] && (
+                                                    <p
+                                                        style={{
+                                                            color:
+                                                                feedback[
+                                                                    questionIndex
+                                                                ] === "Correct!"
+                                                                    ? "green"
+                                                                    : "red",
+                                                            marginTop: "10px",
+                                                        }}
+                                                    >
+                                                        {
                                                             feedback[
                                                                 questionIndex
-                                                            ] === "Correct!"
-                                                                ? "green"
-                                                                : "red",
-                                                        marginTop: "10px",
-                                                    }}
-                                                >
-                                                    {feedback[questionIndex]}
-                                                </p>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
+                                                            ]
+                                                        }
+                                                    </p>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )
+                        ) : (
+                            <div>
+                                <h3>Quiz Locked</h3>
+                                <p>
+                                    You need to watch the video first to unlock
+                                    the quiz.
+                                </p>
                             </div>
                         )}
                     </div>
