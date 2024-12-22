@@ -491,7 +491,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     {questionsArray.length > 0 && (
                         <div>
                             <h2>Submitted Quizzes</h2>
-                            {quizzes.map((quiz, quizIndex) => (
+                            {questionsArray.map((quiz, quizIndex) => (
                                 <div
                                     key={quiz.quizId}
                                     style={{ marginBottom: "30px" }}
