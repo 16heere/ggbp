@@ -189,6 +189,7 @@ const CoursePage = () => {
         }
     };
     useEffect(() => {
+        if (!user || !selectedVideo) return;
         // Fetch the user's previous attempt for this quiz
         const fetchQuizAttempt = async () => {
             try {
@@ -215,7 +216,7 @@ const CoursePage = () => {
         };
 
         fetchQuizAttempt();
-    }, [quiz, user.id, selectedVideo.id]);
+    }, [quiz, user, selectedVideo]);
 
     const handleAnswerClick = (questionIndex, selectedOption) => {
         const updatedAnswers = [...userAnswers];
