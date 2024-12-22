@@ -55,6 +55,13 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             return;
         }
 
+        const confirmRemoval = window.confirm(
+            "Are you sure you want to remove the question? This action cannot be undone."
+        );
+        if (!confirmRemoval) {
+            return;
+        }
+
         try {
             const token = localStorage.getItem("token");
             await axios.delete(

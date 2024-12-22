@@ -9,6 +9,10 @@ import { FaAngleRight, FaBars } from "react-icons/fa";
 
 const CoursePage = () => {
     const [progress, setProgress] = useState(0);
+    const [userAnswers, setUserAnswers] = useState([]);
+    const [feedback, setFeedback] = useState([]);
+
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [videos, setVideos] = useState([]);
     const [quiz, setQuiz] = useState();
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -184,6 +188,26 @@ const CoursePage = () => {
         }
     };
 
+    const handleAnswerClick = (questionIndex, selectedOption) => {
+        const updatedAnswers = [...userAnswers];
+        updatedAnswers[questionIndex] = selectedOption;
+        setUserAnswers(updatedAnswers);
+
+        // Check if the selected option is correct
+        const isCorrect = quiz[questionIndex].answer === selectedOption;
+        const updatedFeedback = [...feedback];
+        updatedFeedback[questionIndex] = isCorrect ? "Correct!" : "Incorrect!";
+        setFeedback(updatedFeedback);
+    };
+
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex < quiz.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+    };
+
+    const score = feedback.filter((f) => f === "Correct!").length;
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -288,18 +312,89 @@ const CoursePage = () => {
                 )}
                 {quiz && (
                     <div className="quiz-container">
-                        <h3>Quiz: {quiz.title}</h3>
-                        <ul>
-                            {console.log(quiz)}
-                            {quiz.map((q) => (
-                                <li key={q.id}>
-                                    <p>{q.question}</p>
-                                    {q.options.map((option, idx) => (
-                                        <button key={idx}>{option}</button>
-                                    ))}
-                                </li>
-                            ))}
-                        </ul>
+                        <h3>Quiz</h3>
+
+                        {currentQuestionIndex < quiz.length ? (
+                            <div>
+                                <h4>
+                                    Question {currentQuestionIndex + 1} of{" "}
+                                    {quiz.length}
+                                </h4>
+                                <p>{quiz[currentQuestionIndex].question}</p>
+                                <div>
+                                    {quiz[currentQuestionIndex].options.map(
+                                        (option, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() =>
+                                                    handleAnswerClick(
+                                                        currentQuestionIndex,
+                                                        option
+                                                    )
+                                                }
+                                                disabled={
+                                                    userAnswers[
+                                                        currentQuestionIndex
+                                                    ] !== undefined
+                                                }
+                                                style={{
+                                                    margin: "5px",
+                                                    padding: "10px 20px",
+                                                    backgroundColor:
+                                                        userAnswers[
+                                                            currentQuestionIndex
+                                                        ] === option
+                                                            ? "#d3d3d3"
+                                                            : "#f0f0f0",
+                                                    border: "1px solid #ccc",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                {option}
+                                            </button>
+                                        )
+                                    )}
+                                </div>
+                                {feedback[currentQuestionIndex] && (
+                                    <p
+                                        style={{
+                                            color:
+                                                feedback[
+                                                    currentQuestionIndex
+                                                ] === "Correct!"
+                                                    ? "green"
+                                                    : "red",
+                                            marginTop: "10px",
+                                        }}
+                                    >
+                                        {feedback[currentQuestionIndex]}
+                                    </p>
+                                )}
+                                {userAnswers[currentQuestionIndex] !==
+                                    undefined && (
+                                    <button
+                                        onClick={handleNextQuestion}
+                                        style={{
+                                            marginTop: "20px",
+                                            padding: "10px 20px",
+                                            backgroundColor: "#007BFF",
+                                            color: "white",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}
+                                    >
+                                        Next Question
+                                    </button>
+                                )}
+                            </div>
+                        ) : (
+                            <div>
+                                <h4>Quiz Completed!</h4>
+                                <p>
+                                    Your Score: {score}/{quiz.length}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
