@@ -401,7 +401,13 @@ const CoursePage = () => {
                                 <p>
                                     Your Score: {score}/{quiz.length}
                                 </p>
-                                <p>You've already completed this quiz.</p>
+                                <butto
+                                    onClick={() => {
+                                        handleResetQuiz();
+                                    }}
+                                >
+                                    Reset Quiz
+                                </butto>
                             </div>
                         ) : (
                             <div>
