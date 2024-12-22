@@ -225,6 +225,7 @@ const CoursePage = () => {
                 }
             } catch (error) {
                 if (error.response?.status === 404) {
+                    setCompleted(false);
                     return;
                 } else {
                     console.error(
