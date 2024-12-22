@@ -22,7 +22,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         groups[level] = videos.filter((video) => video.level === level);
         return groups;
     }, {});
-
     const handleQuestionChange = (index, value) => {
         const updatedQuestions = [...questions];
         updatedQuestions[index].question = value;
@@ -510,53 +509,103 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     <h2>Unsubmitted Quiz</h2>
                     <div style={{ margin: "20px" }}>
                         <h1>Add Quiz</h1>
-                        <h4>Unsubmitted Quiz</h4>
                         {questions.map((q, index) => (
                             <div key={index} style={{ marginBottom: "20px" }}>
-                                <input
-                                    type="text"
-                                    value={q.question}
-                                    onChange={(e) => {
-                                        const updated = [...questions];
-                                        updated[index].question =
-                                            e.target.value;
-                                        setQuestions(updated);
-                                    }}
-                                    placeholder="Enter question"
-                                />
+                                <label>
+                                    Question {index + 1}:
+                                    <input
+                                        type="text"
+                                        value={q.question}
+                                        onChange={(e) =>
+                                            handleQuestionChange(
+                                                index,
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="Enter question"
+                                        style={{
+                                            display: "block",
+                                            margin: "10px 0",
+                                            width: "300px",
+                                        }}
+                                    />
+                                </label>
                                 <div>
                                     {q.options.map((option, optIndex) => (
-                                        <input
+                                        <div
                                             key={optIndex}
-                                            type="text"
-                                            value={option}
-                                            onChange={(e) => {
-                                                const updated = [...questions];
-                                                updated[index].options[
-                                                    optIndex
-                                                ] = e.target.value;
-                                                setQuestions(updated);
-                                            }}
-                                            placeholder={`Option ${
-                                                optIndex + 1
-                                            }`}
-                                        />
+                                            style={{ marginBottom: "5px" }}
+                                        >
+                                            <label>
+                                                Option {optIndex + 1}:
+                                                <input
+                                                    type="text"
+                                                    value={option}
+                                                    onChange={(e) =>
+                                                        handleOptionChange(
+                                                            index,
+                                                            optIndex,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    placeholder={`Option ${
+                                                        optIndex + 1
+                                                    }`}
+                                                    style={{
+                                                        width: "200px",
+                                                        marginLeft: "10px",
+                                                    }}
+                                                />
+                                            </label>
+                                        </div>
                                     ))}
                                 </div>
-                                <input
-                                    type="text"
-                                    value={q.answer}
-                                    onChange={(e) => {
-                                        const updated = [...questions];
-                                        updated[index].answer = e.target.value;
-                                        setQuestions(updated);
+                                <label>
+                                    Answer:
+                                    <input
+                                        type="text"
+                                        value={q.answer}
+                                        onChange={(e) =>
+                                            handleAnswerChange(
+                                                index,
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="Enter correct answer"
+                                        style={{
+                                            display: "block",
+                                            margin: "10px 0",
+                                            width: "200px",
+                                        }}
+                                    />
+                                </label>
+                                <button
+                                    onClick={() => removeQuestion(index)}
+                                    style={{
+                                        marginTop: "10px",
+                                        padding: "5px 10px",
+                                        backgroundColor: "red",
+                                        color: "white",
+                                        border: "none",
+                                        cursor: "pointer",
                                     }}
-                                    placeholder="Correct Answer"
-                                />
+                                >
+                                    Remove Question
+                                </button>
                             </div>
                         ))}
-                        <button onClick={addQuestion}>Add Question</button>
-                        <button onClick={submitQuiz}>Submit Quiz</button>
+                        <button
+                            onClick={addQuestion}
+                            style={{ margin: "10px", padding: "10px 20px" }}
+                        >
+                            Add Another Question
+                        </button>
+                        <button
+                            onClick={submitQuiz}
+                            style={{ padding: "10px 20px" }}
+                        >
+                            Submit Quiz
+                        </button>
                     </div>
                 </div>
             )}
