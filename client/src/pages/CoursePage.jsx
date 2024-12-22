@@ -268,6 +268,7 @@ const CoursePage = () => {
             );
             alert("Score saved successfully!");
             setCompleted(true);
+            setScore(calculatedScore);
         } catch (error) {
             console.error("Failed to save score:", error.message);
         }
