@@ -56,6 +56,21 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     };
 
     const submitQuiz = async () => {
+        if (
+            questions == null ||
+            questions.question == "" ||
+            questions.answer == ""
+        ) {
+            alert("Quiz is not fully completed");
+            return;
+        }
+        questions.options.forEach((option) => {
+            if (option == "") {
+                alert("Quiz is not fully completed");
+                return;
+            }
+        });
+
         try {
             const token = localStorage.getItem("token");
             const response = await axios.post(
@@ -468,7 +483,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                             <h2>Submitted Quizzes</h2>
                             {quizzes.map((quiz, quizIndex) => (
                                 <div
-                                    key={quiz.quizVideoId}
+                                    key={quiz.quizId}
                                     style={{ marginBottom: "30px" }}
                                 >
                                     {console.log(quiz)}
