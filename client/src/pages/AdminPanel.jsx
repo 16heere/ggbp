@@ -110,7 +110,14 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 return acc;
             }, {});
 
-            console.log(groupedQuizzes);
+            const questionsArray = response.data.map((item) => ({
+                quizid: item.quizid,
+                question: item.question,
+                options: item.options,
+                answer: item.answer,
+            }));
+
+            console.log(questionsArray);
 
             setQuizzes(groupedQuizzes);
         } catch (error) {
