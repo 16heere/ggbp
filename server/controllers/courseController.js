@@ -506,19 +506,19 @@ const createQuiz = async (req, res) => {
         const query = `
             INSERT INTO quizzes (video_id, question, options, answer, image_url)
             VALUES ($1, $2, $3, $4, $5)
-            RETURNING id, video_id, question, options, answer
+            RETURNING id, video_id, question, options, answer, image_url
         `;
         const quizAttemptQuery = `DELETE from quiz_attempts WHERE video_id = $1`;
         await db.query(quizAttemptQuery, [videoId]);
 
         const insertedQuestions = [];
-        for (const { question, options, answer } of questions) {
+        for (const { question, options, answer, image_url } of questions) {
             const result = await db.query(query, [
                 videoId,
                 question,
                 JSON.stringify(options),
                 answer,
-                image || null,
+                image_url || null,
             ]);
             insertedQuestions.push(result.rows[0]);
         }
@@ -578,7 +578,7 @@ const getQuizzesByVideo = async (req, res) => {
 
     try {
         const query = `
-            SELECT id as quizId, question, options, answer 
+            SELECT id as quizId, question, options, answer, image_url
             FROM quizzes
             WHERE video_id = $1
         `;
