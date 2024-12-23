@@ -479,6 +479,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                                                             video.title
                                                                         ) // Call fetchQuizzes here
                                                                 }
+                                                                style={{
+                                                                    color: "purple",
+                                                                }}
                                                             >
                                                                 Manage Quizzes
                                                             </button>
