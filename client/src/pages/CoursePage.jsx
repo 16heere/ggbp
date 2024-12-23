@@ -453,18 +453,16 @@ const CoursePage = () => {
                                                     {q.question}
                                                 </p>
                                                 {q.image_url && (
-                                                    <img
-                                                        src={q.image_url}
-                                                        alt={`Question ${
-                                                            questionIndex + 1
-                                                        }`}
-                                                        style={{
-                                                            maxWidth: "100%",
-                                                            height: "auto",
-                                                            marginBottom:
-                                                                "10px",
-                                                        }}
-                                                    />
+                                                    <div className="quiz-image-container">
+                                                        <img
+                                                            src={q.image_url}
+                                                            alt={`Question ${
+                                                                questionIndex +
+                                                                1
+                                                            }`}
+                                                            className="quiz-image"
+                                                        />
+                                                    </div>
                                                 )}
                                                 <div>
                                                     {q.options.map(
