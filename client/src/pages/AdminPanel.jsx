@@ -163,6 +163,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 image: null,
             },
         ]);
+        document.getElementById("image-input").value = "";
     };
     const fetchQuizzes = async (videoId, videoTitle) => {
         setSelectedVideo({ id: videoId, name: videoTitle });
@@ -527,6 +528,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                     Image (optional):
                                     <input
                                         type="file"
+                                        id="image-input"
                                         accept="image/*"
                                         onChange={(e) =>
                                             handleImageChange(
