@@ -512,7 +512,7 @@ video {
 .video-list li {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 10px 15px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -526,11 +526,16 @@ video {
 }
 
 .video-list li span {
-    justify-self: flex-start;
+    margin-right: auto; /* Push the span to the left */
+}
+
+.video-list li .buttons {
+    display: flex;
+    gap: 10px;
 }
 
 /* Remove Button */
-.video-list li button {
+.buttons button {
     padding: 5px 10px;
     background-color: #dc3545;
     color: #fff;
@@ -541,7 +546,7 @@ video {
     transition: background-color 0.3s ease;
 }
 
-.video-list li button:hover {
+.buttons button:hover {
     background-color: #a71d2a;
 }
 

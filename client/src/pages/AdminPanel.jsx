@@ -461,26 +461,28 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                                         <span>
                                                             {video.title}
                                                         </span>
-                                                        <button
-                                                            onClick={() =>
-                                                                handleRemoveVideo(
-                                                                    video.id
-                                                                )
-                                                            }
-                                                        >
-                                                            Remove
-                                                        </button>
-                                                        <button
-                                                            onClick={
-                                                                () =>
-                                                                    fetchQuizzes(
-                                                                        video.id,
-                                                                        video.title
-                                                                    ) // Call fetchQuizzes here
-                                                            }
-                                                        >
-                                                            Manage Quizzes
-                                                        </button>
+                                                        <div className="buttons">
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleRemoveVideo(
+                                                                        video.id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                            <button
+                                                                onClick={
+                                                                    () =>
+                                                                        fetchQuizzes(
+                                                                            video.id,
+                                                                            video.title
+                                                                        ) // Call fetchQuizzes here
+                                                                }
+                                                            >
+                                                                Manage Quizzes
+                                                            </button>
+                                                        </div>
                                                     </li>
                                                 )}
                                             </Draggable>
