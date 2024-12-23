@@ -453,7 +453,7 @@ const CoursePage = () => {
                                                     {q.question}
                                                 </p>
                                                 {q.image_url && (
-                                                    <div className="quiz-image-container">
+                                                    <div className="quiz-image-wrapper">
                                                         <img
                                                             src={q.image_url}
                                                             alt={`Question ${
@@ -464,6 +464,7 @@ const CoursePage = () => {
                                                         />
                                                     </div>
                                                 )}
+
                                                 <div>
                                                     {q.options.map(
                                                         (option, idx) => (
