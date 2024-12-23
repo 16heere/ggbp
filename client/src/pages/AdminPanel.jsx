@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [quizzes, setQuizzes] = useState([]);
     const [questions, setQuestions] = useState([
-        { question: "", options: ["", "", "", ""], answer: "" },
+        { question: "", options: ["", "", "", ""], answer: "", image: null },
     ]);
     const [selectedVideo, setSelectedVideo] = useState({
         id: null,
@@ -79,6 +79,29 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         }
     };
 
+    const handleImageUpload = async (file) => {
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/upload-image`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            return response.data.url; // The URL of the uploaded image
+        } catch (error) {
+            console.error("Error uploading image:", error.message);
+            return null;
+        }
+    };
+
     const submitQuiz = async () => {
         const incomplete = questions.some(
             (q) => !q.question || !q.answer || q.options.includes("")
@@ -86,13 +109,30 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         if (incomplete)
             return alert("Please complete all fields before submitting!");
 
+        for (const question of questions) {
+            if (question.imageFile) {
+                question.image = await handleImageUpload(question.imageFile);
+            }
+        }
+
+        const payload = {
+            videoId: selectedVideo.id,
+            questions: questions.map(
+                ({ question, options, answer, image }) => ({
+                    question,
+                    options,
+                    answer,
+                    image,
+                })
+            ),
+        };
+
         try {
             const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
                 {
-                    videoId: selectedVideo.id,
-                    questions,
+                    payload,
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -100,7 +140,12 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             );
             setQuizzes([...quizzes, ...response.data]); // Append new questions
             setQuestions([
-                { question: "", options: ["", "", "", ""], answer: "" },
+                {
+                    question: "",
+                    options: ["", "", "", ""],
+                    answer: "",
+                    image: null,
+                },
             ]);
             alert("Quiz added successfully!");
         } catch (error) {
@@ -108,7 +153,14 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         }
         // Replace this with your API call to submit the quiz
         alert("Quiz added successfully!");
-        setQuestions([{ question: "", options: ["", "", "", ""], answer: "" }]);
+        setQuestions([
+            {
+                question: "",
+                options: ["", "", "", ""],
+                answer: "",
+                image: null,
+            },
+        ]);
     };
     const fetchQuizzes = async (videoId, videoTitle) => {
         setSelectedVideo({ id: videoId, name: videoTitle });
@@ -133,114 +185,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             console.error("Failed to fetch quizzes:", error.message);
         }
     };
-
-    // Add a new quiz
-    // const handleAddQuiz = async () => {
-    //     if (!selectedVideoId) {
-    //         alert("Quiz title and video selection are required.");
-    //         return;
-    //     }
-
-    //     const sampleQuestions = [newQuestion]; // Assuming one question for simplicity
-    //     try {
-    //         const token = localStorage.getItem("token");
-    //         const response = await axios.post(
-    //             `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
-    //             {
-    //                 videoId: selectedVideoId,
-    //                 questions: sampleQuestions,
-    //             },
-    //             {
-    //                 headers: { Authorization: `Bearer ${token}` },
-    //             }
-    //         );
-    //         setQuizzes([...quizzes, response.data]);
-    //         setNewQuestion({ question: "", options: [], answer: "" });
-    //     } catch (error) {
-    //         console.error("Failed to add quiz:", error.message);
-    //     }
-    // };
-
-    // Remove a quiz
-    // const handleRemoveQuiz = async (quizTitle) => {
-    //     try {
-    //         const token = localStorage.getItem("token");
-    //         const quizToRemove = quizzes.find(
-    //             (quiz) => quiz.title === quizTitle
-    //         );
-    //         const quizId = quizToRemove?.questions[0]?.id; // Use any question ID in the quiz group
-
-    //         if (!quizId) {
-    //             alert("Quiz not found");
-    //             return;
-    //         }
-
-    //         await axios.delete(
-    //             `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizId}`,
-    //             {
-    //                 headers: { Authorization: `Bearer ${token}` },
-    //             }
-    //         );
-    //         setQuizzes(quizzes.filter((quiz) => quiz.title !== quizTitle));
-    //     } catch (error) {
-    //         console.error("Failed to remove quiz:", error.message);
-    //     }
-    // };
-
-    // Add a question to a quiz
-    // const handleAddQuestion = async (quizTitle) => {
-    //     if (
-    //         !newQuestion.question ||
-    //         !newQuestion.options.length ||
-    //         !newQuestion.answer
-    //     ) {
-    //         alert("Complete all fields for the question.");
-    //         return;
-    //     }
-
-    //     try {
-    //         const token = localStorage.getItem("token");
-    //         const quiz = quizzes.find((q) => q.title === quizTitle);
-    //         if (!quiz) {
-    //             alert("Quiz not found.");
-    //             return;
-    //         }
-
-    //         const response = await axios.post(
-    //             `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quiz.questions[0].id}/questions`,
-    //             { ...newQuestion, videoId: selectedVideoId, title: quizTitle },
-    //             {
-    //                 headers: { Authorization: `Bearer ${token}` },
-    //             }
-    //         );
-
-    //         // Add the new question to the local state
-    //         setQuizzes(
-    //             quizzes.map((q) =>
-    //                 q.title === quizTitle
-    //                     ? { ...q, questions: [...q.questions, response.data] }
-    //                     : q
-    //             )
-    //         );
-    //         setNewQuestion({ question: "", options: [], answer: "" });
-    //     } catch (error) {
-    //         console.error("Failed to add question:", error.message);
-    //     }
-    // };
-
-    // Handle adding options to the question
-    // const addOption = () => {
-    //     setNewQuestion((prev) => ({
-    //         ...prev,
-    //         options: [...prev.options, ""],
-    //     }));
-    // };
-
-    // const updateOption = (index, value) => {
-    //     const updatedOptions = [...newQuestion.options];
-    //     updatedOptions[index] = value;
-    //     setNewQuestion((prev) => ({ ...prev, options: updatedOptions }));
-    // };
 
     const handleAddVideo = async () => {
         if (!newVideo.title || !newVideo.file) {
@@ -306,6 +250,12 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         } catch (error) {
             console.error("Failed to remove video:", error.message);
         }
+    };
+
+    const handleImageChange = (index, file) => {
+        const updatedQuestions = [...questions];
+        updatedQuestions[index].image = file;
+        setQuestions(updatedQuestions);
     };
 
     const handleDragEnd = async (result) => {
@@ -568,6 +518,23 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                                             display: "block",
                                             margin: "10px 0",
                                             width: "300px",
+                                        }}
+                                    />
+                                </label>
+                                <label>
+                                    Image (optional):
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) =>
+                                            handleImageChange(
+                                                index,
+                                                e.target.files[0]
+                                            )
+                                        }
+                                        style={{
+                                            display: "block",
+                                            marginTop: "10px",
                                         }}
                                     />
                                 </label>

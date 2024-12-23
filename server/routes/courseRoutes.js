@@ -35,6 +35,8 @@ const upload = multer({
                 cb(null, `videos/${Date.now()}-${file.originalname}`);
             } else if (file.fieldname === "powerpoint") {
                 cb(null, `powerpoints/${Date.now()}-${file.originalname}`);
+            } else if (file.fieldname === "image") {
+                cb(null, `quiz-images/${Date.now()}-${file.originalname}`);
             } else {
                 cb(new Error("Invalid field name for file upload."));
             }
@@ -85,5 +87,19 @@ router.get("/videos/:videoId/quizzes", protect, getQuizzesByVideo);
 router.get("/quiz-attempt/:videoId", protect, getQuizAttempt);
 router.post("/quiz-attempt", protect, setQuizAttempt);
 router.delete("/quiz-attempts/:videoId", protect, deleteQuizAttempt);
+router.post(
+    "/upload-image",
+    protect,
+    adminOnly,
+    upload.single("image"),
+    (req, res) => {
+        if (!req.file) {
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+        res.status(200).json({
+            url: `https://${process.env.SPACES_ENDPOINT}/${req.file.key}`, // Return the public URL
+        });
+    }
+);
 
 module.exports = router;

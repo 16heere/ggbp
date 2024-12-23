@@ -504,8 +504,8 @@ const createQuiz = async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO quizzes (video_id, question, options, answer)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO quizzes (video_id, question, options, answer, image_url)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING id, video_id, question, options, answer
         `;
         const quizAttemptQuery = `DELETE from quiz_attempts WHERE video_id = $1`;
@@ -518,12 +518,9 @@ const createQuiz = async (req, res) => {
                 question,
                 JSON.stringify(options),
                 answer,
+                image || null,
             ]);
-            insertedQuestions.push({
-                questions,
-                options,
-                answer,
-            });
+            insertedQuestions.push(result.rows[0]);
         }
 
         res.status(201).json(insertedQuestions);
