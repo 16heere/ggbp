@@ -583,7 +583,24 @@ const getQuizzesByVideo = async (req, res) => {
             WHERE video_id = $1
         `;
         const result = await db.query(query, [videoId]);
-        res.status(200).json(result.rows);
+        const updatedRows = await Promise.all(
+            result.rows.map(async (row) => {
+                if (row.image_url) {
+                    const signedUrl = await s3.getSignedUrlPromise(
+                        "getObject",
+                        {
+                            Bucket: "ggbp",
+                            Key: row.image_url,
+                            Expires: 3600, // 1 hour
+                        }
+                    );
+                    return { ...row, image_url: signedUrl };
+                }
+                return row;
+            })
+        );
+
+        res.status(200).json(updatedRows);
     } catch (error) {
         console.error("Error fetching quizzes:", error.message);
         res.status(500).json({ message: "Server error" });

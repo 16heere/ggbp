@@ -452,9 +452,9 @@ const CoursePage = () => {
                                                     </strong>{" "}
                                                     {q.question}
                                                 </p>
-                                                {q.image && (
+                                                {q.image_url && (
                                                     <img
-                                                        src={q.image}
+                                                        src={q.image_url}
                                                         alt={`Question ${
                                                             questionIndex + 1
                                                         }`}
