@@ -444,6 +444,7 @@ const CoursePage = () => {
                                                     borderRadius: "5px",
                                                 }}
                                             >
+                                                {console.log(q)}
                                                 <p>
                                                     <strong>
                                                         Question{" "}
