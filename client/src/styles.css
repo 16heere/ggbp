@@ -605,7 +605,9 @@ video {
 
 .first-info h1 {
     font-size: 4rem;
-    z-index: 1; /* Ensure it stays above the background */
+    max-width: 800px; /* Set a maximum width for h1 */
+    margin: 0 auto; /* Center align the h1 */
+    text-align: center;
 }
 
 .courses {
@@ -628,11 +630,23 @@ video {
 
 .course p {
     flex: 1;
-    width: 40%;
+    max-width: 800px;
+    margin: 0 auto;
     font-size: 1.4rem;
+    line-height: 1.6;
     text-align: center;
     z-index: 1; /* Ensure it stays above the background */
     margin-top: 15px;
+}
+
+@media (max-width: 992px) {
+    .first-info h1 {
+        max-width: 100%; /* Let h1 span the container width on smaller screens */
+    }
+
+    .course p {
+        max-width: 100%; /* Match the width of h1 on smaller screens */
+    }
 }
 
 .course button {
