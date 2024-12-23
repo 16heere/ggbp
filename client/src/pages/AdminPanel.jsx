@@ -95,9 +95,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     },
                 }
             );
-            console.log(response.data);
-            console.log("URL = " + response.data.image_key);
-            return response.data.image_key; // The URL of the uploaded image
+            console.log("URL = " + response.data.imageKey);
+            return response.data.imageKey; // The URL of the uploaded image
         } catch (error) {
             console.error("Error uploading image:", error.message);
             return null;
