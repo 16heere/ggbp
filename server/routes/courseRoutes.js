@@ -58,7 +58,6 @@ const uploadImage = (req, res) => {
 
         // Construct the storage key format (already provided by Multer S3)
         const imageKey = uploadedImage.key;
-        console.log("IMAGE KEY: " + imageKey);
 
         res.status(200).json({ imageKey });
     } catch (error) {

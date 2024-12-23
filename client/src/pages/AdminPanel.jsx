@@ -95,8 +95,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     },
                 }
             );
-            console.log("URL = " + response.data.url);
-            return response.data.url; // The URL of the uploaded image
+            console.log("URL = " + response.data.image_key);
+            return response.data.image_key; // The URL of the uploaded image
         } catch (error) {
             console.error("Error uploading image:", error.message);
             return null;
@@ -111,7 +111,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             return alert("Please complete all fields before submitting!");
 
         for (const question of questions) {
-            console.log(question.image);
             if (question.image) {
                 question.image_url = await handleImageUpload(question.image);
             }
