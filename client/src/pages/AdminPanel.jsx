@@ -313,20 +313,29 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
         const { source, destination } = result;
 
-        if (
-            source.index === destination.index &&
-            source.droppableId === destination.droppableId
-        ) {
-            return;
+        // Check if the drag happened within the same level
+        if (source.droppableId !== destination.droppableId) {
+            return; // Prevent cross-level dragging
         }
 
-        const updatedVideos = [...videos];
+        // Get the level of the dragged video
+        const level = source.droppableId;
 
-        // Optimistically update the UI
-        const movedVideo = updatedVideos[source.index];
-        updatedVideos.splice(source.index, 1);
-        updatedVideos.splice(destination.index, 0, movedVideo);
+        // Clone the videos for the relevant level
+        const levelVideos = [...groupedVideos[level]];
 
+        // Perform the reordering within the level
+        const [movedVideo] = levelVideos.splice(source.index, 1);
+        levelVideos.splice(destination.index, 0, movedVideo);
+
+        // Update the groupedVideos state
+        const updatedGroupedVideos = {
+            ...groupedVideos,
+            [level]: levelVideos,
+        };
+
+        // Flatten the updatedGroupedVideos into the main videos array
+        const updatedVideos = Object.values(updatedGroupedVideos).flat();
         setVideos(updatedVideos);
 
         try {
@@ -343,7 +352,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            setVideos(response.data.videos); // Use the response to ensure the final state is accurate
+            // Update the videos with the response from the server
+            setVideos(response.data.videos);
         } catch (error) {
             console.error("Failed to update video order:", error.message);
             alert("Failed to update video order. Refreshing...");
