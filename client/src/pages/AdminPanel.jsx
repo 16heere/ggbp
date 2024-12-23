@@ -115,6 +115,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             }
         }
 
+        console.log(questions);
         const payload = {
             videoId: selectedVideo.id,
             questions: questions.map(
