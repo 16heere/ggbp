@@ -111,6 +111,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             return alert("Please complete all fields before submitting!");
 
         for (const question of questions) {
+            console.log(question);
             if (question.imageFile) {
                 question.image_url = await handleImageUpload(
                     question.imageFile
