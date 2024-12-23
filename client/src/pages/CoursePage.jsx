@@ -433,7 +433,6 @@ const CoursePage = () => {
                                 </div>
                             ) : (
                                 <div>
-                                    <h3>Quiz</h3>
                                     <ul>
                                         {quiz.map((q, questionIndex) => (
                                             <li

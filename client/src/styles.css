@@ -1365,7 +1365,7 @@ hr {
 
 .download-powerpoint-button {
     display: inline-block;
-    margin-top: 20px;
+    margin: 20px 0px;
     padding: 10px 20px;
     font-size: 1rem;
     font-family: "SFPROBOLD";
