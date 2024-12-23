@@ -512,7 +512,7 @@ video {
 .video-list li {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 10px 15px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -523,6 +523,10 @@ video {
 
 .video-list li:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.video-list li span {
+    justify-self: flex-start;
 }
 
 /* Remove Button */
