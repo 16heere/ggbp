@@ -95,6 +95,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     },
                 }
             );
+            console.log(response.data.url);
             return response.data.url; // The URL of the uploaded image
         } catch (error) {
             console.error("Error uploading image:", error.message);
@@ -111,7 +112,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
         for (const question of questions) {
             if (question.imageFile) {
-                question.image = await handleImageUpload(question.imageFile);
+                question.image_url = await handleImageUpload(
+                    question.imageFile
+                );
             }
         }
 
@@ -119,11 +122,11 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         const payload = {
             videoId: selectedVideo.id,
             questions: questions.map(
-                ({ question, options, answer, image }) => ({
+                ({ question, options, answer, image_url }) => ({
                     question,
                     options,
                     answer,
-                    image,
+                    image_url,
                 })
             ),
         };
