@@ -93,6 +93,8 @@ router.post(
     adminOnly,
     upload.single("image"),
     (req, res) => {
+        console.log("UPLOADING IMAGE");
+        console.log(`https://${process.env.SPACES_ENDPOINT}/${req.file.key}`);
         if (!req.file) {
             return res.status(400).json({ message: "No file uploaded" });
         }
