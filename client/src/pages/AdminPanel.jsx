@@ -95,7 +95,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     },
                 }
             );
-            console.log(response.data.url);
+            console.log("URL = " + response.data.url);
             return response.data.url; // The URL of the uploaded image
         } catch (error) {
             console.error("Error uploading image:", error.message);
@@ -118,7 +118,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             }
         }
 
-        console.log(questions);
         const payload = {
             videoId: selectedVideo.id,
             questions: questions.map(

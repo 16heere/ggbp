@@ -91,17 +91,29 @@ router.post(
     "/upload-image",
     protect,
     adminOnly,
-    upload.single("image"),
-    (req, res) => {
-        console.log("UPLOADING IMAGE");
-        console.log(`https://${process.env.SPACES_ENDPOINT}/${req.file.key}`);
-        if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded" });
-        }
-        res.status(200).json({
-            url: `https://${process.env.SPACES_ENDPOINT}/${req.file.key}`, // Return the public URL
-        });
-    }
+    upload.fields([{ name: "image", maxCount: 1 }]),
+    uploadImage
 );
+
+const uploadImage = (req, res) => {
+    try {
+        // Check if the file was uploaded
+        if (!req.files || !req.files.image || req.files.image.length === 0) {
+            return res.status(400).json({ message: "No image file uploaded." });
+        }
+
+        // Get the uploaded image file metadata
+        const uploadedImage = req.files.image[0];
+
+        // Construct the storage key format (already provided by Multer S3)
+        const imageKey = uploadedImage.key;
+        console.log("IMAGE KEY: " + imageKey);
+
+        res.status(200).json({ imageKey });
+    } catch (error) {
+        console.error("Error uploading quiz image:", error.message);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
 
 module.exports = router;

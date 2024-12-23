@@ -354,7 +354,6 @@ const getVideoById = async (req, res) => {
 
 const updateVideoPositions = async (req, res) => {
     const { positions } = req.body; // Array of { id, position, level }
-    console.log("Positions Payload:", positions);
 
     if (!Array.isArray(positions)) {
         return res
@@ -502,7 +501,6 @@ const resubscribeUser = async (req, res) => {
 const createQuiz = async (req, res) => {
     const { payload } = req.body;
     const { videoId, questions } = payload;
-    console.log(questions);
 
     try {
         const query = `
@@ -585,7 +583,6 @@ const getQuizzesByVideo = async (req, res) => {
             WHERE video_id = $1
         `;
         const result = await db.query(query, [videoId]);
-        console.log(result.rows);
         res.status(200).json(result.rows);
     } catch (error) {
         console.error("Error fetching quizzes:", error.message);
