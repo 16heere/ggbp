@@ -1501,20 +1501,17 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px; /* Space between the image and the question text */
-    background-color: #f9f9f9; /* Light background for better visibility */
-    padding: 10px; /* Padding around the image */
-    border-radius: 8px; /* Rounded corners */
-    border: 1px solid #e0e0e0; /* Light border to define the area */
-    max-width: 300px; /* Limit the width of the container */
-    margin-left: auto; /* Center the image horizontally */
-    margin-right: auto; /* Center the image horizontally */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9fafb; /* Light gray background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.quiz-image-small {
-    display: block;
-    max-width: 100%; /* Ensure the image fits the container */
-    height: auto; /* Maintain the aspect ratio */
-    border-radius: 5px; /* Slight rounding on the image itself */
+.quiz-image {
+    max-width: 100%;
+    max-height: 300px; /* Constrain the image height */
+    object-fit: contain; /* Maintain aspect ratio */
+    border-radius: 5px;
 }

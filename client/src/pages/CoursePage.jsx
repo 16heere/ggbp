@@ -460,7 +460,7 @@ const CoursePage = () => {
                                                                 questionIndex +
                                                                 1
                                                             }`}
-                                                            className="quiz-image-small"
+                                                            className="quiz-image"
                                                         />
                                                     </div>
                                                 )}
