@@ -501,7 +501,7 @@ const resubscribeUser = async (req, res) => {
 
 const createQuiz = async (req, res) => {
     const { videoId, questions } = req.body;
-    console.log(req.body);
+    console.log(req.body.questions);
     console.log(questions);
 
     try {
