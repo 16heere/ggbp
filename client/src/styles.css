@@ -1497,27 +1497,24 @@ hr {
     padding: 30px 30px 0 30px;
 }
 
-.quiz-image-wrapper {
-    position: relative;
-    display: block;
-    width: 100%;
-    margin-bottom: 15px;
-    overflow: hidden; /* Ensures the image stays contained */
-    border-radius: 12px; /* Soft rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-    background-color: #fff; /* Light background for a card effect */
+.quiz-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* Space between the image and the question text */
+    background-color: #f9f9f9; /* Light background for better visibility */
+    padding: 10px; /* Padding around the image */
+    border-radius: 8px; /* Rounded corners */
+    border: 1px solid #e0e0e0; /* Light border to define the area */
+    max-width: 300px; /* Limit the width of the container */
+    margin-left: auto; /* Center the image horizontally */
+    margin-right: auto; /* Center the image horizontally */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.quiz-image-wrapper:hover {
-    transform: scale(1.02); /* Slight zoom on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
-}
-
-.quiz-image {
+.quiz-image-small {
     display: block;
-    width: 100%; /* Ensures image scales to container width */
-    height: auto; /* Maintains aspect ratio */
-    border-radius: 12px; /* Matches the wrapper */
-    object-fit: cover; /* Fills the container proportionally */
+    max-width: 100%; /* Ensure the image fits the container */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 5px; /* Slight rounding on the image itself */
 }

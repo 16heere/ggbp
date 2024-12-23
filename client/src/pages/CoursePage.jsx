@@ -453,14 +453,14 @@ const CoursePage = () => {
                                                     {q.question}
                                                 </p>
                                                 {q.image_url && (
-                                                    <div className="quiz-image-wrapper">
+                                                    <div className="quiz-image-container">
                                                         <img
                                                             src={q.image_url}
                                                             alt={`Question ${
                                                                 questionIndex +
                                                                 1
                                                             }`}
-                                                            className="quiz-image"
+                                                            className="quiz-image-small"
                                                         />
                                                     </div>
                                                 )}
