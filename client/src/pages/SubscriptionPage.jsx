@@ -34,7 +34,7 @@ const SubscriptionPage = () => {
     return (
         <div className="subscription-page">
             <div className="subscription-card">
-                <h2 className="price">£20</h2>
+                <h2 className="price">£50</h2>
                 <p className="billing-info">Billed Monthly</p>
                 <h3 className="course-name">GGBP Course</h3>
                 <ul className="benefits">
