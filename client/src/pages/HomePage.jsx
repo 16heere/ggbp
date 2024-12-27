@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const HomePage = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const reviews = [
         {
             name: "Rajan Rama",
