@@ -55,10 +55,10 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit">Login</button>
-                <p>
+                {/* <p>
                     Want to resubscribe?{" "}
                     <Link to="/resubscribe">Click here</Link>.
-                </p>
+                </p> */}
             </form>
         </div>
     );
