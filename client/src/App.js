@@ -23,11 +23,11 @@ const App = () => {
                 </h1>
                 <nav>
                     {!user && <Link to="/login">Login</Link>}
-                    {!user && (
+                    {/* {!user && (
                         <Link className="subscribe-btn" to="/subscribe">
                             Subscribe
                         </Link>
-                    )}
+                    )} */}
                     {user && user.isSubscribed && (
                         <Link to="/course">Course</Link>
                     )}

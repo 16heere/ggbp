@@ -52,9 +52,9 @@ const HomePage = () => {
                             protecting users from scams and misinformation often
                             found on social media
                         </p>
-                        <button onClick={() => navigate("/subscribe")}>
+                        {/* <button onClick={() => navigate("/subscribe")}>
                             Get Involved
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>
