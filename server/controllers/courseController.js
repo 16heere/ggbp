@@ -386,15 +386,25 @@ const updateVideoPositions = async (req, res) => {
 
             const existingPositions = result.rows;
 
+            // Assign unique temporary positions to avoid duplicate key constraint
+            let tempPosition = -100000;
+            for (const video of existingPositions) {
+                await client.query(
+                    "UPDATE videos SET position = $1 WHERE id = $2 AND level = $3",
+                    [tempPosition++, video.id, level]
+                );
+            }
+
             // Determine the next available position in the current level
             const maxPosition = existingPositions.length
                 ? Math.max(...existingPositions.map((v) => v.position))
                 : 0;
 
             // Update positions for the current level
+            let currentPosition = maxPosition;
             for (const { id, position } of levelPositions) {
                 const newPosition =
-                    position === -1 ? maxPosition + 1 : position; // Assign to the end if position is -1
+                    position === -1 ? ++currentPosition : position;
                 await client.query(
                     "UPDATE videos SET position = $1, level = $2 WHERE id = $3",
                     [newPosition, level, id]
