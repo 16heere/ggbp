@@ -264,28 +264,68 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
         const { source, destination } = result;
 
-        // Check if the drag happened within the same level
+        // Check if the drag happened across levels
         if (source.droppableId !== destination.droppableId) {
-            return; // Prevent cross-level dragging
+            const sourceLevel = source.droppableId;
+            const destinationLevel = destination.droppableId;
+
+            // Get the video being moved
+            const sourceVideos = [...groupedVideos[sourceLevel]];
+            const [movedVideo] = sourceVideos.splice(source.index, 1);
+
+            // Update the video's level and append it to the destination level
+            movedVideo.level = destinationLevel;
+            const destinationVideos = [
+                ...groupedVideos[destinationLevel],
+                movedVideo,
+            ];
+
+            // Update the state of groupedVideos
+            const updatedGroupedVideos = {
+                ...groupedVideos,
+                [sourceLevel]: sourceVideos,
+                [destinationLevel]: destinationVideos,
+            };
+
+            // Flatten the updatedGroupedVideos into the main videos array
+            const updatedVideos = Object.values(updatedGroupedVideos).flat();
+            setVideos(updatedVideos);
+
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.post(
+                    `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
+                    {
+                        positions: updatedVideos.map((video, index) => ({
+                            id: video.id,
+                            position: index + 1,
+                            level: video.level,
+                        })),
+                    },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+
+                // Update the videos with the response from the server
+                setVideos(response.data.videos);
+            } catch (error) {
+                console.error("Failed to update video order:", error.message);
+                alert("Failed to update video order. Refreshing...");
+                fetchVideos(); // Reload videos from the API to ensure consistency
+            }
+            return;
         }
 
-        // Get the level of the dragged video
+        // If within the same level, reorder as usual
         const level = source.droppableId;
-
-        // Clone the videos for the relevant level
         const levelVideos = [...groupedVideos[level]];
-
-        // Perform the reordering within the level
         const [movedVideo] = levelVideos.splice(source.index, 1);
         levelVideos.splice(destination.index, 0, movedVideo);
 
-        // Update the groupedVideos state
         const updatedGroupedVideos = {
             ...groupedVideos,
             [level]: levelVideos,
         };
 
-        // Flatten the updatedGroupedVideos into the main videos array
         const updatedVideos = Object.values(updatedGroupedVideos).flat();
         setVideos(updatedVideos);
 
@@ -303,12 +343,11 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            // Update the videos with the response from the server
             setVideos(response.data.videos);
         } catch (error) {
             console.error("Failed to update video order:", error.message);
             alert("Failed to update video order. Refreshing...");
-            fetchVideos(); // Reload videos from the API to ensure consistency
+            fetchVideos();
         }
     };
 
