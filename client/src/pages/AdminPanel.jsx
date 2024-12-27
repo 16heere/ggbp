@@ -298,7 +298,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     {
                         positions: updatedVideos.map((video, index) => ({
                             id: video.id,
-                            position: index + 1,
+                            position: -1,
                             level: video.level,
                         })),
                     },

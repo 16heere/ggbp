@@ -354,7 +354,7 @@ const getVideoById = async (req, res) => {
 
 const updateVideoPositions = async (req, res) => {
     const { positions } = req.body; // Array of { id, position, level }
-
+    console.log(positions);
     if (!Array.isArray(positions)) {
         return res
             .status(400)
@@ -373,26 +373,31 @@ const updateVideoPositions = async (req, res) => {
             return acc;
         }, {});
 
+        console.log(groupedPositions);
+
         for (const [level, levelPositions] of Object.entries(
             groupedPositions
         )) {
-            await client.query(
-                "SELECT id FROM videos WHERE level = $1 FOR UPDATE",
+            // Lock rows for the level being updated
+            const result = await client.query(
+                "SELECT id, position FROM videos WHERE level = $1 ORDER BY position FOR UPDATE",
                 [level]
             );
 
-            // Temporarily clear positions
-            const tempPosition = -100000;
-            await client.query(
-                "UPDATE videos SET position = position + $1 WHERE level = $2",
-                [tempPosition, level]
-            );
+            const existingPositions = result.rows;
 
-            // Reassign positions
+            // Determine the next available position in the current level
+            const maxPosition = existingPositions.length
+                ? Math.max(...existingPositions.map((v) => v.position))
+                : 0;
+
+            // Update positions for the current level
             for (const { id, position } of levelPositions) {
+                const newPosition =
+                    position === -1 ? maxPosition + 1 : position; // Assign to the end if position is -1
                 await client.query(
-                    "UPDATE videos SET position = $1 WHERE id = $2 AND level = $3",
-                    [position, id, level]
+                    "UPDATE videos SET position = $1, level = $2 WHERE id = $3",
+                    [newPosition, level, id]
                 );
             }
         }
@@ -412,6 +417,7 @@ const updateVideoPositions = async (req, res) => {
                 END,
                 position
         `);
+
         res.status(200).json({
             message: "Positions updated successfully",
             videos: updatedVideos.rows,
