@@ -32,22 +32,26 @@ router.post("/create-checkout-session", async (req, res) => {
 });
 
 router.post("/create-course-subscription", async (req, res) => {
-    const { email, password, courseId } = req.body; // Include course ID
+    const { email, password } = req.body;
 
     try {
+        const prices = await stripe.prices.list({
+            product: "prod_RQHRE64ktNmZUH",
+        });
+        const priceId = prices.data[0]?.id;
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             mode: "subscription",
             line_items: [
                 {
-                    price: "price_1QXRGADwIDDdMRawdBXA9c6u",
+                    price: priceId,
                     quantity: 1,
                 },
             ],
             metadata: {
                 email,
                 password,
-                courseId, // Pass course ID in metadata
             },
             success_url: "https://ggbp.org.uk/login",
             cancel_url: "https://ggbp.org.uk/cancel",
