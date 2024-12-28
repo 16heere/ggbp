@@ -740,6 +740,7 @@ video {
 }
 
 .course-info-points {
+    max-width: 1200px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px; /* Reduce gap for smaller screens */
