@@ -55,7 +55,7 @@ const App = () => {
                 <p>© 2024 GGBP. All rights reserved.</p>
                 <div className="socials">
                     <a
-                        href="https://www.twitter.com"
+                        href="https://x.com/ggbpx"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="social-link"
