@@ -298,7 +298,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     {
                         positions: updatedVideos.map((video, index) => ({
                             id: video.id,
-                            position: -1,
+                            position: index + 1,
                             level: video.level,
                         })),
                     },
@@ -312,6 +312,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 alert("Failed to update video order. Refreshing...");
                 fetchVideos(); // Reload videos from the API to ensure consistency
             }
+
             return;
         }
 
