@@ -2181,3 +2181,137 @@ body {
         transform: scale(0);
     }
 }
+
+.scroller {
+    width: 60%;
+}
+
+.scroller__inner {
+    padding-block: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.scroller[data-animated="true"] {
+    overflow: hidden;
+    -webkit-mask: linear-gradient(
+        90deg,
+        transparent,
+        white 20%,
+        white 80%,
+        transparent
+    );
+    mask: linear-gradient(
+        90deg,
+        transparent,
+        white 20%,
+        white 80%,
+        transparent
+    );
+}
+
+.scroller[data-animated="true"] .scroller__inner {
+    width: max-content;
+    flex-wrap: nowrap;
+    animation: scroll var(--_animation-duration, 40s)
+        var(--_animation-direction, forwards) linear infinite;
+}
+
+.scroller[data-direction="right"] {
+    --_animation-direction: reverse;
+}
+
+.scroller[data-direction="left"] {
+    --_animation-direction: forwards;
+}
+
+.scroller[data-speed="fast"] {
+    --_animation-duration: 20s;
+}
+
+.scroller[data-speed="slow"] {
+    --_animation-duration: 60s;
+}
+
+@keyframes scroll {
+    to {
+        transform: translate(calc(-50% - 0.5rem));
+    }
+}
+
+.tag-list {
+    margin: 0;
+    padding-inline: 0;
+    list-style: none;
+}
+
+.tag-list li {
+    min-width: 300px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    margin: 0px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tag-list li img {
+    width: 30px; /* Slightly larger image for better visibility */
+    height: auto;
+    margin-right: 20px;
+}
+
+.tag-list li .price-text {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures even spacing between items */
+    gap: 10px; /* Adds spacing between text elements */
+    overflow: hidden; /* Prevents overflow issues */
+}
+
+.tag-list li .price-text p {
+    font-size: 1.1rem; /* Adjusted size for uniformity */
+    margin: 0;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Prevents overflow beyond container */
+    text-overflow: ellipsis; /* Adds "..." for overflowed content */
+}
+
+.price {
+    font-family: "SFPROBOLD";
+    font-size: 1.3rem; /* Emphasized size */
+    color: black; /* Green for positive price */
+    flex-shrink: 0; /* Prevents price from shrinking */
+    max-width: 150px; /* Restricts the price width */
+    text-align: right; /* Aligns price text to the right */
+}
+
+.pair {
+    font-family: "SFPROREG";
+    font-size: 1.2rem; /* Slight emphasis */
+    color: #333; /* Readable text color */
+    flex-shrink: 1; /* Allows shrinking for the pair name */
+    max-width: 100px; /* Restricts pair width to prevent layout issues */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.change {
+    font-family: "SFPROREG";
+    font-size: 1rem; /* Smaller for de-emphasis */
+    flex-shrink: 0; /* Prevents shrinking */
+    max-width: 80px; /* Restricts the change width */
+    text-align: right; /* Aligns change text to the right */
+}
+
+.change.down {
+    color: #dc3545; /* Red for negative change */
+}
+
+.change.up {
+    color: #09ff00; /* Red for negative change */
+}

@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Scroller from "../components/Scroller";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const HomePage = () => {
-    // const navigate = useNavigate();
     const reviews = [
         {
             name: "Rajan Rama",
@@ -32,16 +31,65 @@ const HomePage = () => {
             content: "The strategies they teach here are pure gold...",
         },
     ];
+    const [prices, setPrices] = useState([]);
+
+    const fetchPrices = async () => {
+        const pairs = [
+            "BTC-USD",
+            "ETH-USD",
+            "XRP-USD",
+            "SUI-USD",
+            "SOL-USD",
+            "ADA-USD",
+        ];
+        const baseUrl = "https://api.exchange.coinbase.com/products";
+        try {
+            const priceData = await Promise.all(
+                pairs.map(async (pair) => {
+                    const response = await axios.get(
+                        `${baseUrl}/${pair}/ticker`
+                    );
+
+                    const statsResponse = await axios.get(
+                        `${baseUrl}/${pair}/stats`
+                    );
+
+                    const { price } = response.data;
+                    const { open, last } = statsResponse.data;
+                    const currentPrice = parseFloat(last);
+                    const openPrice = parseFloat(open);
+
+                    // Calculate 24-hour percentage change
+                    const change24h =
+                        ((currentPrice - openPrice) / openPrice) * 100;
+                    const baseCurrency = pair.split("-")[0];
+                    const logoPath = `/assets/${baseCurrency}.svg`;
+                    return {
+                        pair,
+                        price: parseFloat(price).toFixed(2),
+                        change24h: change24h.toFixed(2),
+                        logo: logoPath,
+                    };
+                })
+            );
+            setPrices([...priceData]);
+        } catch (error) {
+            console.error("Error fetching prices:", error.message);
+        }
+    };
 
     useEffect(() => {
         const trustpilotElement = document.querySelector(".trustpilot-widget");
         if (window.Trustpilot && trustpilotElement) {
             window.Trustpilot.loadFromElement(trustpilotElement);
         }
+        fetchPrices();
     }, []);
 
     return (
         <div className="home-page">
+            <Scroller items={prices} speed="fast" direction="left" />
+
             <div className="first-info">
                 <h1>Begin Your Trading Journey</h1>
                 <div className="courses">
