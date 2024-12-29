@@ -1848,6 +1848,7 @@ body {
 
 /* article page */
 .article-page {
+    min-width: 500px;
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
@@ -1882,6 +1883,7 @@ body {
 
 .article-image {
     display: block;
+    min-width: 50%;
     max-width: 70%;
     height: auto;
     margin: 20px auto;
@@ -2314,4 +2316,67 @@ body {
 
 .change.up {
     color: #09ff00; /* Red for negative change */
+}
+
+.carousel {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.carousel-track-container {
+    overflow-x: hidden;
+    width: auto;
+    height: 650px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-section {
+    flex: 0 0 calc(100% / 3);
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.carousel-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.carousel-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.carousel-button.prev {
+    margin-right: 10px;
+}
+
+.carousel-button.next {
+    margin-left: 10px;
+}
+
+.carousel-section .research-card {
+    height: 600px;
+}
+
+@media (max-width: 1200px) {
+    .carousel {
+        display: none;
+    }
 }

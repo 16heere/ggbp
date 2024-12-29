@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Scroller from "../components/Scroller";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ArticleCarousel from "../components/ArticleCarousel";
 
 const HomePage = () => {
     const reviews = [
@@ -32,6 +34,7 @@ const HomePage = () => {
         },
     ];
     const [prices, setPrices] = useState([]);
+    const [articles, setArticles] = useState([]);
 
     const fetchPrices = async () => {
         const pairs = [
@@ -78,12 +81,24 @@ const HomePage = () => {
         }
     };
 
+    const fetchArticles = async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.REACT_APP_API_ENDPOINT}/courses/research`
+            );
+            setArticles(response.data);
+        } catch (error) {
+            console.error("Error fetching articles:", error.message);
+        }
+    };
+
     useEffect(() => {
         const trustpilotElement = document.querySelector(".trustpilot-widget");
         if (window.Trustpilot && trustpilotElement) {
             window.Trustpilot.loadFromElement(trustpilotElement);
         }
         fetchPrices();
+        fetchArticles();
     }, []);
 
     return (
@@ -244,6 +259,78 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
+            <ArticleCarousel />
+            {/* <div className="articles-carousel">
+                <h3 className="articles-title">Featured Articles</h3>
+                <div
+                    id="articlesCarousel"
+                    className="carousel slide"
+                    data-bs-ride="carousel"
+                    data-bs-interval="10000"
+                >
+                    <div className="carousel-inner">
+                        {Array.from({
+                            length: Math.ceil(articles.length / 3),
+                        }).map((_, index) => (
+                            <div
+                                className={`carousel-item ${
+                                    index === 0 ? "active" : ""
+                                }`}
+                                key={index}
+                            >
+                                <div className="row">
+                                    {articles
+                                        .slice(index * 3, index * 3 + 3)
+                                        .map((article) => (
+                                            <div
+                                                className="col-md-4"
+                                                key={article.id}
+                                            >
+                                                <div className="article-item">
+                                                    <img
+                                                        src={article.image}
+                                                        alt={article.title}
+                                                        className="article-image"
+                                                    />
+                                                    <div className="article-content">
+                                                        <h4>{article.title}</h4>
+                                                        <p>
+                                                            {article.subtitle}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#articlesCarousel"
+                        data-bs-slide="prev"
+                    >
+                        <span
+                            className="carousel-control-prev-icon"
+                            aria-hidden="true"
+                        ></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#articlesCarousel"
+                        data-bs-slide="next"
+                    >
+                        <span
+                            className="carousel-control-next-icon"
+                            aria-hidden="true"
+                        ></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div> */}
             <div className="section-divider"></div>
             <div className="reviews-container">
                 <div className="reviews">

@@ -8,9 +8,9 @@ const ArticlePage = () => {
     const { user } = useContext(UserContext);
     const [article, setArticle] = useState();
     const [loading, setLoading] = useState(true);
-    const [isLocked, setIsLocked] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         const fetchArticle = async () => {
             try {
                 const token = localStorage.getItem("token");
@@ -21,11 +21,10 @@ const ArticlePage = () => {
                     }
                 );
                 const articleData = response.data;
-
                 if (articleData.is_premium && !user?.isSubscribed) {
-                    setIsLocked(true);
+                    setArticle({ ...articleData, isLocked: true });
                 } else {
-                    setArticle(articleData);
+                    setArticle({ ...articleData, isLocked: false });
                 }
             } catch (error) {
                 console.error("Error fetching article:", error);
@@ -48,7 +47,7 @@ const ArticlePage = () => {
         );
     }
 
-    if (isLocked) {
+    if (article?.isLocked) {
         return (
             <div className="locked-page">
                 <h1>🔒 This Article is Locked</h1>
