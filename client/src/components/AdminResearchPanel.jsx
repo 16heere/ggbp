@@ -20,6 +20,17 @@ const AdminResearchPanel = ({ refreshArticles }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (
+            !formData.title ||
+            !formData.subtitle ||
+            !formData.content ||
+            !formData.image
+        ) {
+            alert("Please fill in all fields before submitting.");
+            return; // Stop submission if validation fails
+        }
+
         const data = new FormData();
         data.append("title", formData.title);
         data.append("subtitle", formData.subtitle);
