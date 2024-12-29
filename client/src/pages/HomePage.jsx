@@ -246,7 +246,10 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            <ArticleCarousel />
+            <div className="article-section">
+                <h2>Featured Articles</h2>
+                <ArticleCarousel />
+            </div>
             <div className="section-divider"></div>
             <div className="reviews-container">
                 <div className="reviews">
