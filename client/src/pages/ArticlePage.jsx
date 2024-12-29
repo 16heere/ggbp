@@ -38,7 +38,14 @@ const ArticlePage = () => {
     }, [id, user]);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div class="newtons-cradle">
+                <div class="newtons-cradle__dot"></div>
+                <div class="newtons-cradle__dot"></div>
+                <div class="newtons-cradle__dot"></div>
+                <div class="newtons-cradle__dot"></div>
+            </div>
+        );
     }
 
     if (isLocked) {
