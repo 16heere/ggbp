@@ -25,13 +25,40 @@ const ResearchCard = ({ article }) => {
         }
     };
 
+    const handleClick = () => {
+        if (article.is_premium && !user?.isSubscribed) {
+            alert("This article is for premium subscribers only.");
+            return;
+        }
+        // Navigate to the article page (assuming React Router is used)
+        window.location.href = `/research/${article.id}`;
+    };
+
     return (
-        <div className="research-card">
+        <div
+            className={`research-card ${
+                article.is_premium && !user?.isSubscribed ? "locked" : ""
+            }`}
+            onClick={handleClick}
+            style={{
+                cursor:
+                    article.is_premium && !user?.isSubscribed
+                        ? "not-allowed"
+                        : "pointer",
+                opacity: article.is_premium && !user?.isSubscribed ? 0.5 : 1,
+            }}
+        >
             <img src={article.image} alt={article.title} />
             <h2>{article.title}</h2>
             <h3>{article.subtitle}</h3>
             <p>{article.content.substring(0, 100)}...</p>
             <Link to={`/research/${article.id}`}>Read More</Link>
+            {article.is_premium && !user?.isSubscribed && (
+                <div className="lock-overlay">
+                    <div className="chain"></div>
+                    <div className="lock-icon">🔒</div>
+                </div>
+            )}
             {user?.isAdmin && (
                 <div class="voltage-button">
                     <button onClick={() => removeArticle()}>Remove</button>

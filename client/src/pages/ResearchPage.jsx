@@ -18,7 +18,10 @@ const ResearchPage = () => {
             );
             setArticles(response.data);
             setLoading(false);
-        } catch (error) {}
+        } catch (error) {
+            console.error("Error fetching articles: ", error);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {

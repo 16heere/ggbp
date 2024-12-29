@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 const ArticlePage = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
+    const { user } = useContext(UserContext);
     const [article, setArticle] = useState();
+    const [loading, setLoading] = useState(true);
+    const [isLocked, setIsLocked] = useState(false);
 
     useEffect(() => {
         const fetchArticle = async () => {
@@ -15,17 +20,37 @@ const ArticlePage = () => {
                         headers: { Authorization: `Bearer ${token}` },
                     }
                 );
-                setArticle(response.data);
+                const articleData = response.data;
+
+                if (articleData.is_premium && !user?.isSubscribed) {
+                    setIsLocked(true);
+                } else {
+                    setArticle(articleData);
+                }
             } catch (error) {
                 console.error("Error fetching article:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchArticle();
-    }, [id]);
+    }, [id, user]);
 
-    if (!article) {
+    if (loading) {
         return <p>Loading...</p>;
+    }
+
+    if (isLocked) {
+        return (
+            <div className="locked-page">
+                <h1>🔒 This Article is Locked</h1>
+                <p>You need to subscribe to access premium articles.</p>
+                <button onClick={() => navigate("/login")}>
+                    Subscribe Now
+                </button>
+            </div>
+        );
     }
 
     const parseContent = (content) => {
@@ -64,6 +89,7 @@ const ArticlePage = () => {
 
     return (
         <div className="article-page">
+            {console.log(article)}
             <header className="article-header">
                 <h1 className="article-title">{article.title}</h1>
             </header>

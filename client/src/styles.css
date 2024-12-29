@@ -1975,3 +1975,209 @@ body {
         animation-timing-function: ease-in;
     }
 }
+
+.research-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    transition: opacity 0.3s;
+}
+
+.research-card.locked {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.chain {
+    width: 80%;
+    height: 5px;
+    background: repeating-linear-gradient(
+        45deg,
+        silver,
+        silver 10px,
+        gray 10px,
+        gray 20px
+    );
+    position: absolute;
+    transform: rotate(45deg);
+    z-index: 11;
+}
+
+.lock-icon {
+    font-size: 2rem;
+    color: gold;
+    z-index: 12;
+    text-shadow: 0 0 5px black;
+}
+
+.premium-badge {
+    background-color: gold;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.locked-message {
+    color: gray;
+    font-style: italic;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* From Uiverse.io by milegelu */
+.checkmark-container {
+    --UnChacked-color: rgba(255, 255, 255, 1);
+    --chacked-color: rgba(255, 215, 0, 1);
+    --font-color: black;
+    --chacked-font-color: var(--font-color);
+    --icon-size: 1.5em;
+    --anim-time: 0.2s;
+    --anim-scale: 0.1;
+    --base-radius: 0.8em;
+}
+
+.checkmark-container {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    user-select: none;
+    fill: var(--font-color);
+    color: var(--font-color);
+}
+
+/* Hide the default checkbox */
+.checkmark-container input {
+    display: none;
+}
+
+/* Base custom checkbox */
+.checkmark {
+    background: var(--UnChacked-color);
+    border-radius: var(--base-radius);
+
+    display: flex;
+    padding: 0.5em;
+}
+.icon {
+    width: var(--icon-size);
+    height: auto;
+    filter: drop-shadow(0px 2px var(--base-radius) rgba(0, 0, 0, 0.25));
+}
+.name {
+    margin: 0 0.25em;
+}
+.Yes {
+    width: 0;
+}
+.name.Yes {
+    display: none;
+}
+
+/* action custom checkbox */
+.checkmark-container:hover .checkmark,
+.checkmark-container:hover .icon,
+.checkmark-container:hover .name {
+    transform: scale(calc(1 + var(--anim-scale)));
+}
+
+.checkmark-container:active .checkmark,
+.checkmark-container:active .icon,
+.checkmark-container:active .name {
+    transform: scale(calc(1 - var(--anim-scale) / 2));
+    border-radius: calc(var(--base-radius) * 2);
+}
+.checkmark::before {
+    content: "";
+    opacity: 0.5;
+    transform: scale(1);
+    border-radius: var(--base-radius);
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+.checkmark:hover:before {
+    background-color: hsla(0, 0%, 50%, 0.2);
+}
+.checkmark-container input:checked + .checkmark:before {
+    animation: boon calc(var(--anim-time)) ease;
+    animation-delay: calc(var(--anim-time) / 2);
+}
+
+/* When the checkbox is checked*/
+.checkmark-container input:checked + .checkmark {
+    --UnChacked-color: var(--chacked-color);
+    fill: var(--chacked-font-color);
+    color: var(--chacked-font-color);
+}
+
+.checkmark-container input:checked ~ .checkmark .No {
+    width: 0;
+}
+.checkmark-container input:checked ~ .checkmark .name.No {
+    display: none;
+}
+
+.checkmark-container input:checked ~ .checkmark .Yes {
+    width: var(--icon-size);
+}
+.checkmark-container input:checked ~ .checkmark .name.Yes {
+    width: auto;
+    display: unset;
+}
+
+/*Animation*/
+.checkmark-container,
+.checkmark,
+.checkmark:after,
+.icon,
+.checkmark .name {
+    transition: all var(--anim-time);
+}
+
+/*Unuse*/
+@keyframes icon-rot {
+    50% {
+        transform: rotateZ(180deg) scale(calc(1 - var(--anim-scale)));
+        border-radius: 1em;
+    }
+    to {
+        transform: rotate(360deg);
+        border-radius: var(--base-radius);
+    }
+}
+/*Unuse*/
+@keyframes boo {
+    80% {
+        transform: scale(1.4);
+    }
+    99% {
+        transform: scale(1.7);
+        border: 2px solid var(--UnChacked-color);
+    }
+    to {
+        transform: scale(0);
+    }
+}

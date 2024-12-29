@@ -1,7 +1,7 @@
 const db = require("../models/db");
 const { s3 } = require("../config/digitalOceanConfig");
 const addResearchArticle = async (req, res) => {
-    const { title, subtitle, content } = req.body;
+    const { title, subtitle, content, isPremium } = req.body;
     console.log(req.files["news-image"]);
     const image = req.files["news-image"]
         ? req.files["news-image"][0].key
@@ -9,10 +9,16 @@ const addResearchArticle = async (req, res) => {
 
     try {
         const query = `
-            INSERT INTO research_articles (title, subtitle, image, content)
-            VALUES ($1, $2, $3, $4) RETURNING id, title, subtitle, image, content
+            INSERT INTO research_articles (title, subtitle, image, content, is_premium)
+            VALUES ($1, $2, $3, $4, $5) RETURNING id, title, subtitle, image, content, is_premium
         `;
-        const result = await db.query(query, [title, subtitle, image, content]);
+        const result = await db.query(query, [
+            title,
+            subtitle,
+            image,
+            content,
+            isPremium,
+        ]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error("Error adding research article:", error.message);
