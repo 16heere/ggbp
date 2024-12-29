@@ -89,10 +89,7 @@ const ArticlePage = () => {
 
     return (
         <div className="article-page">
-            {console.log(article)}
-            <header className="article-header">
-                <h1 className="article-title">{article.title}</h1>
-            </header>
+            <h1 className="article-title">{article.title}</h1>
             <div className="article-content">
                 <img
                     className="article-image"

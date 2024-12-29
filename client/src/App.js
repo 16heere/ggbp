@@ -20,7 +20,7 @@ const App = () => {
             <header className="navbar">
                 <h1>
                     <Link to="/">
-                        <img src="./assets/ggbp LOGO white wide.png" alt="" />
+                        <img src="/assets/ggbp LOGO white wide.png" alt="" />
                     </Link>
                 </h1>
                 <nav>
