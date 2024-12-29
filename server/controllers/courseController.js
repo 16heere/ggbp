@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../models/db");
 const { s3 } = require("../config/digitalOceanConfig");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
 // Generate JWT token
 const generateToken = (id) => {

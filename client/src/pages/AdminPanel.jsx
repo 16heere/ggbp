@@ -81,7 +81,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
     const handleImageUpload = async (file) => {
         const formData = new FormData();
-        formData.append("image", file);
+        formData.append("image", file);https://ggbp.lon1.cdn.digitaloceanspaces.com/news-image/1735431693895-IMG_7596.png
 
         try {
             const token = localStorage.getItem("token");

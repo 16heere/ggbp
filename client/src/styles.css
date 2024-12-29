@@ -1536,3 +1536,442 @@ hr {
     object-fit: contain; /* Maintain aspect ratio */
     border-radius: 5px;
 }
+
+/* research page */
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Research Page */
+.research-page {
+    height: 100%;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.research-page h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.articles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Research Card */
+.research-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.research-card:hover {
+    transform: translateY(-5px);
+}
+
+.research-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.research-card h2 {
+    font-size: 1.5rem;
+    margin: 15px;
+    color: #495057;
+}
+
+.research-card h3 {
+    font-size: 1.2rem;
+    margin: 0 15px;
+    color: #6c757d;
+}
+
+.research-card p {
+    font-size: 1rem;
+    margin: 15px 15px 70px 15px;
+    color: #6c757d;
+}
+
+.research-card a {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0;
+    text-decoration: none;
+    color: black;
+    background: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 1),
+            rgba(255, 255, 255, 1)
+        ),
+        linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+    background-size: 100% 3px, 0 3px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 400ms;
+}
+
+.research-card a:hover {
+    background-size: 0 3px, 100% 3px;
+}
+
+/* Admin Research Panel */
+.admin-research-panel {
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-research-panel form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.admin-research-panel input,
+.admin-research-panel textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.admin-research-panel textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.admin-research-panel button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.admin-research-panel button:hover {
+    background-color: #0056b3;
+}
+
+.research-btn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.2rem;
+    transition: all 0.1s ease-in-out;
+}
+
+.research-btn:hover {
+    transform: scale(1.05);
+}
+
+/* From Uiverse.io by Pradeepsaranbishnoi */
+.voltage-button {
+    width: fit-content;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+}
+
+.voltage-button button {
+    color: white;
+    background: #0d1127;
+    padding: 10px;
+    border-radius: 5rem;
+    border: 5px solid #5978f3;
+    font-size: 1.2rem;
+    line-height: 1em;
+    letter-spacing: 0.075em;
+    transition: background 0.3s;
+}
+
+.voltage-button button:hover {
+    cursor: pointer;
+    background: #0f1c53;
+}
+
+.voltage-button button:hover + svg,
+.voltage-button button:hover + svg + .dots {
+    opacity: 1;
+}
+
+.voltage-button svg {
+    display: block;
+    position: absolute;
+    top: -0.75em;
+    left: -0.25em;
+    width: calc(100% + 0.5em);
+    height: calc(100% + 1.5em);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+    transition-delay: 0.1s;
+}
+
+.voltage-button svg path {
+    stroke-dasharray: 100;
+    filter: url("#glow");
+}
+
+.voltage-button svg path.line-1 {
+    stroke: #f6de8d;
+    stroke-dashoffset: 0;
+    animation: spark-1 3s linear infinite;
+}
+
+.voltage-button svg path.line-2 {
+    stroke: #6bfeff;
+    stroke-dashoffset: 500;
+    animation: spark-2 3s linear infinite;
+}
+
+.voltage-button .dots {
+    opacity: 0;
+    transition: opacity 0.3s;
+    transition-delay: 0.4s;
+}
+
+.voltage-button .dots .dot {
+    width: 1rem;
+    height: 1rem;
+    background: white;
+    border-radius: 100%;
+    position: absolute;
+    opacity: 0;
+}
+
+.voltage-button .dots .dot-1 {
+    top: 0;
+    left: 20%;
+    animation: fly-up 3s linear infinite;
+}
+
+.voltage-button .dots .dot-2 {
+    top: 0;
+    left: 55%;
+    animation: fly-up 3s linear infinite;
+    animation-delay: 0.5s;
+}
+
+.voltage-button .dots .dot-3 {
+    top: 0;
+    left: 80%;
+    animation: fly-up 3s linear infinite;
+    animation-delay: 1s;
+}
+
+.voltage-button .dots .dot-4 {
+    bottom: 0;
+    left: 30%;
+    animation: fly-down 3s linear infinite;
+    animation-delay: 2.5s;
+}
+
+.voltage-button .dots .dot-5 {
+    bottom: 0;
+    left: 65%;
+    animation: fly-down 3s linear infinite;
+    animation-delay: 1.5s;
+}
+
+@keyframes spark-1 {
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes spark-2 {
+    to {
+        stroke-dashoffset: -500;
+    }
+}
+
+@keyframes fly-up {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.2);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(-1.5rem) scale(0.4);
+    }
+
+    10%,
+    100% {
+        opacity: 0;
+        transform: translateY(-3rem) scale(0.2);
+    }
+}
+
+@keyframes fly-down {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.2);
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(1.5rem) scale(0.4);
+    }
+
+    10%,
+    100% {
+        opacity: 0;
+        transform: translateY(3rem) scale(0.2);
+    }
+}
+
+/* article page */
+.article-page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Header Styling */
+.article-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.article-title {
+    font-size: 2.5rem;
+    margin: 0;
+    width: fit-content;
+}
+
+.article-subtitle {
+    font-size: 2rem;
+    padding-left: 3px;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+/* Content Styling */
+.article-content {
+    text-align: left;
+}
+
+.article-image {
+    display: block;
+    max-width: 70%;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.article-body {
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+/* Loading Message */
+.loading-message {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #555;
+    margin-top: 50px;
+}
+
+/* loader */
+/* From Uiverse.io by G4b413l */
+.newtons-cradle {
+    --uib-size: 50px;
+    --uib-speed: 1.2s;
+    --uib-color: #474554;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--uib-size);
+    height: var(--uib-size);
+}
+
+.newtons-cradle__dot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 25%;
+    transform-origin: center top;
+}
+
+.newtons-cradle__dot::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 25%;
+    border-radius: 50%;
+    background-color: var(--uib-color);
+}
+
+.newtons-cradle__dot:first-child {
+    animation: swing var(--uib-speed) linear infinite;
+}
+
+.newtons-cradle__dot:last-child {
+    animation: swing2 var(--uib-speed) linear infinite;
+}
+
+@keyframes swing {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    25% {
+        transform: rotate(70deg);
+        animation-timing-function: ease-in;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+}
+
+@keyframes swing2 {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    75% {
+        transform: rotate(-70deg);
+        animation-timing-function: ease-in;
+    }
+}

@@ -53,6 +53,7 @@ const LoginPage = () => {
                     type="password"
                     placeholder="Password"
                     value={password}
+                    autocomplete="current-password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit">Login</button>

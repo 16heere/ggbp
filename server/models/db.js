@@ -4,9 +4,10 @@ require("dotenv").config();
 // PostgreSQL connection pool
 const db = new Pool({
     connectionString: process.env.DB_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
+    ssl:
+        process.env.NODE_ENV === "production"
+            ? { rejectUnauthorized: false }
+            : false,
 });
 
 db.on("connect", () => {

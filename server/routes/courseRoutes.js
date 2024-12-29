@@ -24,11 +24,17 @@ const { adminOnly } = require("../middleware/adminMiddleware");
 const multer = require("multer");
 const multerS3 = require("multer-s3-v2");
 const { s3 } = require("../config/digitalOceanConfig");
+const {
+    addResearchArticle,
+    getResearchArticles,
+    deleteResearchArticle,
+    getResearchArticleById,
+} = require("../controllers/researchController");
 
 const upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: "ggbp", // Your Spaces bucket
+        bucket: "ggbp",
         acl: "private",
         key: function (req, file, cb) {
             if (file.fieldname === "video") {
@@ -37,6 +43,8 @@ const upload = multer({
                 cb(null, `powerpoints/${Date.now()}-${file.originalname}`);
             } else if (file.fieldname === "image") {
                 cb(null, `quiz-images/${Date.now()}-${file.originalname}`);
+            } else if (file.fieldname === "news-image") {
+                cb(null, `news-image/${Date.now()}-${file.originalname}`);
             } else {
                 cb(new Error("Invalid field name for file upload."));
             }
@@ -114,5 +122,16 @@ router.post(
     upload.fields([{ name: "image", maxCount: 1 }]),
     uploadImage
 );
+
+router.post(
+    "/research",
+    protect,
+    adminOnly,
+    upload.fields([{ name: "news-image", maxCount: 1 }]),
+    addResearchArticle
+);
+router.get("/research", getResearchArticles);
+router.delete("/research/:id", protect, adminOnly, deleteResearchArticle);
+router.get("/research/:id", getResearchArticleById);
 
 module.exports = router;

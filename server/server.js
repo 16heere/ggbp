@@ -14,7 +14,7 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-    origin: "https://ggbp.org.uk",
+    origin: ["https://ggbp.org.uk"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -79,6 +79,12 @@ app.use(express.urlencoded({ limit: "500mb", extended: true }));
 // Routes
 app.use("/api/courses", courseRoutes);
 app.use("/api/subscription", subscriptionRoutes);
+
+app.use((req, res, next) => {
+    console.log("Incoming request:", req.method, req.path);
+    console.log("Request headers:", req.headers);
+    next();
+});
 
 // Start Server
 const PORT = process.env.PORT || 5000;

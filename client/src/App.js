@@ -8,6 +8,8 @@ import AboutPage from "./pages/AboutPage";
 import { FaLinkedin, FaInstagram, FaTwitter, FaTiktok } from "react-icons/fa6";
 import { UserContext } from "./context/userContext";
 import ResubscribePage from "./pages/ResubscribePage";
+import ResearchPage from "./pages/ResearchPage";
+import ArticlePage from "./pages/ArticlePage";
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
@@ -22,12 +24,19 @@ const App = () => {
                     </Link>
                 </h1>
                 <nav>
+                    <button
+                        className="research-btn"
+                        onClick={() => navigate("/research")}
+                    >
+                        Research
+                    </button>
                     {!user && <Link to="/login">Login</Link>}
                     {/* {!user && (
                         <Link className="subscribe-btn" to="/subscribe">
                             Subscribe
                         </Link>
                     )} */}
+
                     {user && user.isSubscribed && (
                         <Link to="/course">Course</Link>
                     )}
@@ -49,6 +58,8 @@ const App = () => {
                     <Route path="/subscribe" element={<SubscriptionPage />} />
                     <Route path="/resubscribe" element={<ResubscribePage />} />
                     <Route path="/course" element={<CoursePage />} />
+                    <Route path="/research" element={<ResearchPage />} />
+                    <Route path="/research/:id" element={<ArticlePage />} />
                 </Routes>
             </main>
             <footer className="footer">
