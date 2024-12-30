@@ -74,7 +74,7 @@ const HomePage = () => {
                     };
                 })
             );
-            setPrices([...priceData]);
+            setPrices([...priceData, ...priceData]);
         } catch (error) {
             console.error("Error fetching prices:", error.message);
         }

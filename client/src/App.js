@@ -26,6 +26,12 @@ const App = () => {
                 <nav>
                     <button
                         className="research-btn"
+                        onClick={() => navigate("/")}
+                    >
+                        Home
+                    </button>
+                    <button
+                        className="research-btn"
                         onClick={() => navigate("/research")}
                     >
                         Research

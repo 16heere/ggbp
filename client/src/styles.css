@@ -1848,7 +1848,7 @@ body {
 
 /* article page */
 .article-page {
-    min-width: 500px;
+    min-width: 300px;
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
@@ -2185,7 +2185,7 @@ body {
 }
 
 .scroller {
-    width: 60%;
+    width: 35%;
 }
 
 .scroller__inner {
@@ -2214,10 +2214,10 @@ body {
 }
 
 .scroller[data-animated="true"] .scroller__inner {
-    min-width: 100%;
+    min-width: min-content;
     display: flex;
     flex-wrap: nowrap;
-    animation: scroll var(--_animation-duration, 40s)
+    animation: scroll var(--_animation-duration, 5s)
         var(--_animation-direction, forwards) linear infinite;
 }
 
@@ -2230,7 +2230,7 @@ body {
 }
 
 .scroller[data-speed="fast"] {
-    --_animation-duration: 20s;
+    --_animation-duration: 8s;
 }
 
 .scroller[data-speed="slow"] {
@@ -2317,6 +2317,69 @@ body {
 
 .change.up {
     color: #09ff00; /* Red for negative change */
+}
+
+@media (max-width: 768px) {
+    .scroller {
+        width: 50%; /* Adjust width for tablets */
+    }
+
+    .tag-list li {
+        min-width: 250px; /* Reduce item width */
+        gap: 10px; /* Reduce gap */
+    }
+
+    .tag-list li img {
+        width: 25px; /* Reduce image size */
+    }
+
+    .tag-list li .price-text p {
+        font-size: 1rem; /* Reduce text font size */
+    }
+
+    .price {
+        font-size: 1.1rem; /* Reduce price font size */
+    }
+
+    .pair {
+        font-size: 1rem; /* Reduce pair font size */
+    }
+
+    .change {
+        font-size: 0.9rem; /* Reduce change font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .scroller {
+        width: 90%; /* Make it full-width */
+    }
+
+    .tag-list li {
+        min-width: 200px; /* Further reduce item width */
+        padding: 8px; /* Reduce padding */
+        gap: 8px; /* Smaller gap */
+    }
+
+    .tag-list li img {
+        width: 20px; /* Smaller image */
+    }
+
+    .tag-list li .price-text p {
+        font-size: 0.9rem; /* Smaller font size for text */
+    }
+
+    .price {
+        font-size: 1rem; /* Adjust price font size */
+    }
+
+    .pair {
+        font-size: 0.9rem; /* Adjust pair font size */
+    }
+
+    .change {
+        font-size: 0.8rem; /* Adjust change font size */
+    }
 }
 
 .carousel {

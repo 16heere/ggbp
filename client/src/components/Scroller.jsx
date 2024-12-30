@@ -18,7 +18,7 @@ const Scroller = ({ items, speed = "default", direction = "left" }) => {
             scroller.setAttribute("data-animated", true);
 
             const scrollerInner = scroller.querySelector(".scroller__inner");
-            const scrollerContent = Array.from(scrollerInner.children);
+            const scrollerContent = Array.from(...scrollerInner.children);
 
             // Clone each item for seamless animation
             scrollerContent.forEach((item) => {
