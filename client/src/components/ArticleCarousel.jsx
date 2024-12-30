@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ResearchCard from "./ResearchCard";
+import {
+    MdOutlineKeyboardDoubleArrowRight,
+    MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
+
 const ArticleCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [articles, setArticles] = useState([]);
@@ -41,7 +46,25 @@ const ArticleCarousel = () => {
                 onClick={handlePrev}
                 disabled={currentIndex === 0}
             >
-                Prev
+                <svg width="0" height="0">
+                    <linearGradient
+                        id="blue-gradient"
+                        x1="100%"
+                        y1="100%"
+                        x2="0%"
+                        y2="0%"
+                    >
+                        <stop
+                            stopColor="rgba(202, 108, 230, 255)"
+                            offset="0%"
+                        />
+                        <stop stopColor="rgba(0, 74, 173, 255)" offset="100%" />
+                    </linearGradient>
+                </svg>
+                <MdOutlineKeyboardDoubleArrowLeft
+                    size={50}
+                    style={{ fill: "url(#blue-gradient)" }}
+                />
             </button>
             <div className="carousel-track-container">
                 <div
@@ -62,7 +85,10 @@ const ArticleCarousel = () => {
                 onClick={handleNext}
                 disabled={currentIndex >= articles.length - 3}
             >
-                Next
+                <MdOutlineKeyboardDoubleArrowRight
+                    size={50}
+                    style={{ fill: "url(#blue-gradient)" }}
+                />
             </button>
         </div>
     );

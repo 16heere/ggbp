@@ -4,6 +4,7 @@ import Scroller from "../components/Scroller";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ArticleCarousel from "../components/ArticleCarousel";
+
 const HomePage = () => {
     const reviews = [
         {

@@ -10,6 +10,8 @@ import { UserContext } from "./context/userContext";
 import ResubscribePage from "./pages/ResubscribePage";
 import ResearchPage from "./pages/ResearchPage";
 import ArticlePage from "./pages/ArticlePage";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
@@ -57,6 +59,7 @@ const App = () => {
                 </nav>
             </header>
             <main className="container">
+                <ScrollToTop />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/about" element={<AboutPage />} />
@@ -66,10 +69,16 @@ const App = () => {
                     <Route path="/course" element={<CoursePage />} />
                     <Route path="/research" element={<ResearchPage />} />
                     <Route path="/research/:id" element={<ArticlePage />} />
+                    <Route path="/terms" element={<TermsAndConditions />} />
                 </Routes>
             </main>
             <footer className="footer">
                 <p>© 2024 GGBP. All rights reserved.</p>
+                <div className="footer-links">
+                    <Link to="/terms" className="footer-link">
+                        Terms and Conditions
+                    </Link>
+                </div>
                 <div className="socials">
                     <a
                         href="https://x.com/ggbpx"

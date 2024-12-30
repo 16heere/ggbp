@@ -32,7 +32,7 @@ main {
 
 html,
 body {
-    height: 100%; /* Ensure the entire viewport is filled */
+    height: auto; /* Ensure the entire viewport is filled */
     overflow-x: hidden;
 }
 
@@ -148,12 +148,6 @@ h4 {
     padding: 15px 0;
     margin-top: auto; /* Ensures footer is pushed to the bottom */
     font-size: 0.9rem;
-}
-
-.footer a {
-    color: #f9fafb;
-    text-decoration: underline;
-    font-weight: bold;
 }
 
 /* Buttons */
@@ -289,19 +283,27 @@ progress::-moz-progress-bar {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.subscription-card > * {
+    width: 100%;
+}
 /* Price and Billing Info */
 .subscription-card .price {
     font-size: 3rem;
     color: #4f46e5; /* Vibrant indigo */
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .subscription-card .billing-info {
     color: #6b7280; /* Medium gray */
     font-size: 1rem;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Course Name */
@@ -309,6 +311,7 @@ progress::-moz-progress-bar {
     font-size: 1.8rem;
     color: #4b5563; /* Darker gray */
     margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Benefits */
@@ -317,6 +320,7 @@ progress::-moz-progress-bar {
     padding: 0;
     margin-bottom: 30px;
     text-align: left;
+    text-align: center;
 }
 
 .subscription-card .benefits li {
@@ -2414,7 +2418,7 @@ body {
 }
 
 .carousel-button {
-    background-color: #007bff;
+    background-color: transparent;
     color: white;
     border: none;
     padding: 10px;
@@ -2423,7 +2427,6 @@ body {
 }
 
 .carousel-button:disabled {
-    background-color: #ccc;
     cursor: not-allowed;
 }
 
@@ -2469,4 +2472,90 @@ body {
     ); /* Gradient colors */
     -webkit-background-clip: text; /* Clip the background to the text */
     -webkit-text-fill-color: transparent; /* Make the rest of the text transparent */
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        scale: 0.5;
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+.home-page .course-info .course-info-points .course-info-point,
+.home-page .more-info .more-info-point {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0;
+}
+
+.terms-container {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.terms-title {
+    font-size: 2.4em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.terms-section {
+    margin-bottom: 20px;
+}
+
+.terms-heading {
+    font-size: 1.8em;
+    margin-top: 20px;
+    color: #555;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.terms-paragraph {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .terms-container {
+        padding: 15px;
+    }
+
+    .terms-title {
+        font-size: 2em;
+    }
+
+    .terms-heading {
+        font-size: 1.5em;
+    }
+
+    .terms-paragraph {
+        font-size: 1em;
+    }
+}
+
+.footer-link {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
 }
