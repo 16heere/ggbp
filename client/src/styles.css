@@ -2230,7 +2230,7 @@ body {
 }
 
 .scroller[data-speed="fast"] {
-    --_animation-duration: 14s;
+    --_animation-duration: 16s;
 }
 
 .scroller[data-speed="slow"] {
