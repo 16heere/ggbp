@@ -2189,10 +2189,9 @@ body {
 }
 
 .scroller__inner {
-    padding-block: 1rem;
+    padding-block: 10px;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
 }
 
 .scroller[data-animated="true"] {
@@ -2215,6 +2214,7 @@ body {
 
 .scroller[data-animated="true"] .scroller__inner {
     min-width: min-content;
+    height: 70px;
     display: flex;
     flex-wrap: nowrap;
     animation: scroll var(--_animation-duration, 5s)
@@ -2230,7 +2230,7 @@ body {
 }
 
 .scroller[data-speed="fast"] {
-    --_animation-duration: 8s;
+    --_animation-duration: 14s;
 }
 
 .scroller[data-speed="slow"] {
@@ -2261,7 +2261,7 @@ body {
 }
 
 .tag-list li img {
-    width: 30px; /* Slightly larger image for better visibility */
+    width: 20px; /* Slightly larger image for better visibility */
     height: auto;
     margin-right: 20px;
 }
