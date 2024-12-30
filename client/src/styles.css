@@ -2382,7 +2382,7 @@ body {
     }
 }
 
-.carousel {
+.article-carousel {
     display: flex;
     align-items: center;
     overflow: hidden;

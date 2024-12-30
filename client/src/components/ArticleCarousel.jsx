@@ -35,7 +35,7 @@ const ArticleCarousel = () => {
     };
 
     return (
-        <div className="carousel">
+        <div className="article-carousel">
             <button
                 className="carousel-button prev"
                 onClick={handlePrev}
