@@ -2223,6 +2223,11 @@ body {
     flex-wrap: nowrap;
     animation: scroll var(--_animation-duration, 5s)
         var(--_animation-direction, forwards) linear infinite;
+    will-change: transform;
+}
+
+.scroller.hovered .scroller__inner {
+    animation-play-state: paused;
 }
 
 .scroller[data-direction="right"] {
@@ -2320,7 +2325,7 @@ body {
 }
 
 .change.up {
-    color: #09ff00; /* Red for negative change */
+    color: #037e26; /* Red for negative change */
 }
 
 @media (max-width: 768px) {

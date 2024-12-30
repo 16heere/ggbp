@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const Scroller = ({ items, speed = "default", direction = "left" }) => {
+    const [isHovered, setIsHovered] = useState(false);
     useEffect(() => {
         // Check for reduced motion preference
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -31,9 +32,11 @@ const Scroller = ({ items, speed = "default", direction = "left" }) => {
 
     return (
         <div
-            className={`scroller`}
+            className={`scroller ${isHovered ? "hovered" : ""}`}
             data-speed={speed}
             data-direction={direction}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <ul className="tag-list scroller__inner">
                 {items.map((item, index) => (
