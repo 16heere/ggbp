@@ -2440,7 +2440,7 @@ body {
 }
 
 @media (max-width: 1200px) {
-    .carousel {
+    .article-carousel {
         display: none;
     }
 
