@@ -357,7 +357,14 @@ const CoursePage = () => {
                             <div key={level} className="level-section">
                                 <details className="level-dropdown">
                                     <summary className="level-summary">
-                                        {level}
+                                        {level
+                                            .split(" ")
+                                            .map(
+                                                (name) =>
+                                                    name[0].toUpperCase() +
+                                                    name.slice(1)
+                                            )
+                                            .join(" ")}
                                     </summary>
                                     <ul className="video-list">
                                         {levelVideos.map((video) => (
