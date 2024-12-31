@@ -13,10 +13,16 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     });
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
-    const [newVideoLevel, setNewVideoLevel] = useState("beginner");
+    const [newVideoLevel, setNewVideoLevel] = useState(
+        "beginner technical series"
+    );
     const [newPowerPoint, setNewPowerPoint] = useState(null);
     const [loading, setLoading] = useState(false);
-    const levels = ["beginner", "intermediate", "advanced"];
+    const levels = [
+        "beginner technical series",
+        "intermediate",
+        "advanced technical series",
+    ];
 
     const groupedVideos = levels.reduce((groups, level) => {
         groups[level] = videos.filter((video) => video.level === level);
@@ -413,9 +419,13 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     onChange={(e) => setNewVideoLevel(e.target.value)}
                     required
                 >
-                    <option value="beginner">Beginner</option>
+                    <option value="beginner-technical-series">
+                        Beginner Technical Series
+                    </option>
                     <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
+                    <option value="advanced-technical-series">
+                        Advanced Technical Series
+                    </option>
                 </select>
                 <input
                     type="file"

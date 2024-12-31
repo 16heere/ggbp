@@ -419,9 +419,9 @@ const updateVideoPositions = async (req, res) => {
             FROM videos
             ORDER BY 
                 CASE 
-                    WHEN level = 'beginner' THEN 1
+                    WHEN level = 'beginner technical series' THEN 1
                     WHEN level = 'intermediate' THEN 2
-                    WHEN level = 'advanced' THEN 3
+                    WHEN level = 'advanced technical series' THEN 3
                     ELSE 4 -- Optional: for unexpected levels
                 END,
                 position
