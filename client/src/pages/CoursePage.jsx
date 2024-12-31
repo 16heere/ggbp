@@ -357,8 +357,7 @@ const CoursePage = () => {
                             <div key={level} className="level-section">
                                 <details className="level-dropdown">
                                     <summary className="level-summary">
-                                        {level.charAt(0).toUpperCase() +
-                                            level.slice(1)}
+                                        {level}
                                     </summary>
                                     <ul className="video-list">
                                         {levelVideos.map((video) => (
