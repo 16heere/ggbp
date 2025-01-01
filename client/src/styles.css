@@ -2230,6 +2230,13 @@ body {
     animation-play-state: paused;
 }
 
+@media (pointer: coarse) and (hover: none) {
+    /* Styles for devices with coarse (touch) input and no hover capability */
+    .scroller.hovered .scroller__inner {
+        animation-play-state: running;
+    }
+}
+
 .scroller[data-direction="right"] {
     --_animation-direction: reverse;
 }
