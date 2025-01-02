@@ -419,11 +419,11 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     onChange={(e) => setNewVideoLevel(e.target.value)}
                     required
                 >
-                    <option value="beginner-technical-series">
+                    <option value="beginner technical series">
                         Beginner Technical Series
                     </option>
                     <option value="intermediate">Intermediate</option>
-                    <option value="advanced-technical-series">
+                    <option value="advanced technical series">
                         Advanced Technical Series
                     </option>
                 </select>
