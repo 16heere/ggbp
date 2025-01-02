@@ -420,9 +420,8 @@ const updateVideoPositions = async (req, res) => {
             ORDER BY 
                 CASE 
                     WHEN level = 'beginner technical series' THEN 1
-                    WHEN level = 'intermediate' THEN 2
-                    WHEN level = 'advanced technical series' THEN 3
-                    ELSE 4 -- Optional: for unexpected levels
+                    WHEN level = 'advanced technical series' THEN 2
+                    ELSE 3 -- Optional: for unexpected levels
                 END,
                 position
         `);
