@@ -421,7 +421,11 @@ const updateVideoPositions = async (req, res) => {
                 CASE 
                     WHEN level = 'beginner technical series' THEN 1
                     WHEN level = 'advanced technical series' THEN 2
-                    ELSE 3 -- Optional: for unexpected levels
+                    WHEN level = 'basic crypto series' THEN 3
+                    WHEN level = 'advanced crypto series' THEN 4
+                    WHEN level = 'application series' THEN 5
+                    WHEN level = 'weekly outlooks' THEN 6
+                    ELSE 7 -- Optional: for unexpected levels
                 END,
                 position
         `);

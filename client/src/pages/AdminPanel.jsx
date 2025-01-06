@@ -18,7 +18,14 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     );
     const [newPowerPoint, setNewPowerPoint] = useState(null);
     const [loading, setLoading] = useState(false);
-    const levels = ["beginner technical series", "advanced technical series"];
+    const levels = [
+        "beginner technical series",
+        "advanced technical series",
+        "basic crypto series",
+        "advanced crypto series",
+        "application series",
+        "weekly outlooks",
+    ];
 
     const groupedVideos = levels.reduce((groups, level) => {
         groups[level] = videos.filter((video) => video.level === level);
@@ -420,6 +427,18 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     </option>
                     <option value="advanced technical series">
                         Advanced Technical Series
+                    </option>
+                    <option value="basic crypto series">
+                        Basic Crypto Series
+                    </option>
+                    <option value="advanced crypto series">
+                        Advanced Crypto Series
+                    </option>
+                    <option value="application series">
+                        Application Series
+                    </option>
+                    <option value="weekly outlooks">
+                        Weekly Outlooks
                     </option>
                 </select>
                 <input
