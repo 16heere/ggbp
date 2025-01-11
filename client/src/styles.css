@@ -107,7 +107,6 @@ h4 {
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    font-size: 1rem;
     transition: background-color 0.3s ease;
 }
 
@@ -1141,10 +1140,7 @@ hr {
 /* Responsive Behavior */
 @media (max-width: 768px) {
     .sidebar {
-        width: 250px; /* Adjust sidebar width on smaller screens */
-    }
-    .sidebar-toggle-icon {
-        left: -35px; /* Adjust toggle button position */
+        width: 100vw; /* Adjust sidebar width on smaller screens */
     }
 
     .course-info {
@@ -1220,6 +1216,7 @@ hr {
 
 .video-container {
     width: calc(100% - 300px); /* Account for sidebar width */
+    height: 100vh;
     transition: width 0.3s ease-in-out;
     padding: 20px;
 }
@@ -2558,6 +2555,12 @@ body {
 
     .terms-paragraph {
         font-size: 1em;
+    }
+
+    .navbar nav a,
+    .navbar nav button,
+    .navbar nav button .logout-button {
+        font-size: 13px;
     }
 }
 

@@ -380,7 +380,10 @@ const CoursePage = () => {
                                                         ? "watched"
                                                         : ""
                                                 }`}
-                                                onClick={() => openVideo(video)}
+                                                onClick={() => {
+                                                    openVideo(video);
+                                                    setSidebarOpen(false);
+                                                }}
                                             >
                                                 {video.title}
                                             </li>
