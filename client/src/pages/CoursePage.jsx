@@ -98,6 +98,7 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
+            console.log(response.data);
             setVideos(response.data || []);
             if (!selectedVideo && response.data.length > 0) {
                 openVideo(response.data[0]);
@@ -336,8 +337,6 @@ const CoursePage = () => {
         groups[level] = (videos || []).filter((video) => video.level === level);
         return groups;
     }, {});
-
-    console.log(groupedVideos);
 
     return (
         <div className="course-page">

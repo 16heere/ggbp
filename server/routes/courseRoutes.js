@@ -17,6 +17,7 @@ const {
     getQuizAttempt,
     setQuizAttempt,
     deleteQuizAttempt,
+    showWeeklyOutlooks,
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminOnly } = require("../middleware/adminMiddleware");
@@ -133,5 +134,7 @@ router.post(
 router.get("/research", getResearchArticles);
 router.delete("/research/:id", protect, adminOnly, deleteResearchArticle);
 router.get("/research/:id", getResearchArticleById);
+
+router.get("/weekly-outlooks", protect, showWeeklyOutlooks);
 
 module.exports = router;

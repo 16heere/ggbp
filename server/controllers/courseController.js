@@ -649,6 +649,44 @@ const deleteQuizAttempt = async (req, res) => {
     }
 };
 
+const showWeeklyOutlooks = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const query = `
+            SELECT 
+                v.id, 
+                v.title, 
+                v.s3_key, 
+                v.duration,
+                COALESCE(uv.watched_duration >= v.duration, false) AS watched
+            FROM videos v
+            LEFT JOIN user_video_watch uv
+            ON v.id = uv.video_id AND uv.user_id = $1
+            WHERE v.level = 'weekly outlooks'
+            ORDER BY v.position DESC
+        `;
+        const result = await db.query(query, [userId]);
+
+        const videosWithSignedUrl = result.rows.map((video) => {
+            const signedUrl = s3.getSignedUrl("getObject", {
+                Bucket: "ggbp",
+                Key: video.s3_key,
+                Expires: 3600,
+            });
+
+            return {
+                ...video,
+                s3_key: signedUrl,
+            };
+        });
+
+        res.status(200).json(videosWithSignedUrl);
+    } catch (error) {
+        console.error("Error fetching weekly outlooks:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 module.exports = {
     loginUser,
     subscribeUser,
@@ -670,4 +708,5 @@ module.exports = {
     getQuizAttempt,
     setQuizAttempt,
     deleteQuizAttempt,
+    showWeeklyOutlooks,
 };

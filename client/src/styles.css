@@ -2574,3 +2574,59 @@ body {
 .footer-link:hover {
     text-decoration: underline;
 }
+
+.navbar nav {
+    display: flex;
+    gap: 20px; /* Space between items */
+    align-items: center;
+    justify-content: flex-end; /* Align items to the right */
+}
+
+.navbar nav a,
+.navbar nav button {
+    font-size: 1.2rem; /* Adjust text size */
+    color: #ffffff; /* White text color */
+    text-decoration: none; /* Remove underline */
+    padding: 10px 15px; /* Add padding for clickable area */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar nav a:hover,
+.navbar nav button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light overlay on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.navbar nav button {
+    background-color: transparent; /* Transparent button */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor for button */
+}
+
+.navbar nav button.logout-button {
+    background-color: #f87171; /* Soft red */
+    padding: 10px 20px;
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar nav button.logout-button:hover {
+    background-color: #ef4444; /* Deeper red on hover */
+}
+
+/* Responsive Navigation */
+@media (max-width: 768px) {
+    .navbar nav {
+        flex-direction: column; /* Stack links vertically */
+        gap: 15px;
+    }
+
+    .navbar nav a,
+    .navbar nav button {
+        font-size: 0.9rem; /* Reduce font size on smaller screens */
+        padding: 8px 10px; /* Adjust padding */
+    }
+}

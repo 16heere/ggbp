@@ -11,6 +11,7 @@ import ResubscribePage from "./pages/ResubscribePage";
 import ResearchPage from "./pages/ResearchPage";
 import ArticlePage from "./pages/ArticlePage";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import WeeklyOutlooks from "./pages/WeeklyOutlooks";
 import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
@@ -48,6 +49,10 @@ const App = () => {
                     {user && user.isSubscribed && (
                         <Link to="/course">Course</Link>
                     )}
+
+                    {user && user.isSubscribed && (
+                        <Link to="/weekly-outlooks">Weekly Outlooks</Link>
+                    )}
                     {user && (
                         <button
                             onClick={() => logout(navigate)}
@@ -70,6 +75,10 @@ const App = () => {
                     <Route path="/research" element={<ResearchPage />} />
                     <Route path="/research/:id" element={<ArticlePage />} />
                     <Route path="/terms" element={<TermsAndConditions />} />
+                    <Route
+                        path="/weekly-outlooks"
+                        element={<WeeklyOutlooks />}
+                    />
                 </Routes>
             </main>
             <footer className="footer">
