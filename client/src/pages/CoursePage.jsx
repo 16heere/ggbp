@@ -23,6 +23,14 @@ const CoursePage = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [score, setScore] = useState(null);
+    const LEVEL_ORDER = [
+        "beginner technical series",
+        "advanced technical series",
+        "basic crypto series",
+        "advanced crypto series",
+        "application series",
+        "weekly outlooks",
+    ];
 
     const openVideo = useCallback(
         async (video) => {
@@ -90,12 +98,13 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            setVideos(response.data);
+            setVideos(response.data || []);
             if (!selectedVideo && response.data.length > 0) {
                 openVideo(response.data[0]);
             }
         } catch (error) {
             console.error("Failed to fetch videos:", error.message);
+            setVideos([]);
         }
     }, [selectedVideo, openVideo]);
 
@@ -323,13 +332,12 @@ const CoursePage = () => {
         );
     }
 
-    const groupedVideos = videos.reduce((groups, video) => {
-        if (!groups[video.level]) {
-            groups[video.level] = [];
-        }
-        groups[video.level].push(video);
+    const groupedVideos = LEVEL_ORDER.reduce((groups, level) => {
+        groups[level] = (videos || []).filter((video) => video.level === level);
         return groups;
     }, {});
+
+    console.log(groupedVideos);
 
     return (
         <div className="course-page">
@@ -352,8 +360,10 @@ const CoursePage = () => {
                 />
                 <div className="video-list">
                     <CourseProgress progress={progress} />
-                    {Object.entries(groupedVideos).map(
-                        ([level, levelVideos]) => (
+                    {LEVEL_ORDER.map((level) => {
+                        const levelVideos = groupedVideos[level] || [];
+                        if (levelVideos.length < 1) return;
+                        return (
                             <div key={level} className="level-section">
                                 <details className="level-dropdown">
                                     <summary className="level-summary">
@@ -391,8 +401,8 @@ const CoursePage = () => {
                                     </ul>
                                 </details>
                             </div>
-                        )
-                    )}
+                        );
+                    })}
                     {user?.isSubscribed && !user?.isAdmin && (
                         <p className="unsubscribe-link" onClick={unsubscribe}>
                             Unsubscribe

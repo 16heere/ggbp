@@ -26,11 +26,13 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         "application series",
         "weekly outlooks",
     ];
+    const [isSwapping, setIsSwapping] = useState(false);
 
     const groupedVideos = levels.reduce((groups, level) => {
-        groups[level] = videos.filter((video) => video.level === level);
+        groups[level] = (videos || []).filter((video) => video.level === level);
         return groups;
     }, {});
+
     const handleQuestionChange = (index, value) => {
         const updatedQuestions = [...questions];
         updatedQuestions[index].question = value;
@@ -269,8 +271,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     };
 
     const handleDragEnd = async (result) => {
+        console.log(result);
         if (!result.destination) return;
 
+        setIsSwapping(true);
         const { source, destination } = result;
 
         // Check if the drag happened across levels
@@ -279,15 +283,16 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             const destinationLevel = destination.droppableId;
 
             // Get the video being moved
-            const sourceVideos = [...groupedVideos[sourceLevel]];
+            const sourceVideos = groupedVideos[sourceLevel]
+                ? [...groupedVideos[sourceLevel]]
+                : [];
             const [movedVideo] = sourceVideos.splice(source.index, 1);
 
             // Update the video's level and append it to the destination level
             movedVideo.level = destinationLevel;
-            const destinationVideos = [
-                ...groupedVideos[destinationLevel],
-                movedVideo,
-            ];
+            const destinationVideos = groupedVideos[destinationLevel]
+                ? [...groupedVideos[destinationLevel], movedVideo]
+                : [movedVideo];
 
             // Update the state of groupedVideos
             const updatedGroupedVideos = {
@@ -302,14 +307,23 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
             try {
                 const token = localStorage.getItem("token");
+                const positions = Object.values(
+                    updatedVideos.reduce((acc, video) => {
+                        acc[video.level] = acc[video.level] || [];
+                        acc[video.level].push(video);
+                        return acc;
+                    }, {})
+                ).flatMap((videosInLevel) =>
+                    videosInLevel.map((video, index) => ({
+                        id: video.id,
+                        position: index + 1,
+                        level: video.level,
+                    }))
+                );
                 const response = await axios.post(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
                     {
-                        positions: updatedVideos.map((video, index) => ({
-                            id: video.id,
-                            position: index + 1,
-                            level: video.level,
-                        })),
+                        positions: positions,
                     },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -327,7 +341,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
         // If within the same level, reorder as usual
         const level = source.droppableId;
-        const levelVideos = [...groupedVideos[level]];
+        const levelVideos = groupedVideos[level]
+            ? [...groupedVideos[level]]
+            : [];
         const [movedVideo] = levelVideos.splice(source.index, 1);
         levelVideos.splice(destination.index, 0, movedVideo);
 
@@ -339,25 +355,40 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         const updatedVideos = Object.values(updatedGroupedVideos).flat();
         setVideos(updatedVideos);
 
+        console.log("Grouped Videos:", groupedVideos);
+        console.log("Updated Videos:", updatedVideos);
+
         try {
             const token = localStorage.getItem("token");
+            const positions = Object.values(
+                updatedVideos.reduce((acc, video) => {
+                    acc[video.level] = acc[video.level] || [];
+                    acc[video.level].push(video);
+                    return acc;
+                }, {})
+            ).flatMap((videosInLevel) =>
+                videosInLevel.map((video, index) => ({
+                    id: video.id,
+                    position: index + 1,
+                    level: video.level,
+                }))
+            );
+
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/update-position`,
                 {
-                    positions: updatedVideos.map((video, index) => ({
-                        id: video.id,
-                        position: index + 1,
-                        level: video.level,
-                    })),
+                    positions: positions,
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-
+            console.log(response.data.videos);
             setVideos(response.data.videos);
         } catch (error) {
             console.error("Failed to update video order:", error.message);
             alert("Failed to update video order. Refreshing...");
             fetchVideos();
+        } finally {
+            setIsSwapping(false); // End loading
         }
     };
 
@@ -437,9 +468,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     <option value="application series">
                         Application Series
                     </option>
-                    <option value="weekly outlooks">
-                        Weekly Outlooks
-                    </option>
+                    <option value="weekly outlooks">Weekly Outlooks</option>
                 </select>
                 <input
                     type="file"

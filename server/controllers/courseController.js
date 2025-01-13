@@ -157,6 +157,14 @@ const addVideo = async (req, res) => {
         const videoKey = videoFile.key;
         const powerpointKey = powerpointFile ? powerpointFile.key : null;
 
+        const positionQuery = `
+            SELECT COALESCE(MAX(position), 0) + 1 AS next_position
+            FROM videos
+            WHERE level = $1
+        `;
+        const positionResult = await db.query(positionQuery, [level]);
+        const position = positionResult.rows[0].next_position;
+
         // Insert video metadata (without binary data) into the database
         const insertQuery = `
         INSERT INTO videos (title, s3_key, position, duration, level, powerpoint_key)
@@ -196,16 +204,15 @@ const addVideo = async (req, res) => {
 
 const removeVideo = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user.id;
 
     if (!req.user.isAdmin) {
         return res.status(403).json({ message: "Access denied: Admin only" });
     }
 
     try {
-        // 1. Fetch the video details first to get s3_key and duration
+        // 1. Fetch the video details to get position and level
         const videoResult = await db.query(
-            "SELECT s3_key, duration, position FROM videos WHERE id = $1",
+            "SELECT s3_key, duration, position, level FROM videos WHERE id = $1",
             [id]
         );
 
@@ -213,52 +220,48 @@ const removeVideo = async (req, res) => {
             return res.status(404).json({ message: "Video not found" });
         }
 
-        const { s3_key, duration, position } = videoResult.rows[0];
+        const { s3_key, duration, position, level } = videoResult.rows[0];
 
-        // 2. Find all users who watched this video
-        const usersWhoWatched = await db.query(
-            "SELECT user_id FROM user_video_watch WHERE video_id = $1",
-            [id]
-        );
-
-        // 3. Delete references from user_video_watch
-        await db.query("DELETE FROM user_video_watch WHERE video_id = $1;", [
+        // 2. Delete all references to the video
+        await db.query("DELETE FROM user_video_watch WHERE video_id = $1", [
             id,
         ]);
-
-        //delete ref from quizzes
         await db.query("DELETE FROM quizzes WHERE video_id = $1", [id]);
-
-        //delete ref from quiz_attempts
         await db.query("DELETE FROM quiz_attempts WHERE video_id = $1", [id]);
 
-        // 4. Delete from videos table
+        // 3. Delete the video from the database
         const deleteResult = await db.query(
-            "DELETE FROM videos WHERE id = $1 RETURNING id;",
+            "DELETE FROM videos WHERE id = $1 RETURNING id",
             [id]
         );
 
         if (deleteResult.rowCount === 0) {
-            // If for some reason the video wasn't actually deleted, return an error
             return res
                 .status(404)
                 .json({ message: "Video not found in videos table" });
         }
 
+        // 4. Assign temporary positions to affected videos
         await db.query(
-            "UPDATE videos SET position = position - 1 WHERE position > $1;",
-            [position]
+            "UPDATE videos SET position = -position WHERE level = $1 AND position > $2",
+            [level, position]
         );
 
-        // 5. Update watched_seconds for each user who watched this video
-        const userIds = usersWhoWatched.rows.map((row) => row.user_id);
-        for (const userId of userIds) {
-            await db.query(
-                "UPDATE users SET watched_seconds = watched_seconds - $1 WHERE id = $2",
-                [duration, userId]
-            );
-        }
+        // 5. Reassign the correct positions for videos in the same level
+        const updatePositionsQuery = `
+            WITH reordered_videos AS (
+                SELECT id, ROW_NUMBER() OVER (ORDER BY position ASC) AS new_position
+                FROM videos
+                WHERE level = $1
+            )
+            UPDATE videos
+            SET position = reordered_videos.new_position
+            FROM reordered_videos
+            WHERE videos.id = reordered_videos.id;
+        `;
+        await db.query(updatePositionsQuery, [level]);
 
+        // 6. Delete the video file from the S3 bucket
         await new Promise((resolve, reject) => {
             s3.deleteObject(
                 {
@@ -281,7 +284,7 @@ const removeVideo = async (req, res) => {
         res.status(200).json({ message: "Video removed successfully" });
     } catch (error) {
         console.error("Error removing video:", error.message);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
@@ -352,8 +355,7 @@ const getVideoById = async (req, res) => {
 };
 
 const updateVideoPositions = async (req, res) => {
-    const { positions } = req.body; // Array of { id, position, level }
-    console.log(positions);
+    const { positions } = req.body;
     if (!Array.isArray(positions)) {
         return res
             .status(400)
@@ -363,83 +365,42 @@ const updateVideoPositions = async (req, res) => {
     let client;
 
     try {
-        client = await db.connect(); // Use transactions for atomic updates
+        client = await db.connect();
         await client.query("BEGIN");
 
-        const groupedPositions = positions.reduce((acc, curr) => {
-            acc[curr.level] = acc[curr.level] || [];
-            acc[curr.level].push(curr);
-            return acc;
-        }, {});
+        // Step 1: Assign temporary positions to break conflicts
+        for (const { id, level } of positions) {
+            const tempQuery = `
+                UPDATE videos
+                SET position = -position -- Temporarily set to a negative value
+                WHERE id = $1 AND level = $2
+            `;
+            await client.query(tempQuery, [id, level]);
+        }
 
-        console.log(groupedPositions);
-
-        for (const [level, levelPositions] of Object.entries(
-            groupedPositions
-        )) {
-            // Lock rows for the level being updated
-            const result = await client.query(
-                "SELECT id, position FROM videos WHERE level = $1 ORDER BY position FOR UPDATE",
-                [level]
-            );
-
-            const existingPositions = result.rows;
-
-            // Assign unique temporary positions to avoid duplicate key constraint
-            let tempPosition = -100000;
-            for (const video of existingPositions) {
-                await client.query(
-                    "UPDATE videos SET position = $1 WHERE id = $2 AND level = $3",
-                    [tempPosition++, video.id, level]
-                );
-            }
-
-            // Determine the next available position in the current level
-            const maxPosition = existingPositions.length
-                ? Math.max(...existingPositions.map((v) => v.position))
-                : 0;
-
-            // Update positions for the current level
-            let currentPosition = maxPosition;
-            for (const { id, position } of levelPositions) {
-                const newPosition =
-                    position === -1 ? ++currentPosition : position;
-                await client.query(
-                    "UPDATE videos SET position = $1, level = $2 WHERE id = $3",
-                    [newPosition, level, id]
-                );
-            }
+        // Step 2: Assign the new positions from the request
+        for (const { id, position, level } of positions) {
+            const updateQuery = `
+                UPDATE videos
+                SET position = $1, level = $2
+                WHERE id = $3
+            `;
+            await client.query(updateQuery, [position, level, id]);
         }
 
         await client.query("COMMIT");
 
-        // Fetch the updated videos
         const updatedVideos = await client.query(`
-            SELECT * 
-            FROM videos
-            ORDER BY 
-                CASE 
-                    WHEN level = 'beginner technical series' THEN 1
-                    WHEN level = 'advanced technical series' THEN 2
-                    WHEN level = 'basic crypto series' THEN 3
-                    WHEN level = 'advanced crypto series' THEN 4
-                    WHEN level = 'application series' THEN 5
-                    WHEN level = 'weekly outlooks' THEN 6
-                    ELSE 7 -- Optional: for unexpected levels
-                END,
-                position
+            SELECT * FROM videos ORDER BY level, position
         `);
 
-        res.status(200).json({
-            message: "Positions updated successfully",
-            videos: updatedVideos.rows,
-        });
+        res.status(200).json({ videos: updatedVideos.rows });
     } catch (error) {
-        console.error("Error updating video positions:", error.message);
-        await client.query("ROLLBACK");
-        res.status(500).json({ message: "Server error" });
+        console.error("Error updating positions:", error.message);
+        if (client) await client.query("ROLLBACK");
+        res.status(500).json({ message: "Server error", error: error.message });
     } finally {
-        client.release();
+        if (client) client.release();
     }
 };
 
