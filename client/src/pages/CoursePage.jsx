@@ -29,7 +29,6 @@ const CoursePage = () => {
         "basic crypto series",
         "advanced crypto series",
         "application series",
-        "weekly outlooks",
     ];
 
     const openVideo = useCallback(
