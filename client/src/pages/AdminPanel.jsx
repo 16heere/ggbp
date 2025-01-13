@@ -26,7 +26,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         "application series",
         "weekly outlooks",
     ];
-    const [isSwapping, setIsSwapping] = useState(false);
 
     const groupedVideos = levels.reduce((groups, level) => {
         groups[level] = (videos || []).filter((video) => video.level === level);
@@ -274,7 +273,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         console.log(result);
         if (!result.destination) return;
 
-        setIsSwapping(true);
         const { source, destination } = result;
 
         // Check if the drag happened across levels
@@ -387,8 +385,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             console.error("Failed to update video order:", error.message);
             alert("Failed to update video order. Refreshing...");
             fetchVideos();
-        } finally {
-            setIsSwapping(false); // End loading
         }
     };
 

@@ -362,7 +362,7 @@ const CoursePage = () => {
                     <CourseProgress progress={progress} />
                     {LEVEL_ORDER.map((level) => {
                         const levelVideos = groupedVideos[level] || [];
-                        if (levelVideos.length < 1) return;
+                        if (levelVideos.length < 1) return null;
                         return (
                             <div key={level} className="level-section">
                                 <details className="level-dropdown">
