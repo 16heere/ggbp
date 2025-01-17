@@ -27,7 +27,7 @@ const CoursePage = () => {
         "introduction to GGBP",
         "beginner technical series",
         "advanced technical series",
-        "basic crypto series",
+        "beginner crypto series",
         "advanced crypto series",
         "application series",
     ];

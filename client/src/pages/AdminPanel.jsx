@@ -13,16 +13,14 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     });
     const [newVideo, setNewVideo] = useState({ title: "", file: null });
     const [videoDuration, setVideoDuration] = useState(null);
-    const [newVideoLevel, setNewVideoLevel] = useState(
-        "beginner technical series"
-    );
+    const [newVideoLevel, setNewVideoLevel] = useState("introduction to GGBP");
     const [newPowerPoint, setNewPowerPoint] = useState(null);
     const [loading, setLoading] = useState(false);
     const levels = [
         "introduction to GGBP",
         "beginner technical series",
         "advanced technical series",
-        "basic crypto series",
+        "beginner crypto series",
         "advanced crypto series",
         "application series",
         "weekly outlooks",
@@ -459,8 +457,8 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     <option value="advanced technical series">
                         Advanced Technical Series
                     </option>
-                    <option value="basic crypto series">
-                        Basic Crypto Series
+                    <option value="Beginner crypto series">
+                        Beginner Crypto Series
                     </option>
                     <option value="advanced crypto series">
                         Advanced Crypto Series
