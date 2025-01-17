@@ -24,6 +24,7 @@ const CoursePage = () => {
     const [loading, setLoading] = useState(true);
     const [score, setScore] = useState(null);
     const LEVEL_ORDER = [
+        "introduction to GGBP",
         "beginner technical series",
         "advanced technical series",
         "basic crypto series",

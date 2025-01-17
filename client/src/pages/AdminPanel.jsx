@@ -19,6 +19,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [newPowerPoint, setNewPowerPoint] = useState(null);
     const [loading, setLoading] = useState(false);
     const levels = [
+        "introduction to GGBP",
         "beginner technical series",
         "advanced technical series",
         "basic crypto series",
@@ -449,6 +450,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     onChange={(e) => setNewVideoLevel(e.target.value)}
                     required
                 >
+                    <option value="introduction to GGBP">
+                        Introduction to GGBP
+                    </option>
                     <option value="beginner technical series">
                         Beginner Technical Series
                     </option>
