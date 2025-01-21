@@ -457,7 +457,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     <option value="advanced technical series">
                         Advanced Technical Series
                     </option>
-                    <option value="Beginner crypto series">
+                    <option value="beginner crypto series">
                         Beginner Crypto Series
                     </option>
                     <option value="advanced crypto series">
