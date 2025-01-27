@@ -100,7 +100,7 @@ h4 {
     transform: scale(1.05);
 }
 
-.navbar .logout-button {
+.logout-button {
     background-color: #f87171; /* Soft red */
     color: white;
     border: none;
@@ -110,7 +110,7 @@ h4 {
     transition: background-color 0.3s ease;
 }
 
-.navbar .logout-button:hover {
+.logout-button:hover {
     background-color: #ef4444; /* Deeper red */
 }
 
@@ -2619,7 +2619,7 @@ body {
 
 /* Responsive Navigation */
 @media (max-width: 768px) {
-    .navbar nav {
+    .navbar {
         flex-direction: column; /* Stack links vertically */
         gap: 15px;
     }
@@ -2629,4 +2629,97 @@ body {
         font-size: 0.9rem; /* Reduce font size on smaller screens */
         padding: 8px 10px; /* Adjust padding */
     }
+}
+
+/* Base styles for the sidebar menu */
+.nav-sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px; /* Start off-screen */
+    width: 250px;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    ); /* Match your gradient start */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.nav-sidebar.open {
+    right: 0; /* Slide in */
+}
+
+/* Close button inside the sidebar */
+.nav-sidebar .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    align-self: flex-end;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+/* Sidebar links */
+.nav-sidebar a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 10px;
+    text-align: center;
+}
+
+.nav-sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* Hamburger menu button */
+.hamburger {
+    display: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #fff;
+    background: none;
+    border: none;
+}
+
+/* Show hamburger on small screens */
+@media (max-width: 500px) {
+    .navbar {
+        flex-direction: row; /* Stack links vertically */
+        gap: 15px;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .navbar nav {
+        display: none; /* Hide nav links */
+    }
+
+    .logout-button {
+        margin-top: 50px;
+    }
+}
+
+.login-button {
+    background-color: #34d399; /* Soft red */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #ef4444; /* Deeper red */
 }

@@ -1,11 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import CoursePage from "./pages/CoursePage";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
-import { FaLinkedin, FaInstagram, FaTwitter, FaTiktok } from "react-icons/fa6";
+import {
+    FaLinkedin,
+    FaInstagram,
+    FaTwitter,
+    FaTiktok,
+    FaBars,
+} from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 import { UserContext } from "./context/userContext";
 import ResubscribePage from "./pages/ResubscribePage";
 import ResearchPage from "./pages/ResearchPage";
@@ -17,6 +24,11 @@ import ScrollToTop from "./components/ScrollToTop";
 const App = () => {
     const { user, logout } = useContext(UserContext);
     const navigate = useNavigate();
+    const [navSidebarOpen, setNavSidebarOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setNavSidebarOpen(!navSidebarOpen);
+    };
 
     return (
         <div className="content-container">
@@ -26,6 +38,9 @@ const App = () => {
                         <img src="/assets/ggbp LOGO white wide.png" alt="" />
                     </Link>
                 </h1>
+                <button className="hamburger" onClick={toggleSidebar}>
+                    <FaBars />
+                </button>
                 <nav>
                     <button
                         className="research-btn"
@@ -63,6 +78,63 @@ const App = () => {
                     )}
                 </nav>
             </header>
+            <div className={`nav-sidebar ${navSidebarOpen ? "open" : ""}`}>
+                <button className="close-btn" onClick={toggleSidebar}>
+                    <IoClose />
+                </button>
+                <button
+                    className="research-btn"
+                    onClick={() => {
+                        navigate("/");
+                        toggleSidebar();
+                    }}
+                >
+                    Home
+                </button>
+                <button
+                    className="research-btn"
+                    onClick={() => {
+                        navigate("/research");
+                        toggleSidebar();
+                    }}
+                >
+                    Research
+                </button>
+                {!user && (
+                    <Link
+                        classname="login-button"
+                        to="/login"
+                        onClick={toggleSidebar}
+                    >
+                        Login
+                    </Link>
+                )}
+                {/* {!user && (
+                        <Link className="subscribe-btn" to="/subscribe" onClick={toggleSidebar}>>
+                            Subscribe
+                        </Link>
+                    )} */}
+
+                {user && user.isSubscribed && (
+                    <Link to="/course" onClick={toggleSidebar}>
+                        Course
+                    </Link>
+                )}
+
+                {user && user.isSubscribed && (
+                    <Link to="/weekly-outlooks" onClick={toggleSidebar}>
+                        Weekly Outlooks
+                    </Link>
+                )}
+                {user && (
+                    <button
+                        onClick={() => logout(navigate)}
+                        className="logout-button"
+                    >
+                        Logout
+                    </button>
+                )}
+            </div>
             <main className="container">
                 <ScrollToTop />
                 <Routes>
