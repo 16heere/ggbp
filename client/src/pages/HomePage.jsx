@@ -236,13 +236,24 @@ const HomePage = () => {
                             className="info-image-large"
                         />
                         <div className="info-content">
-                            <h4>Personalized Portfolio Tips</h4>
+                            <h4>Personalised Portfolio Tips</h4>
                             <p>
-                                Receive tailored advice to optimize your
+                                Receive tailored advice to optimise your
                                 portfolio.
                             </p>
                         </div>
                     </div>
+                    {/* <div className="more-info-point">
+                        <img
+                            src="/assets/airdrop.png"
+                            alt="Airdrops"
+                            className="info-image-large"
+                        />
+                        <div className="info-content">
+                            <h4>Airdrops</h4>
+                            <p>We host airdops etc...</p>
+                        </div>
+                    </div> */}
                 </div>
             </div>
             <div className="article-section">

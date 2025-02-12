@@ -2,7 +2,6 @@ const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const db = require("../models/db");
 const router = express.Router();
-
 router.post("/create-checkout-session", async (req, res) => {
     const { email, password } = req.body;
 
@@ -15,6 +14,10 @@ router.post("/create-checkout-session", async (req, res) => {
                     price: "price_1QXRGADwIDDdMRawdBXA9c6u",
                     quantity: 1,
                 },
+                // {
+                //     price: "price_1QmvhIH85R48nJ1WzULcED6u",
+                //     quantity: 1,
+                // },
             ],
             metadata: {
                 email,
@@ -27,39 +30,6 @@ router.post("/create-checkout-session", async (req, res) => {
         res.json({ url: session.url });
     } catch (error) {
         console.error("Error creating checkout session:", error);
-        res.status(500).json({ error: "Failed to create checkout session" });
-    }
-});
-
-router.post("/create-course-subscription", async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const prices = await stripe.prices.list({
-            product: "prod_RQHRE64ktNmZUH",
-        });
-        const priceId = prices.data[0]?.id;
-
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "subscription",
-            line_items: [
-                {
-                    price: priceId,
-                    quantity: 1,
-                },
-            ],
-            metadata: {
-                email,
-                password,
-            },
-            success_url: "https://ggbp.org.uk/login",
-            cancel_url: "https://ggbp.org.uk/cancel",
-        });
-
-        res.json({ url: session.url });
-    } catch (error) {
-        console.error("Error creating course checkout session:", error);
         res.status(500).json({ error: "Failed to create checkout session" });
     }
 });

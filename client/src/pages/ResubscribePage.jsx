@@ -20,7 +20,7 @@ const ResubscribePage = () => {
                 `${process.env.REACT_APP_API_ENDPOINT}/subscription/resubscribe-session`,
                 {
                     email,
-                    successUrl: "https://ggbp.org.uk//course",
+                    successUrl: "https://ggbp.org.uk/course",
                     cancelUrl: "https://ggbp.org.uk/",
                 }
             );

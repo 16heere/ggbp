@@ -487,6 +487,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 {levels.map((level) => (
                     <div key={level} className="video-section">
                         <h3>
+                            {levels.indexOf(level) + 1}){" "}
                             {level.charAt(0).toUpperCase() + level.slice(1)}
                         </h3>
                         <Droppable droppableId={level}>

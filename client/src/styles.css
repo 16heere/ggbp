@@ -182,7 +182,8 @@ form h2 {
 form input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
@@ -1098,7 +1099,6 @@ hr {
 }
 
 .video-list ul {
-    list-style-type: none;
     padding: 0;
 }
 
@@ -1277,12 +1277,12 @@ hr {
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
-        minmax(200px, 1fr)
+        minmax(190px, 1fr)
     ); /* Flexible grid */
     max-width: 1400px;
     width: 100%;
     gap: 40px; /* Increased spacing */
-    padding: 50px 20px;
+    padding: 50px 10px;
     background: #f9fafb; /* Subtle light gray */
     border-radius: 12px;
     text-align: center;
@@ -1309,7 +1309,7 @@ hr {
 
 .info-image-large {
     width: 200px; /* Larger image size */
-    height: auto;
+    height: 100px;
     margin-bottom: 20px;
     border-radius: 80px; /* Circular shape */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -2722,4 +2722,36 @@ body {
 
 .login-button:hover {
     background-color: #ef4444; /* Deeper red */
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 40px; /* Space for the eye icon */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: gray;
+}
+
+.checkbox {
+    display: flex;
+}
+
+.checkbox input {
+    width: 40px;
 }

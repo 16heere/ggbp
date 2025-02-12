@@ -31,7 +31,7 @@ app.post(
     "/webhook",
     bodyParser.raw({ type: "application/json" }),
     async (req, res) => {
-        const endpointSecret = process.env.STRIPE_ENPOINT_SECRET;
+        const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
         const sig = req.headers["stripe-signature"];
 
         let event;

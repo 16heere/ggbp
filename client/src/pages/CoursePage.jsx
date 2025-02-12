@@ -366,6 +366,7 @@ const CoursePage = () => {
                             <div key={level} className="level-section">
                                 <details className="level-dropdown">
                                     <summary className="level-summary">
+                                        {LEVEL_ORDER.indexOf(level) + 1}){" "}
                                         {level
                                             .split(" ")
                                             .map(

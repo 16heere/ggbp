@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SubscriptionPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -16,6 +20,10 @@ const SubscriptionPage = () => {
     }, [user, navigate]);
 
     const handleSubscribeNow = async () => {
+        if (!email || !password || !isChecked) {
+            alert("Please fill out all fields");
+            return;
+        }
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/subscription/create-checkout-session`,
@@ -52,14 +60,40 @@ const SubscriptionPage = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
-                    <input
-                        type="password"
-                        placeholder="Choose a password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button type="button" onClick={handleSubscribeNow}>
+                    <div className="password-container">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            autoComplete="current-password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <span
+                            className="toggle-password"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <FaEye /> : <FaEyeSlash />}
+                        </span>
+                    </div>
+                    <div className="checkbox">
+                        <input
+                            type="checkbox"
+                            id="tandc"
+                            required
+                            checked={isChecked}
+                            onChange={(e) => setIsChecked(e.target.checked)}
+                        />
+                        <label htmlFor="tandc">
+                            I agree to the{" "}
+                            <Link to="/terms">Terms & Conditions</Link>
+                        </label>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={handleSubscribeNow}
+                        disabled={!email || !password || !isChecked}
+                    >
                         Subscribe Now
                     </button>
                 </form>

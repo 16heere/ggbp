@@ -1,6 +1,25 @@
 const bcrypt = require("bcrypt");
 const db = require("../models/db");
+const axios = require("axios");
+const { sendEmail } = require("../handlers/mailHandler");
 
+async function generateTelegramInviteLink() {
+    try {
+        const response = await axios.post(
+            `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/createChatInviteLink`,
+            {
+                chat_id: process.env.TELEGRAM_GROUP_ID,
+                expire_date: 0,
+                member_limit: 1,
+            }
+        );
+
+        return response.data.result.invite_link;
+    } catch (error) {
+        console.error("Error generating Telegram invite link:", error);
+        return null;
+    }
+}
 async function handleCheckoutSessionCompleted(session) {
     const email = session.metadata.email;
     const password = session.metadata.password
@@ -62,6 +81,28 @@ async function handleCheckoutSessionCompleted(session) {
             );
             console.log(`New user ${email} subscribed`);
         }
+
+        const inviteLink = await generateTelegramInviteLink();
+        const text = `Welcome to GGBP, you now have access to the full course on the website. Additionally you can join our premium telegram channel - ${inviteLink}`;
+        await sendEmail(
+            email,
+            "GGBP Telegram link",
+            text,
+            `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <h2 style="color: #007bff;">Welcome to GGBP!</h2>
+                    <p>Thank you for subscribing!</p>
+                    <blockquote style="background: #f8f9fa; padding: 10px; border-left: 5px solid #007bff;">
+                        ${text}
+                        <br>
+                        <strong>Click below to join:</strong> <br>
+                        <a href="${inviteLink}">${inviteLink}</a>
+                    </blockquote>
+                    <hr>
+                    <footer style="font-size: 12px; color: #777;">
+                        <p>Best regards,<br> GGBP Team</p>
+                    </footer>
+                </div>`
+        );
     } catch (err) {
         console.error("Error handling course subscription:", err.message);
         throw new Error("Database operation failed");
