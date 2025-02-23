@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import Scroller from "../components/Scroller";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -91,10 +92,22 @@ const HomePage = () => {
     return (
         <div className="home-page">
             <Scroller items={prices} speed="fast" direction="left" />
-            <div className="first-info">
+            <motion.div
+                className="first-info"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+                viewport={{ once: true }}
+            >
                 <h1>Begin Your Trading Journey</h1>
-                <div className="courses">
-                    <div className="course crypto-course">
+                <motion.div className="courses">
+                    <div
+                        className="course crypto-course"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: true }}
+                    >
                         <p>
                             GGBP offers a clear and secure path to navigating
                             crypto, removing the confusion of going solo and
@@ -105,75 +118,157 @@ const HomePage = () => {
                             Get Involved
                         </button> */}
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
-            <div className="course-info">
-                <div className="course-info-title">
+            <motion.div
+                className="course-info"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{
+                    duration: 0.8,
+                    ease: "easeInOut",
+                }}
+                viewport={{ once: true }}
+            >
+                <motion.div
+                    className="course-info-title"
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                >
                     <h2>What our Program Includes</h2>
-                </div>
+                </motion.div>
+
                 <div className="course-info-points">
-                    <div className="course-info-point">
+                    <motion.div
+                        className="course-info-point"
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.2,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/IMG_7594.png"
                             alt="Education"
                             className="course-image"
                         />
-                        {/* <h2 className="course-info-point-circle">1</h2> */}
                         <h4>Education</h4>
                         <p>
                             Elevate your investing skills to the next level.
                             Gain access to comprehensive courses, 50+ hours of
                             tutorials, and expert-crafted articles.
                         </p>
-                    </div>
-                    <div className="course-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="course-info-point"
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.4,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/IMG_7595.png"
                             alt="Insights"
                             className="course-image"
                         />
-                        {/* <h2 className="course-info-point-circle">2</h2> */}
                         <h4>Insights You Can Trust</h4>
                         <p>
                             Discover and invest in opportunities backed by
                             expert analysis.
                         </p>
-                    </div>
-                    <div className="course-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="course-info-point"
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.6,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/IMG_7593.png"
                             alt="Market Analysis"
                             className="course-image"
                         />
-                        {/* <h2 className="course-info-point-circle">3</h2> */}
                         <h4>Market Analysis</h4>
                         <p>
                             Safeguard your investments against unpredictable
                             market volatility.
                         </p>
-                    </div>
-                    <div className="course-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="course-info-point"
+                        initial={{ opacity: 0, x: 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.8,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/IMG_7596.png"
                             alt="Network"
                             className="course-image"
                         />
-                        {/* <h2 className="course-info-point-circle">4</h2> */}
                         <h4>Network</h4>
                         <p>
                             Collaborate and learn alongside the sharpest minds
                             in crypto, and connect directly with 8-figure
                             traders. 1-1 Sessions on demand.
                         </p>
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="more-info-container">
-                <h3>AND MUCH MORE</h3>
+            <motion.div
+                className="more-info-container"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                    duration: 1,
+                    ease: "easeInOut",
+                }}
+                viewport={{ once: true }}
+            >
+                <motion.h3
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true }}
+                >
+                    AND MUCH MORE
+                </motion.h3>
+
                 <div className="more-info">
-                    <div className="more-info-point">
+                    <motion.div
+                        className="more-info-point"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.2,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/live-stream.png"
                             alt="Live Streams"
@@ -186,8 +281,19 @@ const HomePage = () => {
                                 actionable insights.
                             </p>
                         </div>
-                    </div>
-                    <div className="more-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="more-info-point"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.4,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/weekly-outlooks.png"
                             alt="Weekly Outlooks"
@@ -200,8 +306,19 @@ const HomePage = () => {
                                 opportunities.
                             </p>
                         </div>
-                    </div>
-                    <div className="more-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="more-info-point"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.6,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/coin-picks.png"
                             alt="Coin Picks"
@@ -214,8 +331,19 @@ const HomePage = () => {
                                 maximum growth.
                             </p>
                         </div>
-                    </div>
-                    <div className="more-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="more-info-point"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 0.8,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/market-analysis.png"
                             alt="Market Analysis"
@@ -228,8 +356,19 @@ const HomePage = () => {
                                 factors.
                             </p>
                         </div>
-                    </div>
-                    <div className="more-info-point">
+                    </motion.div>
+
+                    <motion.div
+                        className="more-info-point"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: 0.8,
+                            ease: "easeOut",
+                            delay: 1,
+                        }}
+                        viewport={{ once: true }}
+                    >
                         <img
                             src="/assets/portfolio-tips.png"
                             alt="Personalized Portfolio Tips"
@@ -242,26 +381,27 @@ const HomePage = () => {
                                 portfolio.
                             </p>
                         </div>
-                    </div>
-                    {/* <div className="more-info-point">
-                        <img
-                            src="/assets/airdrop.png"
-                            alt="Airdrops"
-                            className="info-image-large"
-                        />
-                        <div className="info-content">
-                            <h4>Airdrops</h4>
-                            <p>We host airdops etc...</p>
-                        </div>
-                    </div> */}
+                    </motion.div>
                 </div>
-            </div>
-            <div className="article-section">
+            </motion.div>
+
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                viewport={{ once: true }}
+            >
                 <h2>Featured Articles</h2>
                 <ArticleCarousel />
-            </div>
+            </motion.div>
             <div className="section-divider"></div>
-            <div className="reviews-container">
+            <motion.div
+                className="reviews-container"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                viewport={{ once: true }}
+            >
                 <div className="reviews">
                     <h3 className="reviews-title">What Our Users Say</h3>
                     <div
@@ -331,7 +471,7 @@ const HomePage = () => {
                         Trustpilot
                     </a>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 };

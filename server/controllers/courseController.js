@@ -86,22 +86,43 @@ const getUserProgress = async (req, res) => {
     try {
         const userId = req.user.id;
 
-        // Fetch the user's watched minutes
-        const userResult = await db.query(
-            "SELECT SUM(watched_duration) AS watched_duration FROM user_video_watch WHERE user_id = $1",
-            [userId]
-        );
-        const watchedSeconds = userResult.rows[0].watched_duration;
+        // Fetch user's watched duration per level
+        const levelProgressQuery = `
+            SELECT v.level, 
+                   SUM(uv.watched_duration) AS watched_duration,
+                   SUM(v.duration) AS total_duration
+            FROM videos v
+            LEFT JOIN user_video_watch uv 
+            ON v.id = uv.video_id AND uv.user_id = $1
+            GROUP BY v.level;
+        `;
+        const levelProgressResult = await db.query(levelProgressQuery, [
+            userId,
+        ]);
 
-        // Fetch total video duration
-        const videoResult = await db.query(
-            "SELECT SUM(duration) AS total_duration FROM videos"
-        );
-        const totalDuration = videoResult.rows[0].total_duration;
-        // Calculate progress
-        const progress =
-            totalDuration > 0 ? (watchedSeconds / totalDuration) * 100 : 0;
-        res.status(200).json({ progress });
+        // Structure level-wise progress
+        const levelProgress = {};
+        let totalWatched = 0;
+        let totalDuration = 0;
+
+        levelProgressResult.rows.forEach((row) => {
+            const watched = row.watched_duration || 0;
+            const duration = row.total_duration || 1; // Avoid division by zero
+            levelProgress[row.level] = (watched / duration) * 100;
+
+            // Aggregate total progress
+            totalWatched += watched;
+            totalDuration += duration;
+        });
+
+        // Compute overall progress
+        const overallProgress =
+            totalDuration > 0 ? (totalWatched / totalDuration) * 100 : 0;
+
+        res.status(200).json({
+            overallProgress: overallProgress.toFixed(2),
+            levelProgress,
+        });
     } catch (error) {
         console.error("Error fetching progress:", error.message);
         res.status(500).json({ message: "Server error" });
@@ -687,6 +708,37 @@ const showWeeklyOutlooks = async (req, res) => {
     }
 };
 
+const toggleWatchedVideo = async (req, res) => {
+    try {
+        const { videoId, watched, watchedDuration } = req.body;
+        const userId = req.user.id;
+
+        if (watched) {
+            // Add watched video to the database
+            await db.query(
+                `INSERT INTO user_video_watch (user_id, video_id, watched_duration) 
+                 VALUES ($1, $2, $3)
+                 ON CONFLICT (user_id, video_id) 
+                 DO UPDATE SET watched_duration = $3`,
+                [userId, videoId, watchedDuration]
+            );
+
+            res.status(200).json({ message: "Video marked as watched." });
+        } else {
+            // Remove video from watched list
+            await db.query(
+                `DELETE FROM user_video_watch WHERE user_id = $1 AND video_id = $2`,
+                [userId, videoId]
+            );
+
+            res.status(200).json({ message: "Video unmarked as watched." });
+        }
+    } catch (error) {
+        console.error("Error updating watched status:", error.message);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
 module.exports = {
     loginUser,
     subscribeUser,
@@ -709,4 +761,5 @@ module.exports = {
     setQuizAttempt,
     deleteQuizAttempt,
     showWeeklyOutlooks,
+    toggleWatchedVideo,
 };

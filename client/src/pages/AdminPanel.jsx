@@ -18,9 +18,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
     const [loading, setLoading] = useState(false);
     const levels = [
         "introduction to GGBP",
+        "beginner crypto series",
         "beginner technical series",
         "advanced technical series",
-        "beginner crypto series",
         "advanced crypto series",
         "application series",
         "weekly outlooks",

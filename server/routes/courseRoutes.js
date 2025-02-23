@@ -18,6 +18,7 @@ const {
     setQuizAttempt,
     deleteQuizAttempt,
     showWeeklyOutlooks,
+    toggleWatchedVideo,
 } = require("../controllers/courseController");
 const { protect } = require("../middleware/authMiddleware");
 const { adminOnly } = require("../middleware/adminMiddleware");
@@ -86,6 +87,8 @@ router.get("/user-progress", protect, getUserProgress); // Protect this route
 
 router.get("/videos", protect, getVideos);
 router.post("/videos/watched", protect, updateWatchedSeconds);
+router.post("/videos/toggle-watched", protect, toggleWatchedVideo);
+
 router.get("/videos/:id", protect, getVideoById);
 // Admin routes
 router.post(
