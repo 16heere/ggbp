@@ -249,17 +249,16 @@ progress::-moz-progress-bar {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    background-color: #f9fafb; /* Light background */
     min-height: 100vh;
-    width: 80%;
+    width: 100%;
 }
 
 .subscription-card {
-    max-width: 1200px;
+    height: auto;
+    max-width: 600px;
     width: 100%;
     background: #ffffff;
-    padding: 30px;
+    padding: 30px 0;
     border: 1px solid #ddd;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -312,9 +311,11 @@ progress::-moz-progress-bar {
 
 /* Form Styling */
 .subscription-form {
+    height: auto;
+    width: 80%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .subscription-form h2 {
@@ -344,6 +345,13 @@ progress::-moz-progress-bar {
 
 .subscription-form button:hover {
     background-color: #10b981; /* Deeper green */
+}
+
+.subscription-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .video-grid {
@@ -638,11 +646,20 @@ progress::-moz-progress-bar {
 }
 
 .login-page {
-    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers vertically */
+    align-items: center; /* Centers horizontally */
+    height: 70vh; /* Takes full viewport height */
+    width: 100%; /* Ensures it spans the width */
 }
 
 .login-form {
-    width: 100%;
+    height: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .course-page {
@@ -2714,6 +2731,10 @@ body {
     border-radius: 5px;
 }
 
+.password-input-container {
+    position: relative;
+}
+
 .toggle-password {
     position: absolute;
     right: 10px;
@@ -2722,6 +2743,11 @@ body {
     cursor: pointer;
     font-size: 18px;
     color: gray;
+}
+
+.error-message {
+    margin: 0;
+    letter-spacing: 2px;
 }
 
 .checkbox {

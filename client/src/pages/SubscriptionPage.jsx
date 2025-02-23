@@ -10,6 +10,7 @@ const SubscriptionPage = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [error, setError] = useState("");
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -34,6 +35,9 @@ const SubscriptionPage = () => {
             );
             window.location.href = response.data.url;
         } catch (error) {
+            setError(
+                error.response?.data?.message || "Invalid email or password."
+            );
             console.error("Error creating checkout session:", error);
             alert("Subscription failed. Please try again.");
         }
@@ -53,29 +57,51 @@ const SubscriptionPage = () => {
                     <li>✓ Cancel anytime</li>
                 </ul>
                 <form className="subscription-form">
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <div className="password-container">
+                    {error && <p className="error-message">{error}</p>}
+                    <div className="subscription-inputs">
+                        <label
+                            htmlFor="email"
+                            style={{
+                                color: error ? "red" : "black",
+                                letterSpacing: "2px",
+                            }}
+                        >
+                            Email
+                        </label>
                         <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            value={password}
-                            autoComplete="current-password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="email"
+                            placeholder="yourname@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
-                        <span
-                            className="toggle-password"
-                            onClick={() => setShowPassword(!showPassword)}
+                        <label
+                            htmlFor="password"
+                            style={{
+                                color: error ? "red" : "black",
+                                letterSpacing: "2px",
+                            }}
                         >
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
-                        </span>
+                            Password
+                        </label>
+                        <div className="password-container">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Password"
+                                value={password}
+                                autoComplete="current-password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <span
+                                className="toggle-password"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </span>
+                        </div>
                     </div>
+
                     <div className="checkbox">
                         <input
                             type="checkbox"
