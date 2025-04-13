@@ -13,6 +13,9 @@ oAuth2Client.setCredentials({
 async function sendEmail(to, subject, text, html) {
     try {
         const accessToken = await oAuth2Client.getAccessToken();
+        console.log("🔐 Access Token:", accessToken.token);
+        console.log("📧 Sending email from:", "contact@ggbp.org.uk");
+        console.log("📨 To:", to);
 
         const transporter = nodemailer.createTransport({
             service: "gmail",
