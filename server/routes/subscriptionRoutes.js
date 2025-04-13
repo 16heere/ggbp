@@ -14,17 +14,13 @@ router.post("/create-checkout-session", async (req, res) => {
                     price: "price_1QXRGADwIDDdMRawdBXA9c6u",
                     quantity: 1,
                 },
-                // {
-                //     price: "price_1QmvhIH85R48nJ1WzULcED6u",
-                //     quantity: 1,
-                // },
             ],
             metadata: {
                 email,
                 password,
             },
             success_url: "https://ggbp.org.uk/login",
-            cancel_url: "https://ggbp.org.uk/cancel",
+            cancel_url: "https://ggbp.org.uk/",
         });
 
         res.json({ url: session.url });
@@ -52,11 +48,13 @@ router.post("/unsubscribe", async (req, res) => {
         const subscriptionId = user.rows[0].stripe_subscription_id;
 
         // Cancel the Stripe subscription
-        await stripe.subscriptions.del(subscriptionId);
+        await stripe.subscriptions.update(subscriptionId, {
+            cancel_at_period_end: true,
+        });
 
         // Update the user's subscription status in the database
         await db.query(
-            "UPDATE subscription SET status = false WHERE user_id = $1",
+            "UPDATE subscriptions SET status = false WHERE user_id = $1",
             [userId]
         );
 

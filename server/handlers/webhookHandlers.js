@@ -27,6 +27,11 @@ async function handleCheckoutSessionCompleted(session) {
         : null;
     const hashedPassword =
         password != null ? await bcrypt.hash(password, 10) : null;
+        
+    if (!session.subscription) {
+        console.error("Missing subscription ID in session object.");
+        return;
+    }
     const stripeSubscriptionId = session.subscription;
 
     try {

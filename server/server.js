@@ -64,6 +64,7 @@ app.post(
                 break;
             default:
                 console.log(`Unhandled event type: ${event.type}`);
+                break;
         }
 
         // Return a response to acknowledge receipt of the event
