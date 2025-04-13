@@ -1,33 +1,30 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.office365.com", // Microsoft 365 SMTP server
-    port: 587, // TLS port
-    secure: false, // Use TLS, not SSL
+    host: "smtp.mailersend.net",
+    port: 587,
+    secure: false, // TLS will be used via STARTTLS
     auth: {
-        user: "contact@ggbp.org.uk", // Your full GoDaddy email
-        pass: process.env.EMAIL_PASSWORD, // Your email password (not app password)
-    },
-    tls: {
-        ciphers: "SSLv3",
+        user: process.env.MAILERSEND_SMTP_USERNAME,
+        pass: process.env.MAILERSEND_SMTP_PASSWORD,
     },
 });
 
 async function sendEmail(to, subject, text, html) {
     try {
-        const mailOptions = {
+        const info = await transporter.sendMail({
             from: `"GGBP" <contact@ggbp.org.uk>`,
             to,
             subject,
             text,
             html,
-        };
-
-        const info = await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent:", info.response);
+        });
+        console.log("✅ Email sent:", info.messageId);
     } catch (error) {
         console.error("❌ Error sending email:", error);
     }
 }
 
-module.exports = { sendEmail };
+module.exports = {
+    sendEmail,
+};
