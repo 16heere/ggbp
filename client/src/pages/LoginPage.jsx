@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { loginUser } from "../api/api";
 import { UserContext } from "../context/userContext";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
@@ -100,10 +100,10 @@ const LoginPage = () => {
                 </div>
 
                 <button type="submit">Login</button>
-                {/* <p>
+                <p>
                     Want to resubscribe?{" "}
                     <Link to="/resubscribe">Click here</Link>.
-                </p> */}
+                </p>
             </form>
         </div>
     );

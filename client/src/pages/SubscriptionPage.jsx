@@ -7,7 +7,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SubscriptionPage = () => {
     const [email, setEmail] = useState("");
+    const [confirmEmail, setConfirmEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [error, setError] = useState("");
@@ -21,10 +23,27 @@ const SubscriptionPage = () => {
     }, [user, navigate]);
 
     const handleSubscribeNow = async () => {
-        if (!email || !password || !isChecked) {
+        if (
+            !email ||
+            !confirmEmail ||
+            !password ||
+            !confirmPassword ||
+            !isChecked
+        ) {
             alert("Please fill out all fields");
             return;
         }
+
+        if (email !== confirmEmail) {
+            alert("Emails do not match");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/subscription/create-checkout-session`,
@@ -70,9 +89,17 @@ const SubscriptionPage = () => {
                         </label>
                         <input
                             type="email"
-                            placeholder="yourname@example.com"
+                            placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <label htmlFor="confirmEmail">Confirm Email</label>
+                        <input
+                            type="email"
+                            placeholder="Confirm your email"
+                            value={confirmEmail}
+                            onChange={(e) => setConfirmEmail(e.target.value)}
                             required
                         />
                         <label
@@ -99,6 +126,21 @@ const SubscriptionPage = () => {
                             >
                                 {showPassword ? <FaEye /> : <FaEyeSlash />}
                             </span>
+                        </div>
+                        <label htmlFor="confirmPassword">
+                            Confirm Password
+                        </label>
+                        <div className="password-container">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Confirm Password"
+                                value={confirmPassword}
+                                autoComplete="new-password"
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                required
+                            />
                         </div>
                     </div>
 

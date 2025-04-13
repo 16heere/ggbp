@@ -11,8 +11,7 @@ router.post("/create-checkout-session", async (req, res) => {
             mode: "subscription",
             line_items: [
                 {
-                    // price: "price_1QXRGADwIDDdMRawdBXA9c6u",
-                    price: "price_1RDTskDwIDDdMRawlsUY6B9D",
+                    price: "price_1RDaQTDwIDDdMRawNl5J3Ig6",
                     quantity: 1,
                 },
             ],
@@ -100,7 +99,7 @@ router.post("/resubscribe-session", async (req, res) => {
             payment_method_types: ["card"],
             line_items: [
                 {
-                    price: "price_1QXRGADwIDDdMRawdBXA9c6u", // Replace with your price ID
+                    price: "price_1RDaQTDwIDDdMRawNl5J3Ig6", 
                     quantity: 1,
                 },
             ],
