@@ -1,25 +1,20 @@
-const nodemailer = require("nodemailer");
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 async function sendEmail(to, subject, text, html) {
     try {
-        const mailOptions = {
-            from: `"GGBP" <contact@ggbp.org.uk>`,
-            to: to,
-            subject: subject,
-            text: text,
-            html: html,
-        };
+        const data = await resend.emails.send({
+            from: "GGBP <contact@ggbp.org.uk>",
+            to,
+            subject,
+            text,
+            html,
+        });
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent:", info.response);
+        console.log("✅ Email sent:", data);
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error("❌ Error sending email:", error.message);
     }
 }
 
