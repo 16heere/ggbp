@@ -55,11 +55,11 @@ const App = () => {
                         Research
                     </button>
                     {!user && <Link to="/login">Login</Link>}
-                    {/* {!user && (
+                    {!user && (
                         <Link className="subscribe-btn" to="/subscribe">
                             Subscribe
                         </Link>
-                    )} */}
+                    )}
 
                     {user && user.isSubscribed && (
                         <Link to="/course">Course</Link>
@@ -109,11 +109,15 @@ const App = () => {
                         Login
                     </Link>
                 )}
-                {/* {!user && (
-                        <Link className="subscribe-btn" to="/subscribe" onClick={toggleSidebar}>>
-                            Subscribe
-                        </Link>
-                    )} */}
+                {!user && (
+                    <Link
+                        className="subscribe-btn"
+                        to="/subscribe"
+                        onClick={toggleSidebar}
+                    >
+                        Subscribe
+                    </Link>
+                )}
 
                 {user && user.isSubscribed && (
                     <Link to="/course" onClick={toggleSidebar}>
