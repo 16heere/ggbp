@@ -29,7 +29,7 @@ const CoursePage = () => {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
     const [unsubscribeConfirmText, setUnsubscribeConfirmText] = useState("");
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [score, setScore] = useState(null);
