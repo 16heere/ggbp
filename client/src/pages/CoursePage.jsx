@@ -27,6 +27,8 @@ const CoursePage = () => {
     const [sidebarRight, setSidebarRight] = useState(0);
     const [sidebarHeight, setSidebarHeight] = useState("100vh");
     const [selectedVideo, setSelectedVideo] = useState(null);
+    const [showUnsubscribeModal, setShowUnsubscribeModal] = useState(false);
+    const [unsubscribeConfirmText, setUnsubscribeConfirmText] = useState("");
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -242,13 +244,16 @@ const CoursePage = () => {
         }
     }, [selectedVideo]);
 
-    const unsubscribe = async () => {
-        const confirmUnsubscribe = window.confirm(
-            "Are you sure you want to unsubscribe? This action cannot be undone."
-        );
-        if (!confirmUnsubscribe) {
+    const handleUnsubscribeClick = () => {
+        setShowUnsubscribeModal(true);
+    };
+
+    const confirmUnsubscribe = async () => {
+        if (unsubscribeConfirmText.trim().toUpperCase() !== "UNSUBSCRIBE") {
+            alert("You must type UNSUBSCRIBE to confirm.");
             return;
         }
+
         try {
             const token = localStorage.getItem("token");
             await axios.post(
@@ -262,6 +267,9 @@ const CoursePage = () => {
             navigate("/");
         } catch (error) {
             console.error("Failed to unsubscribe:", error.message);
+        } finally {
+            setShowUnsubscribeModal(false);
+            setUnsubscribeConfirmText("");
         }
     };
 
@@ -577,7 +585,10 @@ const CoursePage = () => {
                     })}
 
                     {user?.isSubscribed && !user?.isAdmin && (
-                        <p className="unsubscribe-link" onClick={unsubscribe}>
+                        <p
+                            className="unsubscribe-link"
+                            onClick={handleUnsubscribeClick}
+                        >
                             Unsubscribe
                         </p>
                     )}
@@ -738,7 +749,84 @@ const CoursePage = () => {
                     )}
                 </div>
             )}
-            {/* Display the selected video on the page */}
+            {showUnsubscribeModal && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: "20px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        backgroundColor: "white",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        padding: "1rem",
+                        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+                        zIndex: 9999,
+                        width: "90%",
+                        maxWidth: "400px",
+                        textAlign: "center",
+                    }}
+                >
+                    <h4>Confirm Unsubscribe</h4>
+                    <p>
+                        Type <strong>UNSUBSCRIBE</strong> to confirm:
+                    </p>
+                    <input
+                        type="text"
+                        value={unsubscribeConfirmText}
+                        onChange={(e) =>
+                            setUnsubscribeConfirmText(e.target.value)
+                        }
+                        placeholder="UNSUBSCRIBE"
+                        style={{
+                            width: "100%",
+                            padding: "0.5rem",
+                            marginBottom: "1rem",
+                            borderRadius: "4px",
+                            border: "1px solid #aaa",
+                        }}
+                    />
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: "10px",
+                        }}
+                    >
+                        <button
+                            onClick={confirmUnsubscribe}
+                            style={{
+                                flex: 1,
+                                padding: "0.5rem",
+                                backgroundColor: "#d9534f",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            onClick={() => {
+                                setShowUnsubscribeModal(false);
+                                setUnsubscribeConfirmText("");
+                            }}
+                            style={{
+                                flex: 1,
+                                padding: "0.5rem",
+                                backgroundColor: "#6c757d",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
