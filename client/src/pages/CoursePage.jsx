@@ -263,6 +263,16 @@ const CoursePage = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
+
+            setUser((prevUser) => ({
+                ...prevUser,
+                isSubscribed: false,
+            }));
+
+            const savedUser = JSON.parse(localStorage.getItem("user") || "{}");
+            savedUser.isSubscribed = false;
+            localStorage.setItem("user", JSON.stringify(savedUser));
+
             alert("You have successfully unsubscribed.");
             navigate("/");
         } catch (error) {
