@@ -13,7 +13,7 @@ const SubscriptionOptionPage = () => {
         <div className="subscription-page">
             <div className="subscription-card">
                 <h2 className="price">
-                    {paymentType === "subscription" ? "£150/mo" : "£5000"}
+                    {paymentType === "subscription" ? "£150/mo" : "£1000"}
                 </h2>
                 <p className="billing-info">
                     {paymentType === "subscription"
@@ -48,7 +48,7 @@ const SubscriptionOptionPage = () => {
                             checked={paymentType === "one-time"}
                             onChange={() => setPaymentType("one-time")}
                         />
-                        One-Time (£5000 lifetime access)
+                        One-Time (£1000 lifetime access)
                     </label>
                 </div>
 

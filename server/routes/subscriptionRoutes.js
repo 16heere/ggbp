@@ -128,7 +128,7 @@ router.post("/checkout-one-time", async (req, res) => {
             mode: "payment", // one-time
             line_items: [
                 {
-                    price: "price_1RJbUmDwIDDdMRawciOVHwZl", // replace with your one-time price
+                    price: "price_1RJfCJDwIDDdMRawzIbqBpkW", // replace with your one-time price
                     quantity: 1,
                 },
             ],
