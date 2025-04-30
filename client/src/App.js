@@ -1,9 +1,5 @@
-import React, { useContext, useState } from "react";
+import { lazy, Suspense, useContext, useState } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import CoursePage from "./pages/CoursePage";
-import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
 import {
     FaLinkedin,
     FaInstagram,
@@ -13,14 +9,21 @@ import {
 } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { UserContext } from "./context/userContext";
-import ResubscribePage from "./pages/ResubscribePage";
-import ResearchPage from "./pages/ResearchPage";
-import ArticlePage from "./pages/ArticlePage";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import WeeklyOutlooks from "./pages/WeeklyOutlooks";
 import ScrollToTop from "./components/ScrollToTop";
-import SubscriptionOptionPage from "./pages/SubscriptionOptionPage";
-import SubscriptionFormPage from "./pages/SubscriptionFormPage";
+
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const CoursePage = lazy(() => import("./pages/CoursePage"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ResubscribePage = lazy(() => import("./pages/ResubscribePage"));
+const ResearchPage = lazy(() => import("./pages/ResearchPage"));
+const ArticlePage = lazy(() => import("./pages/ArticlePage"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
+const WeeklyOutlooks = lazy(() => import("./pages/WeeklyOutlooks"));
+const SubscriptionOptionPage = lazy(
+    () => import("./pages/SubscriptionOptionPage")
+);
+const SubscriptionFormPage = lazy(() => import("./pages/SubscriptionFormPage"));
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
@@ -142,29 +145,33 @@ const App = () => {
             </div>
             <main className="container">
                 <ScrollToTop />
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    {/* <Route path="/subscribe" element={<SubscriptionPage />} /> */}
-                    <Route
-                        path="/subscribe"
-                        element={<SubscriptionOptionPage />}
-                    />
-                    <Route
-                        path="/subscribe/form"
-                        element={<SubscriptionFormPage />}
-                    />
-                    <Route path="/resubscribe" element={<ResubscribePage />} />
-                    <Route path="/course" element={<CoursePage />} />
-                    <Route path="/research" element={<ResearchPage />} />
-                    <Route path="/research/:id" element={<ArticlePage />} />
-                    <Route path="/terms" element={<TermsAndConditions />} />
-                    <Route
-                        path="/weekly-outlooks"
-                        element={<WeeklyOutlooks />}
-                    />
-                </Routes>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/subscribe"
+                            element={<SubscriptionOptionPage />}
+                        />
+                        <Route
+                            path="/subscribe/form"
+                            element={<SubscriptionFormPage />}
+                        />
+                        <Route
+                            path="/resubscribe"
+                            element={<ResubscribePage />}
+                        />
+                        <Route path="/course" element={<CoursePage />} />
+                        <Route path="/research" element={<ResearchPage />} />
+                        <Route path="/research/:id" element={<ArticlePage />} />
+                        <Route path="/terms" element={<TermsAndConditions />} />
+                        <Route
+                            path="/weekly-outlooks"
+                            element={<WeeklyOutlooks />}
+                        />
+                    </Routes>
+                </Suspense>
             </main>
             <footer className="footer">
                 <p>© 2024 GGBP. All rights reserved.</p>
