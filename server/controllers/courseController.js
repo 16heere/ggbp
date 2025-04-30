@@ -5,7 +5,6 @@ const { s3 } = require("../config/digitalOceanConfig");
 
 // Login user
 const loginUser = async (req, res) => {
-    console.log(req.body);
     const { email, password } = req.body;
     try {
         const result = await db.query(
@@ -18,15 +17,12 @@ const loginUser = async (req, res) => {
             [email]
         );
 
-        console.log(result.rows[0]);
-
         if (result.rows.length === 0) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
         const user = result.rows[0];
         const match = await bcrypt.compare(password, user.password);
-        console.log(result.rows[0]);
         if (!match)
             return res.status(401).json({ message: "Invalid credentials" });
 
@@ -44,10 +40,12 @@ const loginUser = async (req, res) => {
             expiresIn: "30d",
         });
 
+        console.log("Environment:", process.env.NODE_ENV);
+
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "Strict",
+            sameSite: "None",
         });
 
         res.json({
