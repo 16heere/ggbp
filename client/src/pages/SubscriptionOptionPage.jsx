@@ -12,21 +12,32 @@ const SubscriptionOptionPage = () => {
     return (
         <div className="subscription-page">
             <div className="subscription-card">
-                <h2 className="price">
-                    {paymentType === "subscription" ? "£150/mo" : "£1000"}
+                <h2>
+                    {paymentType === "subscription"
+                        ? "Monthly Membership – £150/mo"
+                        : paymentType === "one-time"
+                          ? "Lifetime Access – £1000"
+                          : "1-1 Mentorship Package – £2500"}
                 </h2>
+
                 <p className="billing-info">
                     {paymentType === "subscription"
-                        ? "Billed Monthly"
-                        : "One-Time Lifetime Access"}
+                        ? "Billed monthly, cancel anytime"
+                        : paymentType === "one-time"
+                          ? "One-time payment for full lifetime access"
+                          : "Includes full course + personal mentorship"}
                 </p>
+
                 <h3 className="course-name">GGBP Course</h3>
                 <ul className="benefits">
-                    <li>✓ Access to all course materials</li>
-                    <li>✓ New content added every month</li>
+                    <li>✓ Full access to all course materials</li>
+                    <li>✓ Fresh content added every month</li>
                     <li>✓ Exclusive community support</li>
-                    <li>✓ Progress tracking</li>
-                    <li>✓ Cancel anytime</li>
+                    <li>✓ Progress tracking & accountability</li>
+                    {paymentType === "one-to-one" && (
+                        <li>✓ Dedicated 1-on-1 mentoring</li>
+                    )}
+                    <li>✓ Cancel anytime (monthly plan only)</li>
                 </ul>
 
                 <div className="payment-options">
@@ -38,7 +49,7 @@ const SubscriptionOptionPage = () => {
                             checked={paymentType === "subscription"}
                             onChange={() => setPaymentType("subscription")}
                         />
-                        Monthly (£150/month)
+                        Monthly – £150/month
                     </label>
                     <label>
                         <input
@@ -48,7 +59,17 @@ const SubscriptionOptionPage = () => {
                             checked={paymentType === "one-time"}
                             onChange={() => setPaymentType("one-time")}
                         />
-                        One-Time (£1000 lifetime access)
+                        Lifetime Access – £1000
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="paymentType"
+                            value="one-to-one"
+                            checked={paymentType === "one-to-one"}
+                            onChange={() => setPaymentType("one-to-one")}
+                        />
+                        1-1 Mentorship – £2500
                     </label>
                 </div>
 

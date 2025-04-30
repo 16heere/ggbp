@@ -147,4 +147,33 @@ router.post("/checkout-one-time", async (req, res) => {
     }
 });
 
+router.post("/checkout-one-to-one", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment", // one-time
+            line_items: [
+                {
+                    price: "price_1RJi4mDwIDDdMRaw9yuRQkXz", // Replace with your Stripe price ID for £2500 1-1
+                    quantity: 1,
+                },
+            ],
+            metadata: {
+                email,
+                password,
+                type: "one-to-one",
+            },
+            success_url: "https://ggbp.org.uk/login",
+            cancel_url: "https://ggbp.org.uk/",
+        });
+
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error("Error creating 1-1 session:", error.message);
+        res.status(500).json({ message: "Failed to create 1-1 session" });
+    }
+});
+
 module.exports = router;

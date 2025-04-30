@@ -40,7 +40,9 @@ const SubscriptionFormPage = () => {
             const endpoint =
                 paymentType === "one-time"
                     ? "/subscription/checkout-one-time"
-                    : "/subscription/create-checkout-session";
+                    : paymentType === "one-to-one"
+                      ? "/subscription/checkout-one-to-one"
+                      : "/subscription/create-checkout-session";
 
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}${endpoint}`,
