@@ -48,14 +48,11 @@ const AdminResearchPanel = ({ refreshArticles }) => {
         if (formData.image) data.append("news-image", formData.image);
 
         try {
-            const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/research`,
                 data,
                 {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                    withCredentials: true,
                 }
             );
             alert("Article added successfully!");

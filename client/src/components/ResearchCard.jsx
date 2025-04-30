@@ -13,10 +13,9 @@ const ResearchCard = ({ article, onRemove }) => {
             return;
         }
         try {
-            const token = localStorage.getItem("token");
             await axios.delete(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/research/${article.id}`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                { withCredentials: true }
             );
             alert("Article removed succesfully");
             if (onRemove) onRemove(article.id);

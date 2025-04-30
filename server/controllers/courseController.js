@@ -3,43 +3,52 @@ const jwt = require("jsonwebtoken");
 const db = require("../models/db");
 const { s3 } = require("../config/digitalOceanConfig");
 
-// Generate JWT token
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
-};
-
 // Login user
 const loginUser = async (req, res) => {
+    console.log(req.body);
     const { email, password } = req.body;
     try {
-        const query = `
-            SELECT 
-                u.id, 
-                u.email, 
-                u.password, 
-                u.is_admin, 
-                s.status AS subscription_status 
+        const result = await db.query(
+            `
+            SELECT u.id, u.email, u.password, u.is_admin, u.is_logged_in, s.status AS subscription_status
             FROM users u
             LEFT JOIN subscriptions s ON u.id = s.user_id
             WHERE u.email = $1
-        `;
-        const result = await db.query(query, [email]);
-
+        `,
+            [email]
+        );
         if (result.rows.length === 0) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
         const user = result.rows[0];
         const match = await bcrypt.compare(password, user.password);
-
-        if (!match) {
+        console.log(match);
+        if (!match)
             return res.status(401).json({ message: "Invalid credentials" });
+
+        if (user.is_logged_in) {
+            return res
+                .status(403)
+                .json({ message: "User already logged in elsewhere" });
         }
 
-        const token = generateToken(user.id);
+        await db.query("UPDATE users SET is_logged_in = TRUE WHERE id = $1", [
+            user.id,
+        ]);
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+            expiresIn: "30d",
+        });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Strict", // or "Lax" depending on your use case
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        });
 
         res.json({
-            token,
             user: {
                 id: user.id,
                 email: user.email,
@@ -47,8 +56,34 @@ const loginUser = async (req, res) => {
                 isSubscribed: user.subscription_status,
             },
         });
+    } catch (err) {
+        res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+
+const logoutUser = async (req, res) => {
+    const userId = req.user.id;
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+        });
+        await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
+            userId,
+        ]);
+
+        res.status(200).json({ message: "Logged out" });
+
+        await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
+            userId,
+        ]);
+        res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({
+            message: "Logout failed",
+            error: error.message,
+        });
     }
 };
 
@@ -762,4 +797,5 @@ module.exports = {
     deleteQuizAttempt,
     showWeeklyOutlooks,
     toggleWatchedVideo,
+    logoutUser,
 };

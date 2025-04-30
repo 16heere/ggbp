@@ -72,11 +72,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         }
 
         try {
-            const token = localStorage.getItem("token");
             await axios.delete(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes/${quizid}`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             const updatedQuizzes = quizzes.filter(
@@ -93,13 +92,12 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         formData.append("image", file);
 
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/upload-image`,
                 formData,
                 {
+                    withCredentials: true,
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         "Content-Type": "multipart/form-data",
                     },
                 }
@@ -137,14 +135,13 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         };
 
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quizzes`,
                 {
                     payload,
                 },
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             setQuizzes([...quizzes, ...response.data]); // Append new questions
@@ -176,11 +173,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         setSelectedVideo({ id: videoId, name: videoTitle });
 
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             const fetchedQuizzes = response.data.map((quiz) => ({
@@ -215,12 +211,11 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
         setLoading(true);
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos`,
                 formData,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             const addedVideo = response.data;
@@ -248,11 +243,10 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
 
     const handleRemoveVideo = async (videoId) => {
         try {
-            const token = localStorage.getItem("token");
             await axios.delete(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             setVideos(videos.filter((video) => video.id !== videoId)); // Remove locally
@@ -303,7 +297,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
             setVideos(updatedVideos);
 
             try {
-                const token = localStorage.getItem("token");
                 const positions = Object.values(
                     updatedVideos.reduce((acc, video) => {
                         acc[video.level] = acc[video.level] || [];
@@ -322,7 +315,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                     {
                         positions: positions,
                     },
-                    { headers: { Authorization: `Bearer ${token}` } }
+                    { withCredentials: true }
                 );
 
                 // Update the videos with the response from the server
@@ -356,7 +349,6 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         console.log("Updated Videos:", updatedVideos);
 
         try {
-            const token = localStorage.getItem("token");
             const positions = Object.values(
                 updatedVideos.reduce((acc, video) => {
                     acc[video.level] = acc[video.level] || [];
@@ -376,7 +368,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                 {
                     positions: positions,
                 },
-                { headers: { Authorization: `Bearer ${token}` } }
+                { withCredentials: true }
             );
             console.log(response.data.videos);
             setVideos(response.data.videos);

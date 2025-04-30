@@ -4,6 +4,7 @@ dotenv.config();
 const cors = require("cors");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const courseRoutes = require("./routes/courseRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const {
@@ -14,7 +15,7 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-    origin: ["https://ggbp.org.uk"],
+    origin: ["https://ggbp.org.uk", "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -22,10 +23,9 @@ const corsOptions = {
 
 // CORS Middleware
 app.use(cors(corsOptions));
-
 // Handle Preflight Requests
 app.options("*", cors(corsOptions));
-
+app.use(cookieParser());
 // Webhook Route (use raw bodyParser)
 app.post(
     "/webhook",

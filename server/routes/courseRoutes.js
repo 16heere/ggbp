@@ -1,6 +1,7 @@
 const express = require("express");
 const {
     loginUser,
+    logoutUser,
     addVideo,
     removeVideo,
     getVideos,
@@ -78,7 +79,7 @@ const uploadImage = (req, res) => {
 
 // User routes
 router.post("/login", loginUser); // Login
-
+router.post("/logout", protect, logoutUser);
 //subscribe
 router.post("/unsubscribe", protect, unsubscribeUser);
 

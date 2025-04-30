@@ -24,10 +24,9 @@ const LoginPage = () => {
         setError("");
         try {
             const response = await loginUser({ email, password });
-            const { token, user } = response.data;
-            localStorage.setItem("token", token);
-            localStorage.setItem("loginTime", Date.now().toString());
-            handleLogin(user, token);
+            const { user } = response.data;
+
+            handleLogin(user);
             alert("Login successful!");
             navigate("/course");
         } catch (error) {

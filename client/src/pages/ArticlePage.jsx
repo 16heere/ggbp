@@ -13,11 +13,10 @@ const ArticlePage = () => {
         setLoading(true);
         const fetchArticle = async () => {
             try {
-                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/research/${id}`,
                     {
-                        headers: { Authorization: `Bearer ${token}` },
+                        withCredentials: true,
                     }
                 );
                 const articleData = response.data;

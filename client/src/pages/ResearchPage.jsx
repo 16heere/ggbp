@@ -11,10 +11,9 @@ const ResearchPage = () => {
 
     const fetchArticles = async () => {
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/research`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                { withCredentials: true }
             );
             setArticles(response.data);
             setLoading(false);

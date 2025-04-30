@@ -57,11 +57,10 @@ const CoursePage = () => {
                 return;
             }
             try {
-                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${video.id}`,
                     {
-                        headers: { Authorization: `Bearer ${token}` },
+                        withCredentials: true,
                     }
                 );
                 setSelectedVideo({
@@ -84,11 +83,10 @@ const CoursePage = () => {
 
     const fetchQuizForVideo = async (videoId) => {
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/${videoId}/quizzes`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             if (response.data.length === 0) {
@@ -104,11 +102,10 @@ const CoursePage = () => {
 
     const fetchVideos = useCallback(async () => {
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             const fetchedVideos = response.data || [];
@@ -198,11 +195,10 @@ const CoursePage = () => {
 
     const fetchProgress = async () => {
         try {
-            const token = localStorage.getItem("token");
             const response = await axios.get(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/user-progress`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             setProgress(response.data.overallProgress);
@@ -214,12 +210,11 @@ const CoursePage = () => {
 
     const onVideoWatched = async (videoId, videoDuration) => {
         try {
-            const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/watched`,
                 { videoId, videoDuration },
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             setVideos((prevVideos) =>
@@ -255,12 +250,11 @@ const CoursePage = () => {
         }
 
         try {
-            const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/unsubscribe`,
                 {},
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
 
@@ -289,11 +283,11 @@ const CoursePage = () => {
         const fetchQuizAttempt = async () => {
             try {
                 setScore(0);
-                const token = localStorage.getItem("token");
+
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt/${selectedVideo.id}`,
                     {
-                        headers: { Authorization: `Bearer ${token}` },
+                        withCredentials: true,
                     }
                 );
 
@@ -354,7 +348,6 @@ const CoursePage = () => {
         const totalQuestions = quiz.length; // Assuming `quiz` is an array of questions
 
         try {
-            const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempt`,
                 {
@@ -364,7 +357,7 @@ const CoursePage = () => {
                     totalQuestions,
                 },
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             alert("Score saved successfully!");
@@ -378,11 +371,10 @@ const CoursePage = () => {
     const handleResetQuiz = async () => {
         // Reset quiz in the database
         try {
-            const token = localStorage.getItem("token");
             await axios.delete(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/quiz-attempts/${selectedVideo.id}`,
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
 
@@ -399,8 +391,6 @@ const CoursePage = () => {
 
     const toggleWatched = async (videoId, currentWatched, duration) => {
         try {
-            const token = localStorage.getItem("token");
-
             // Toggle watched status
             const newWatched = !currentWatched;
 
@@ -426,7 +416,7 @@ const CoursePage = () => {
                     watchedDuration: newWatched ? duration : 0,
                 },
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
 

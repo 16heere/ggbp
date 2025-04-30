@@ -9,12 +9,11 @@ const WeeklyOutlooks = () => {
 
     const onVideoWatched = async (videoId, videoDuration) => {
         try {
-            const token = localStorage.getItem("token");
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/videos/watched`,
                 { videoId, videoDuration },
                 {
-                    headers: { Authorization: `Bearer ${token}` },
+                    withCredentials: true,
                 }
             );
             setVideos((prevVideos) =>
@@ -30,10 +29,9 @@ const WeeklyOutlooks = () => {
     useEffect(() => {
         const fetchWeeklyOutlooks = async () => {
             try {
-                const token = localStorage.getItem("token");
                 const response = await axios.get(
                     `${process.env.REACT_APP_API_ENDPOINT}/courses/weekly-outlooks`,
-                    { headers: { Authorization: `Bearer ${token}` } }
+                    { withCredentials: true }
                 );
                 console.log(response.data);
                 setVideos(response.data);
