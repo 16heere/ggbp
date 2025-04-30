@@ -3,9 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 
-const ResearchCard = ({ article }) => {
+const ResearchCard = ({ article, onRemove }) => {
     const { user } = useContext(UserContext);
-
     const removeArticle = async () => {
         const confirmRemoveArticle = window.confirm(
             "Are you sure you want to remove the article? This action cannot be undone."
@@ -20,6 +19,7 @@ const ResearchCard = ({ article }) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             alert("Article removed succesfully");
+            if (onRemove) onRemove(article.id);
         } catch (error) {
             console.error("Failed to remove article: ", error.message);
         }
@@ -38,15 +38,8 @@ const ResearchCard = ({ article }) => {
         <div
             className={`research-card ${
                 article.is_premium && !user?.isSubscribed ? "locked" : ""
-            }`}
+            } ${user?.isAdmin ? "no-blur" : ""}`}
             onClick={handleClick}
-            style={{
-                cursor:
-                    article.is_premium && !user?.isSubscribed
-                        ? "not-allowed"
-                        : "pointer",
-                opacity: article.is_premium && !user?.isSubscribed ? 0.5 : 1,
-            }}
         >
             <img src={article.image} alt={article.title} />
             <h2>{article.title}</h2>
@@ -61,7 +54,14 @@ const ResearchCard = ({ article }) => {
             )}
             {user?.isAdmin && (
                 <div class="voltage-button">
-                    <button onClick={() => removeArticle()}>Remove</button>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            removeArticle();
+                        }}
+                    >
+                        Remove
+                    </button>
                     <svg
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"

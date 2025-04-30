@@ -2996,3 +2996,8 @@ body {
 .modal-buttons button:hover {
     background-color: #5a52d4;
 }
+
+.research-card.no-blur::after {
+    backdrop-filter: none;
+    background: none;
+}

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const AdminResearchPanel = ({ refreshArticles }) => {
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         subtitle: "",
@@ -36,6 +37,9 @@ const AdminResearchPanel = ({ refreshArticles }) => {
             return;
         }
 
+        if (loading) return;
+        setLoading(true);
+
         const data = new FormData();
         data.append("title", formData.title);
         data.append("subtitle", formData.subtitle);
@@ -62,6 +66,8 @@ const AdminResearchPanel = ({ refreshArticles }) => {
             if (refreshArticles) refreshArticles();
         } catch (error) {
             console.error("Error adding article:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -135,7 +141,9 @@ const AdminResearchPanel = ({ refreshArticles }) => {
                         <p class="Yes name">Premium</p>
                     </div>
                 </label>
-                <button type="submit">Add Article</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Adding..." : "Add Article"}
+                </button>
             </form>
         </div>
     );

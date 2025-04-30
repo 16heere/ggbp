@@ -28,6 +28,10 @@ const ResearchPage = () => {
         fetchArticles();
     }, []);
 
+    const handleRemove = (id) => {
+        setArticles((prev) => prev.filter((article) => article.id !== id));
+    };
+
     if (loading) {
         return (
             <div class="newtons-cradle">
@@ -51,7 +55,11 @@ const ResearchPage = () => {
             <div className="articles">
                 {articles.map((article) => (
                     <>
-                        <ResearchCard key={article.id} article={article} />
+                        <ResearchCard
+                            key={article.id}
+                            article={article}
+                            onRemove={handleRemove}
+                        />
                     </>
                 ))}
             </div>
