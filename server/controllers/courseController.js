@@ -67,7 +67,7 @@ const logoutUser = async (req, res) => {
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "Strict",
+            sameSite: "None",
         });
 
         await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
