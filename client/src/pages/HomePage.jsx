@@ -145,7 +145,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7594.webp"
+                            src="/assets/IMG_7594.png"
                             alt="Education"
                             className="course-image"
                         />
@@ -169,7 +169,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7595.webp"
+                            src="/assets/IMG_7595.png"
                             alt="Insights"
                             className="course-image"
                         />
@@ -192,7 +192,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7593.webp"
+                            src="/assets/IMG_7593.png"
                             alt="Market Analysis"
                             className="course-image"
                         />
@@ -215,7 +215,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7596.webp"
+                            src="/assets/IMG_7596.png"
                             alt="Network"
                             className="course-image"
                         />
