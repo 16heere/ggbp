@@ -14,7 +14,7 @@ const protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const query = `
-            SELECT u.is_admin, s.status 
+            SELECT u.id, u.email, u.is_admin, s.status, s.type
             FROM users u
             LEFT JOIN subscriptions s ON u.id = s.user_id
             WHERE u.id = $1;
@@ -35,9 +35,11 @@ const protect = async (req, res, next) => {
         }
 
         req.user = {
-            id: decoded.id,
-            isAdmin: user.is_admin,
-            isSubscribed: user.status,
+            id: user.id,
+            email: user.email,
+            is_admin: user.is_admin,
+            subscription_status: user.status,
+            subscription_type: user.type,
         };
 
         next();

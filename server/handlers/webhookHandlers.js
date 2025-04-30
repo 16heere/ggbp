@@ -27,7 +27,7 @@ async function handleCheckoutSessionCompleted(session) {
         : null;
     const hashedPassword =
         password != null ? await bcrypt.hash(password, 10) : null;
-        
+
     if (!session.subscription) {
         console.error("Missing subscription ID in session object.");
         return;
@@ -56,16 +56,27 @@ async function handleCheckoutSessionCompleted(session) {
             if (existingSubscription.rows.length > 0) {
                 // Update existing subscription
                 await db.query(
-                    "UPDATE subscriptions SET stripe_subscription_id = $1, status = $2 WHERE user_id = $3",
-                    [stripeSubscriptionId, true, userId]
+                    "UPDATE subscriptions SET stripe_subscription_id = $1, status = $2, type = $3 WHERE user_id = $4",
+                    [
+                        isSubscription ? stripeSubscriptionId : null,
+                        true,
+                        isSubscription ? "subscription" : "one-time",
+                        userId,
+                    ]
                 );
                 console.log(`Subscription updated for user ${email}`);
             } else {
                 // Insert a new subscription for the existing user
                 await db.query(
-                    "INSERT INTO subscriptions (user_id, stripe_subscription_id, status) VALUES ($1, $2, $3)",
-                    [userId, stripeSubscriptionId, true]
+                    "INSERT INTO subscriptions (user_id, stripe_subscription_id, status, type) VALUES ($1, $2, $3, $4)",
+                    [
+                        userId,
+                        isSubscription ? stripeSubscriptionId : null,
+                        true,
+                        isSubscription ? "subscription" : "one-time",
+                    ]
                 );
+
                 console.log(`Subscription added for existing user ${email}`);
             }
         } else {

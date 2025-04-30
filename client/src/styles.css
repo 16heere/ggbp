@@ -254,7 +254,7 @@ progress::-moz-progress-bar {
 }
 
 .subscription-card {
-    height: auto;
+    height: 80%;
     max-width: 600px;
     width: 100%;
     background: #ffffff;
@@ -3000,4 +3000,59 @@ body {
 .research-card.no-blur::after {
     backdrop-filter: none;
     background: none;
+}
+
+.payment-options {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0 30px 0;
+}
+
+.payment-options label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        border-color 0.3s ease,
+        background-color 0.3s ease;
+    background-color: #fafafa;
+}
+
+.payment-options input[type="radio"] {
+    accent-color: purple;
+    transform: scale(1.2);
+}
+
+.payment-options label:hover {
+    border-color: #888;
+    background-color: #f0f0f0;
+}
+
+.payment-options label:has(input:checked) {
+    border-color: purple;
+    background-color: #f4e8ff;
+    font-weight: 600;
+}
+
+.continue-button {
+    width: 70%;
+    padding: 12px 24px;
+    font-size: 1rem;
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.continue-button:hover {
+    background-color: #4b0082;
 }

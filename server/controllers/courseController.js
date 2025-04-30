@@ -9,7 +9,14 @@ const loginUser = async (req, res) => {
     try {
         const result = await db.query(
             `
-            SELECT u.id, u.email, u.password, u.is_admin, u.is_logged_in, s.status AS subscription_status
+            SELECT 
+                u.id, 
+                u.email, 
+                u.password, 
+                u.is_admin, 
+                u.is_logged_in, 
+                s.status AS subscription_status,
+                s.type AS subscription_type
             FROM users u
             LEFT JOIN subscriptions s ON u.id = s.user_id
             WHERE u.email = $1
@@ -45,7 +52,7 @@ const loginUser = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "None",
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
         });
 
         res.json({
@@ -54,6 +61,7 @@ const loginUser = async (req, res) => {
                 email: user.email,
                 isAdmin: user.is_admin,
                 isSubscribed: user.subscription_status,
+                subscriptionType: user.subscription_type,
             },
         });
     } catch (err) {
@@ -67,7 +75,7 @@ const logoutUser = async (req, res) => {
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "None",
+            sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
         });
 
         await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
@@ -167,9 +175,9 @@ const getUser = async (req, res) => {
             SELECT 
                 u.id, 
                 u.email, 
-                u.password, 
                 u.is_admin, 
-                s.status AS subscription_status 
+                s.status AS subscription_status,
+                s.type AS subscription_type
             FROM users u
             LEFT JOIN subscriptions s ON u.id = s.user_id
             WHERE u.id = $1
@@ -179,12 +187,14 @@ const getUser = async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ message: "User not found" });
         }
+
         res.json(result.rows[0]);
     } catch (error) {
         console.error("Error fetching user data:", error.message);
         res.status(500).json({ message: "Server error" });
     }
 };
+
 const addVideo = async (req, res) => {
     if (!req.user.isAdmin) {
         return res

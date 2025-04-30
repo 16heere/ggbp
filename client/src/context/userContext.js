@@ -37,6 +37,7 @@ export const UserProvider = ({ children }) => {
                     email: response.data.email,
                     isAdmin: response.data.is_admin,
                     isSubscribed: response.data.subscription_status,
+                    subscriptionType: response.data.subscription_type, // 👈 ADD THIS
                 });
             } catch (error) {
                 console.error("User verification failed:", error.message);

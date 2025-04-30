@@ -6,6 +6,7 @@ import { UserContext } from "../context/userContext";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SubscriptionPage = () => {
+    const [paymentType, setPaymentType] = useState("subscription"); // or "one-time"
     const [email, setEmail] = useState("");
     const [confirmEmail, setConfirmEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,17 +46,21 @@ const SubscriptionPage = () => {
         }
 
         try {
+            const endpoint =
+                paymentType === "one-time"
+                    ? "/subscription/checkout-one-time"
+                    : "/subscription/create-checkout-session";
+
             const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/subscription/create-checkout-session`,
-                {
-                    email,
-                    password,
-                }
+                `${process.env.REACT_APP_API_ENDPOINT}${endpoint}`,
+                { email, password }
             );
+
             window.location.href = response.data.url;
         } catch (error) {
             setError(
-                error.response?.data?.message || "Invalid email or password."
+                error.response?.data?.message ||
+                    "Subscription failed. Please try again."
             );
             console.error("Error creating checkout session:", error);
             alert("Subscription failed. Please try again.");
@@ -75,6 +80,28 @@ const SubscriptionPage = () => {
                     <li>✓ Monthly progress tracking</li>
                     <li>✓ Cancel anytime</li>
                 </ul>
+                <div className="payment-options">
+                    <label>
+                        <input
+                            type="radio"
+                            name="paymentType"
+                            value="subscription"
+                            checked={paymentType === "subscription"}
+                            onChange={(e) => setPaymentType(e.target.value)}
+                        />
+                        Monthly (£150/month)
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="paymentType"
+                            value="one-time"
+                            checked={paymentType === "one-time"}
+                            onChange={(e) => setPaymentType(e.target.value)}
+                        />
+                        One-Time (£499 lifetime access)
+                    </label>
+                </div>
                 <form className="subscription-form">
                     {error && <p className="error-message">{error}</p>}
                     <div className="subscription-inputs">

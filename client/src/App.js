@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import SubscriptionPage from "./pages/SubscriptionPage";
 import CoursePage from "./pages/CoursePage";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -20,6 +19,8 @@ import ArticlePage from "./pages/ArticlePage";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import WeeklyOutlooks from "./pages/WeeklyOutlooks";
 import ScrollToTop from "./components/ScrollToTop";
+import SubscriptionOptionPage from "./pages/SubscriptionOptionPage";
+import SubscriptionFormPage from "./pages/SubscriptionFormPage";
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
@@ -145,7 +146,15 @@ const App = () => {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/subscribe" element={<SubscriptionPage />} />
+                    {/* <Route path="/subscribe" element={<SubscriptionPage />} /> */}
+                    <Route
+                        path="/subscribe"
+                        element={<SubscriptionOptionPage />}
+                    />
+                    <Route
+                        path="/subscribe/form"
+                        element={<SubscriptionFormPage />}
+                    />
                     <Route path="/resubscribe" element={<ResubscribePage />} />
                     <Route path="/course" element={<CoursePage />} />
                     <Route path="/research" element={<ResearchPage />} />

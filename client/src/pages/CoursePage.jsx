@@ -583,15 +583,16 @@ const CoursePage = () => {
                             </div>
                         );
                     })}
-
-                    {user?.isSubscribed && !user?.isAdmin && (
-                        <p
-                            className="unsubscribe-link"
-                            onClick={handleUnsubscribeClick}
-                        >
-                            Unsubscribe
-                        </p>
-                    )}
+                    {user?.isSubscribed &&
+                        !user?.isAdmin &&
+                        user?.subscriptionType !== "one-time" && (
+                            <p
+                                className="unsubscribe-link"
+                                onClick={handleUnsubscribeClick}
+                            >
+                                Unsubscribe
+                            </p>
+                        )}
                 </div>
             </div>
 

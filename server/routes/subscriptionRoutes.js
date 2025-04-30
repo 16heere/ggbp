@@ -99,7 +99,7 @@ router.post("/resubscribe-session", async (req, res) => {
             payment_method_types: ["card"],
             line_items: [
                 {
-                    price: "price_1RDaQTDwIDDdMRawNl5J3Ig6", 
+                    price: "price_1RDaQTDwIDDdMRawNl5J3Ig6",
                     quantity: 1,
                 },
             ],
@@ -116,6 +116,34 @@ router.post("/resubscribe-session", async (req, res) => {
     } catch (error) {
         console.error("Error creating Stripe session:", error.message);
         res.status(500).json({ message: "Server error" });
+    }
+});
+
+router.post("/checkout-one-time", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment", // one-time
+            line_items: [
+                {
+                    price: "price_1RJbUmDwIDDdMRawciOVHwZl", // replace with your one-time price
+                    quantity: 1,
+                },
+            ],
+            metadata: {
+                email,
+                password,
+            },
+            success_url: "https://ggbp.org.uk/login",
+            cancel_url: "https://ggbp.org.uk/",
+        });
+
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error("Error creating one-time session:", error.message);
+        res.status(500).json({ message: "Failed to create one-time session" });
     }
 });
 
