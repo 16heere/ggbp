@@ -121,16 +121,7 @@ const HomePage = () => {
                 </motion.div>
             </motion.div>
 
-            <motion.div
-                className="course-info"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{
-                    duration: 0.8,
-                    ease: "easeInOut",
-                }}
-                viewport={{ once: true }}
-            >
+            <div className="course-info">
                 <motion.div
                     className="course-info-title"
                     initial={{ opacity: 0, y: -20 }}
@@ -154,7 +145,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7594.png"
+                            src="/assets/IMG_7594.webp"
                             alt="Education"
                             className="course-image"
                         />
@@ -178,7 +169,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7595.png"
+                            src="/assets/IMG_7595.webp"
                             alt="Insights"
                             className="course-image"
                         />
@@ -201,7 +192,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7593.png"
+                            src="/assets/IMG_7593.webp"
                             alt="Market Analysis"
                             className="course-image"
                         />
@@ -224,7 +215,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7596.png"
+                            src="/assets/IMG_7596.webp"
                             alt="Network"
                             className="course-image"
                         />
@@ -236,7 +227,7 @@ const HomePage = () => {
                         </p>
                     </motion.div>
                 </div>
-            </motion.div>
+            </div>
 
             <motion.div
                 className="more-info-container"
@@ -273,6 +264,7 @@ const HomePage = () => {
                             src="/assets/live-stream.png"
                             alt="Live Streams"
                             className="info-image-large"
+                            loading="lazy"
                         />
                         <div className="info-content">
                             <h4>Live Streams</h4>
@@ -298,6 +290,7 @@ const HomePage = () => {
                             src="/assets/weekly-outlooks.png"
                             alt="Weekly Outlooks"
                             className="info-image-large"
+                            loading="lazy"
                         />
                         <div className="info-content">
                             <h4>Weekly Outlooks</h4>
@@ -323,6 +316,7 @@ const HomePage = () => {
                             src="/assets/coin-picks.png"
                             alt="Coin Picks"
                             className="info-image-large"
+                            loading="lazy"
                         />
                         <div className="info-content">
                             <h4>Coin Picks</h4>
@@ -348,6 +342,7 @@ const HomePage = () => {
                             src="/assets/market-analysis.png"
                             alt="Market Analysis"
                             className="info-image-large"
+                            loading="lazy"
                         />
                         <div className="info-content">
                             <h4>Market Analysis</h4>
@@ -373,6 +368,7 @@ const HomePage = () => {
                             src="/assets/portfolio-tips.png"
                             alt="Personalized Portfolio Tips"
                             className="info-image-large"
+                            loading="lazy"
                         />
                         <div className="info-content">
                             <h4>Personalised Portfolio Tips</h4>
