@@ -17,13 +17,16 @@ const loginUser = async (req, res) => {
         `,
             [email]
         );
+
+        console.log(result.rows[0]);
+
         if (result.rows.length === 0) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
         const user = result.rows[0];
         const match = await bcrypt.compare(password, user.password);
-        console.log(match);
+        console.log(result.rows[0]);
         if (!match)
             return res.status(401).json({ message: "Invalid credentials" });
 
@@ -69,15 +72,11 @@ const logoutUser = async (req, res) => {
             secure: process.env.NODE_ENV === "production",
             sameSite: "Strict",
         });
-        await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
-            userId,
-        ]);
-
-        res.status(200).json({ message: "Logged out" });
 
         await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
             userId,
         ]);
+
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         res.status(500).json({
