@@ -8,19 +8,10 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
         const result = await db.query(
-            `
-            SELECT 
-                u.id, 
-                u.email, 
-                u.password, 
-                u.is_admin, 
-                u.is_logged_in, 
-                s.status AS subscription_status,
-                s.type AS subscription_type
-            FROM users u
-            LEFT JOIN subscriptions s ON u.id = s.user_id
-            WHERE u.email = $1
-        `,
+            `SELECT u.id, u.email, u.password, u.is_admin, s.status AS subscription_status, s.type AS subscription_type
+             FROM users u
+             LEFT JOIN subscriptions s ON u.id = s.user_id
+             WHERE u.email = $1`,
             [email]
         );
 
@@ -33,26 +24,23 @@ const loginUser = async (req, res) => {
         if (!match)
             return res.status(401).json({ message: "Invalid credentials" });
 
-        if (user.is_logged_in) {
-            return res
-                .status(403)
-                .json({ message: "User already logged in elsewhere" });
-        }
-
-        await db.query("UPDATE users SET is_logged_in = TRUE WHERE id = $1", [
-            user.id,
-        ]);
-
+        // Generate new token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
             expiresIn: "30d",
         });
 
-        console.log("Environment:", process.env.NODE_ENV);
+        // Store token in DB, replacing any previous token
+        await db.query("UPDATE users SET token = $1 WHERE id = $2", [
+            token,
+            user.id,
+        ]);
 
+        // Set token in cookie
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
 
         res.json({
@@ -70,17 +58,17 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-    const userId = req.user.id;
     try {
+        const userId = req.user?.id;
+        if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+        await db.query("UPDATE users SET token = NULL WHERE id = $1", [userId]);
+
         res.clearCookie("token", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
         });
-
-        await db.query("UPDATE users SET is_logged_in = FALSE WHERE id = $1", [
-            userId,
-        ]);
 
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {

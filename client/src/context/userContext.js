@@ -48,6 +48,37 @@ export const UserProvider = ({ children }) => {
         checkUserStatus();
     }, []);
 
+    useEffect(() => {
+        if (!user) return;
+
+        let timeout;
+
+        const resetTimer = () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(
+                () => {
+                    console.log("Logging out due to inactivity");
+                    logout(); 
+                },
+                60 * 60 * 1000
+            ); // 1 hour
+        };
+
+        // Track user activity
+        window.addEventListener("mousemove", resetTimer);
+        window.addEventListener("keydown", resetTimer);
+        window.addEventListener("click", resetTimer);
+
+        resetTimer(); // start timer
+
+        return () => {
+            clearTimeout(timeout);
+            window.removeEventListener("mousemove", resetTimer);
+            window.removeEventListener("keydown", resetTimer);
+            window.removeEventListener("click", resetTimer);
+        };
+    }, [user]);
+
     return (
         <UserContext.Provider
             value={{
