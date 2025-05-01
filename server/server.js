@@ -23,8 +23,6 @@ const corsOptions = {
 
 // CORS Middleware
 app.use(cors(corsOptions));
-// Handle Preflight Requests
-app.options("*", cors(corsOptions));
 app.use(cookieParser());
 // Webhook Route (use raw bodyParser)
 app.post(

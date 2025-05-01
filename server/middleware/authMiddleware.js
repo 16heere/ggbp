@@ -3,6 +3,7 @@ const db = require("../models/db");
 
 const protect = async (req, res, next) => {
     const token = req.cookies.token;
+
     if (!token) {
         return res
             .status(401)
@@ -11,6 +12,7 @@ const protect = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
         const result = await db.query(
             "SELECT id, email, is_admin, token FROM users WHERE id = $1",
             [decoded.id]
@@ -25,9 +27,9 @@ const protect = async (req, res, next) => {
         const user = result.rows[0];
 
         if (user.token !== token) {
-            return res
-                .status(401)
-                .json({ message: "Session invalid or logged in elsewhere" });
+            return res.status(401).json({
+                message: "Session invalid or logged in elsewhere",
+            });
         }
 
         req.user = {
@@ -38,9 +40,21 @@ const protect = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res
-            .status(401)
-            .json({ message: "Not authorized, token invalid or expired" });
+        if (error.name === "TokenExpiredError") {
+            const decoded = jwt.decode(token);
+            if (decoded?.id) {
+                await db.query("UPDATE users SET token = NULL WHERE id = $1", [
+                    decoded.id,
+                ]);
+            }
+            return res
+                .status(401)
+                .json({ message: "Session expired, please log in again" });
+        }
+
+        return res.status(401).json({
+            message: "Not authorized, token invalid or corrupted",
+        });
     }
 };
 
