@@ -40,6 +40,7 @@ const loginUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+            domain: process.env.NODE_ENV === "production" ? "ggbp.org.uk" : undefined,
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
 
@@ -68,7 +69,8 @@ const logoutUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
-        });
+            domain: process.env.NODE_ENV === "production" ? "ggbp.org.uk" : undefined,
+          });
 
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
