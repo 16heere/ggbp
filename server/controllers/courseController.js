@@ -68,6 +68,10 @@ const logoutUser = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: process.env.NODE_ENV === "production" ? "None" : "Strict",
+            domain:
+                process.env.NODE_ENV === "production"
+                    ? ".ggbp.org.uk"
+                    : undefined,
         });
 
         res.status(200).json({ message: "Logged out successfully" });
