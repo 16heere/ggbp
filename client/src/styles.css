@@ -2478,6 +2478,10 @@ body {
 }
 
 @media (max-width: 1200px) {
+    .feature-article-title {
+        display: none;
+    }
+
     .article-carousel {
         display: none;
     }

@@ -387,7 +387,7 @@ const HomePage = () => {
                 transition={{ duration: 1, ease: "easeOut" }}
                 viewport={{ once: true }}
             >
-                <h2>Featured Articles</h2>
+                <h2 className="feature-article-title">Featured Articles</h2>
                 <ArticleCarousel />
             </motion.div>
             <div className="section-divider"></div>
