@@ -1,12 +1,12 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.mailersend.net",
+    host: "smtp-relay.brevo.com",
     port: 587,
     secure: false,
     auth: {
-        user: process.env.MAILERSEND_SMTP_USERNAME,
-        pass: process.env.MAILERSEND_SMTP_PASSWORD,
+        user: "contact@ggbp.org.uk", 
+        pass: process.env.BREVO_SMTP_KEY,
     },
 });
 
