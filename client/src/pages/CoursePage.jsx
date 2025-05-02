@@ -585,7 +585,8 @@ const CoursePage = () => {
                     })}
                     {user?.isSubscribed &&
                         !user?.isAdmin &&
-                        user?.subscriptionType !== "one-time" && (
+                        (user?.subscriptionType !== "one-time" ||
+                            user?.subscriptionType !== "one-to-one") && (
                             <p
                                 className="unsubscribe-link"
                                 onClick={handleUnsubscribeClick}
