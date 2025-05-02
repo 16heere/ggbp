@@ -22,17 +22,13 @@ async function generateTelegramInviteLink() {
 }
 async function handleCheckoutSessionCompleted(session) {
     const email = session.metadata.email;
-    const password = session.metadata.password
-        ? session.metadata.password
-        : null;
-    const hashedPassword =
-        password != null ? await bcrypt.hash(password, 10) : null;
+    const password = session.metadata.password || null;
+    const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
 
-    if (!session.subscription) {
-        console.error("Missing subscription ID in session object.");
-        return;
-    }
-    const stripeSubscriptionId = session.subscription;
+    const type = session.metadata?.type || "subscription";
+    const stripeSubscriptionId =
+        session.subscription ||
+        `manual_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
 
     try {
         // Check if the user already exists
@@ -57,26 +53,15 @@ async function handleCheckoutSessionCompleted(session) {
                 // Update existing subscription
                 await db.query(
                     "UPDATE subscriptions SET stripe_subscription_id = $1, status = $2, type = $3 WHERE user_id = $4",
-                    [
-                        isSubscription ? stripeSubscriptionId : null,
-                        true,
-                        isSubscription ? "subscription" : "one-time",
-                        userId,
-                    ]
+                    [stripeSubscriptionId, true, type, userId]
                 );
                 console.log(`Subscription updated for user ${email}`);
             } else {
                 // Insert a new subscription for the existing user
                 await db.query(
                     "INSERT INTO subscriptions (user_id, stripe_subscription_id, status, type) VALUES ($1, $2, $3, $4)",
-                    [
-                        userId,
-                        isSubscription ? stripeSubscriptionId : null,
-                        true,
-                        isSubscription ? "subscription" : "one-time",
-                    ]
+                    [userId, stripeSubscriptionId, true, type]
                 );
-
                 console.log(`Subscription added for existing user ${email}`);
             }
         } else {
@@ -92,8 +77,8 @@ async function handleCheckoutSessionCompleted(session) {
 
             // Insert a new subscription for the new user
             await db.query(
-                "INSERT INTO subscriptions (user_id, stripe_subscription_id, status) VALUES ($1, $2, $3)",
-                [userId, stripeSubscriptionId, true]
+                "INSERT INTO subscriptions (user_id, stripe_subscription_id, status, type) VALUES ($1, $2, $3, $4)",
+                [userId, stripeSubscriptionId, true, type]
             );
             console.log(`New user ${email} subscribed`);
         }
@@ -105,19 +90,19 @@ async function handleCheckoutSessionCompleted(session) {
             "GGBP Telegram link",
             text,
             `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                    <h2 style="color: #007bff;">Welcome to GGBP!</h2>
-                    <p>Thank you for subscribing!</p>
-                    <blockquote style="background: #f8f9fa; padding: 10px; border-left: 5px solid #007bff;">
-                        ${text}
-                        <br>
-                        <strong>Click below to join:</strong> <br>
-                        <a href="${inviteLink}">${inviteLink}</a>
-                    </blockquote>
-                    <hr>
-                    <footer style="font-size: 12px; color: #777;">
-                        <p>Best regards,<br> GGBP Team</p>
-                    </footer>
-                </div>`
+                <h2 style="color: #007bff;">Welcome to GGBP!</h2>
+                <p>Thank you for subscribing!</p>
+                <blockquote style="background: #f8f9fa; padding: 10px; border-left: 5px solid #007bff;">
+                    ${text}
+                    <br>
+                    <strong>Click below to join:</strong> <br>
+                    <a href="${inviteLink}">${inviteLink}</a>
+                </blockquote>
+                <hr>
+                <footer style="font-size: 12px; color: #777;">
+                    <p>Best regards,<br> GGBP Team</p>
+                </footer>
+            </div>`
         );
     } catch (err) {
         console.error("Error handling course subscription:", err.message);

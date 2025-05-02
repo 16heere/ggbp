@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
     host: "smtp.mailersend.net",
     port: 587,
-    secure: false, // TLS will be used via STARTTLS
+    secure: false,
     auth: {
         user: process.env.MAILERSEND_SMTP_USERNAME,
         pass: process.env.MAILERSEND_SMTP_PASSWORD,

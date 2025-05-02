@@ -62,7 +62,9 @@ const SubscriptionFormPage = () => {
                 <h2>
                     {paymentType === "subscription"
                         ? "Monthly Plan"
-                        : "One-Time Payment"}
+                        : paymentType === "one-time"
+                          ? "One-Time Payment"
+                          : "1-1 Mentorship Plan"}
                 </h2>
 
                 <form className="subscription-form">
