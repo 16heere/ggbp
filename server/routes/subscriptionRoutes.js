@@ -109,6 +109,7 @@ router.post("/resubscribe-session", async (req, res) => {
             metadata: {
                 email: email,
                 userId: userId, // Pass user ID to metadata for webhook
+                type: "subscription",
             },
         });
 
@@ -135,6 +136,7 @@ router.post("/checkout-one-time", async (req, res) => {
             metadata: {
                 email,
                 password,
+                type: "one-time",
             },
             success_url: "https://ggbp.org.uk/login",
             cancel_url: "https://ggbp.org.uk/",
