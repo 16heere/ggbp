@@ -247,7 +247,7 @@ router.post("/webhook/nowpayments", async (req, res) => {
     const receivedHmac = req.headers["x-nowpayments-sig"];
 
     const computedHmac = crypto
-        .createHmac("sha512", IPN_SECRET)
+        .createHmac("sha512", process.env.NOWPAYMENTS_IPN_SECRET)
         .update(JSON.stringify(payload))
         .digest("hex");
 
