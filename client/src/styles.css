@@ -3059,3 +3059,107 @@ body {
 .continue-button:hover {
     background-color: #4b0082;
 }
+
+.crypto-info-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.wallet-section {
+    position: relative;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.wallet-address {
+    background: #f0f0f0;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-family: monospace;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: background-color 0.2s ease;
+}
+
+.wallet-address:hover {
+    background-color: #e0e0e0;
+}
+
+.copied-popup {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    animation: fadeOut 2s ease forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
+
+.click-to-copy-hint {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.payment-method-options {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 20px auto;
+}
+
+.payment-method-options label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        border-color 0.3s ease,
+        background-color 0.3s ease;
+    background-color: #fafafa;
+    font-weight: 500;
+    text-align: center;
+}
+
+.payment-method-options input[type="radio"] {
+    accent-color: purple;
+    transform: scale(1.1);
+}
+
+.payment-method-options label:hover {
+    border-color: #888;
+    background-color: #f0f0f0;
+}
+
+.payment-method-options label:has(input:checked) {
+    border-color: purple;
+    background-color: #f4e8ff;
+    font-weight: 600;
+}

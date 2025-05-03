@@ -8,6 +8,7 @@ const SubscriptionFormPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const paymentType = location.state?.paymentType || "subscription";
+    const { user } = useContext(UserContext);
 
     const [email, setEmail] = useState("");
     const [confirmEmail, setConfirmEmail] = useState("");
@@ -15,44 +16,70 @@ const SubscriptionFormPage = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [selectedMethod, setSelectedMethod] = useState("stripe");
     const [error, setError] = useState("");
-    const { user } = useContext(UserContext);
 
     useEffect(() => {
         if (user) navigate("/course");
     }, [user, navigate]);
 
-    const handleSubscribeNow = async () => {
+    const validateFields = () => {
         if (
             !email ||
             !confirmEmail ||
             !password ||
             !confirmPassword ||
             !isChecked
-        ) {
-            return alert("Please fill out all fields");
+        )
+            return "Please fill out all fields";
+        if (email !== confirmEmail) return "Emails do not match";
+        if (password !== confirmPassword) return "Passwords do not match";
+        return null;
+    };
+
+    const handleSubmit = async () => {
+        const validationError = validateFields();
+        if (validationError) {
+            alert(validationError);
+            return;
         }
-        if (email !== confirmEmail) return alert("Emails do not match");
-        if (password !== confirmPassword)
-            return alert("Passwords do not match");
+
+        if (selectedMethod === "crypto" && paymentType === "subscription") {
+            return alert(
+                "Crypto is not supported for subscriptions. Please use Stripe."
+            );
+        }
 
         try {
-            const endpoint =
-                paymentType === "one-time"
-                    ? "/subscription/checkout-one-time"
-                    : paymentType === "one-to-one"
-                      ? "/subscription/checkout-one-to-one"
-                      : "/subscription/create-checkout-session";
+            if (selectedMethod === "stripe") {
+                const endpoint =
+                    paymentType === "one-time"
+                        ? "/subscription/checkout-one-time"
+                        : paymentType === "one-to-one"
+                          ? "/subscription/checkout-one-to-one"
+                          : "/subscription/create-checkout-session";
 
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}${endpoint}`,
-                { email, password }
-            );
+                const response = await axios.post(
+                    `${process.env.REACT_APP_API_ENDPOINT}${endpoint}`,
+                    { email, password }
+                );
 
-            window.location.href = response.data.url;
+                window.location.href = response.data.url;
+            } else {
+                // Crypto payment only allowed for one-time and one-to-one
+                if (paymentType === "subscription") {
+                    return alert("Crypto not supported for subscriptions.");
+                }
+
+                const response = await axios.post(
+                    `${process.env.REACT_APP_API_ENDPOINT}/subscription/crypto-payment`,
+                    { email, password, paymentType }
+                );
+
+                window.location.href = response.data.url;
+            }
         } catch (error) {
-            setError(error.response?.data?.message || "Subscription failed.");
-            alert("Subscription failed. Please try again.");
+            setError(error.response?.data?.message || "Payment failed.");
         }
     };
 
@@ -67,8 +94,9 @@ const SubscriptionFormPage = () => {
                           : "1-1 Mentorship Plan"}
                 </h2>
 
+                {error && <p className="error-message">{error}</p>}
+
                 <form className="subscription-form">
-                    {error && <p className="error-message">{error}</p>}
                     <input
                         type="email"
                         placeholder="Email"
@@ -81,6 +109,7 @@ const SubscriptionFormPage = () => {
                         value={confirmEmail}
                         onChange={(e) => setConfirmEmail(e.target.value)}
                     />
+
                     <div className="password-container">
                         <input
                             type={showPassword ? "text" : "password"}
@@ -95,12 +124,14 @@ const SubscriptionFormPage = () => {
                             {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </span>
                     </div>
+
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
+
                     <div className="checkbox">
                         <input
                             type="checkbox"
@@ -113,8 +144,41 @@ const SubscriptionFormPage = () => {
                             <Link to="/terms">Terms & Conditions</Link>
                         </label>
                     </div>
-                    <button type="button" onClick={handleSubscribeNow}>
-                        Pay Now
+
+                    <div className="payment-method-options">
+                        <label>
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="stripe"
+                                checked={selectedMethod === "stripe"}
+                                onChange={() => setSelectedMethod("stripe")}
+                            />
+                            <span>💳 Pay with Stripe</span>
+                        </label>
+
+                        {paymentType !== "subscription" && (
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="crypto"
+                                    checked={selectedMethod === "crypto"}
+                                    onChange={() => setSelectedMethod("crypto")}
+                                />
+                                <span>🪙 Pay with USDT (TRC20)</span>
+                            </label>
+                        )}
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleSubmit}
+                        style={{ marginTop: "1rem" }}
+                    >
+                        {selectedMethod === "stripe"
+                            ? "Pay with Stripe"
+                            : "Pay with Crypto"}
                     </button>
                 </form>
             </div>

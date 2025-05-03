@@ -112,4 +112,5 @@ async function handleCheckoutSessionCompleted(session) {
 
 module.exports = {
     handleCheckoutSessionCompleted,
+    generateTelegramInviteLink,
 };

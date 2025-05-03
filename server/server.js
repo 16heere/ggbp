@@ -15,7 +15,7 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-    origin: "https://ggbp.org.uk",
+    origin: ["https://ggbp.org.uk", "http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
