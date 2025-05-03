@@ -3126,13 +3126,15 @@ body {
     width: 100%;
     max-width: 400px;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
     gap: 10px;
     margin: 20px auto;
 }
 
 .payment-method-options label {
-    flex: 1;
+    flex: 1 1 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -3151,6 +3153,7 @@ body {
 .payment-method-options input[type="radio"] {
     accent-color: purple;
     transform: scale(1.1);
+    margin-right: 10px;
 }
 
 .payment-method-options label:hover {
@@ -3162,4 +3165,15 @@ body {
     border-color: purple;
     background-color: #f4e8ff;
     font-weight: 600;
+}
+
+/* Responsive layout for medium+ screens */
+@media (min-width: 480px) {
+    .payment-method-options {
+        flex-direction: row;
+    }
+
+    .payment-method-options label {
+        flex: 1 1 calc(50% - 10px); /* 2 items per row with gap */
+    }
 }
