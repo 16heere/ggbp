@@ -176,7 +176,7 @@ const SubscriptionFormPage = () => {
                         onClick={handleSubmit}
                         style={{ marginTop: "1rem" }}
                     >
-                        {selectedMethod === "stripe"
+                        {(selectedMethod || "stripe") === "stripe"
                             ? "Pay with Stripe"
                             : "Pay with Crypto"}
                     </button>

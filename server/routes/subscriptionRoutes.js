@@ -2,11 +2,12 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 const db = require("../models/db");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { sendEmail } = require("../handlers/mailHandler");
 const { generateTelegramInviteLink } = require("../handlers/webhookHandlers");
 const router = express.Router();
 
-const NOWPAYMENTS_API_KEY = process.env.NOWPAYMENTS_API_KEY;
+const NOWPAYMENTS_API_KEY = process.env.NOW_PAYMENTS_API_KEY;
 const NOWPAYMENTS_API_URL = "https://api.nowpayments.io/v1/invoice";
 router.post("/create-checkout-session", async (req, res) => {
     const { email, password } = req.body;
@@ -209,8 +210,6 @@ router.post("/crypto-payment", async (req, res) => {
             return res.status(400).json({ message: "Invalid payment type." });
         }
 
-        const orderId = `user_${email}_${Date.now()}`;
-
         const response = await axios.post(
             NOWPAYMENTS_API_URL,
             {
@@ -220,10 +219,8 @@ router.post("/crypto-payment", async (req, res) => {
                 ipn_callback_url: `${process.env.BASE_URL}/webhook/nowpayments`,
                 success_url: `${process.env.BASE_URL}/login`,
                 cancel_url: `${process.env.BASE_URL}/subscribe/cancel`,
-                order_id: orderId,
+                order_id: `np_${Buffer.from(JSON.stringify({ email, password, paymentType })).toString("base64")}`,
                 is_fixed_rate: true,
-                underpaid_cover: true,
-                metadata: JSON.stringify({ email, password, paymentType }),
             },
             {
                 headers: {
@@ -259,14 +256,16 @@ router.post("/webhook/nowpayments", async (req, res) => {
         return res.status(403).end();
     }
 
-    const { payment_status, order_id, payment_id, metadata } = payload;
+    const { payment_status, order_id, payment_id } = payload;
 
-    if (payment_status !== "finished" || !metadata || !order_id)
+    if (payment_status !== "finished" || !order_id)
         return res.status(400).end();
 
     let parsed;
     try {
-        parsed = JSON.parse(metadata);
+        const base64Payload = order_id.replace(/^np_/, "");
+        const decoded = Buffer.from(base64Payload, "base64").toString("utf8");
+        parsed = JSON.parse(decoded);
     } catch {
         return res.status(400).end();
     }
