@@ -214,7 +214,7 @@ router.post("/crypto-payment", async (req, res) => {
             NOWPAYMENTS_API_URL,
             {
                 price_amount: priceAmount,
-                price_currency: "usd",
+                price_currency: "gbp",
                 pay_currency: "usdttrc20",
                 ipn_callback_url: `${process.env.BASE_URL}/webhook/nowpayments`,
                 success_url: `${process.env.BASE_URL}/login`,
