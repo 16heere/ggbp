@@ -3153,7 +3153,7 @@ body {
 .payment-method-options input[type="radio"] {
     accent-color: purple;
     transform: scale(1.1);
-    margin-right: 10px;
+    width: fit-content;
 }
 
 .payment-method-options label:hover {
