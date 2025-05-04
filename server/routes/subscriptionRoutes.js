@@ -304,7 +304,20 @@ router.post("/webhook/nowpayments", async (req, res) => {
             email,
             "GGBP Telegram Access",
             text,
-            `<p>${text}</p><a href="${inviteLink}">${inviteLink}</a>`
+            `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <h2 style="color: #007bff;">Welcome to GGBP!</h2>
+                <p>Thank you for subscribing!</p>
+                <blockquote style="background: #f8f9fa; padding: 10px; border-left: 5px solid #007bff;">
+                    ${text}
+                    <br>
+                    <strong>Click below to join:</strong> <br>
+                    <a href="${inviteLink}">${inviteLink}</a>
+                </blockquote>
+                <hr>
+                <footer style="font-size: 12px; color: #777;">
+                    <p>Best regards,<br> GGBP Team</p>
+                </footer>
+            </div>`
         );
 
         res.status(200).end();
