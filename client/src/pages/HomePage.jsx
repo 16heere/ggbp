@@ -261,7 +261,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/live-stream.jpg"
+                            src="/assets/live-stream.webp"
                             alt="Live Streams"
                             className="info-image-large"
                             loading="lazy"
@@ -287,7 +287,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/weekly-outlooks.jpg"
+                            src="/assets/weekly-outlooks.webp"
                             alt="Weekly Outlooks"
                             className="info-image-large"
                             loading="lazy"
@@ -313,7 +313,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/coin-picks.jpg"
+                            src="/assets/coin-picks.webp"
                             alt="Coin Picks"
                             className="info-image-large"
                             loading="lazy"
@@ -339,7 +339,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/market-analysis.jpg"
+                            src="/assets/market-analysis.webp"
                             alt="Market Analysis"
                             className="info-image-large"
                             loading="lazy"
@@ -365,7 +365,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/portfolio-tips.jpg"
+                            src="/assets/portfolio-tips.webp"
                             alt="Personalized Portfolio Tips"
                             className="info-image-large"
                             loading="lazy"
