@@ -75,3 +75,4 @@ node_repl_history
 
 # zip files
 .zip
+client/optimize-images.js

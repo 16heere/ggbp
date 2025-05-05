@@ -145,10 +145,13 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7594.webp"
+                            src="/assets/optimized/IMG_7594.webp"
+                            srcSet="/assets/optimized/IMG_7594-400.webp 400w, /assets/optimized/IMG_7594-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Education"
                             className="course-image"
                         />
+
                         <h4>Education</h4>
                         <p>
                             Elevate your investing skills to the next level.
@@ -169,10 +172,13 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7595.webp"
+                            src="/assets/optimized/IMG_7595.webp"
+                            srcSet="/assets/optimized/IMG_7595-400.webp 400w, /assets/optimized/IMG_7595-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Insights"
                             className="course-image"
                         />
+
                         <h4>Insights You Can Trust</h4>
                         <p>
                             Discover and invest in opportunities backed by
@@ -192,10 +198,13 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7593.webp"
+                            src="/assets/optimized/IMG_7593.webp"
+                            srcSet="/assets/optimized/IMG_7593-400.webp 400w, /assets/optimized/IMG_7593-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Market Analysis"
                             className="course-image"
                         />
+
                         <h4>Market Analysis</h4>
                         <p>
                             Safeguard your investments against unpredictable
@@ -215,10 +224,13 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/IMG_7596.webp"
+                            src="/assets/optimized/IMG_7596.webp"
+                            srcSet="/assets/optimized/IMG_7596-400.webp 400w, /assets/optimized/IMG_7596-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Network"
                             className="course-image"
                         />
+
                         <h4>Network</h4>
                         <p>
                             Collaborate and learn alongside the sharpest minds
@@ -261,11 +273,14 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/live-stream.webp"
+                            src="/assets/optimized/live-stream.webp"
+                            srcSet="/assets/optimized/live-stream-400.webp 400w, /assets/optimized/live-stream-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Live Streams"
                             className="info-image-large"
                             loading="lazy"
                         />
+
                         <div className="info-content">
                             <h4>Live Streams</h4>
                             <p>
@@ -287,11 +302,14 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/weekly-outlooks.webp"
+                            src="/assets/optimized/weekly-outlooks.webp"
+                            srcSet="/assets/optimized/weekly-outlooks-400.webp 400w, /assets/optimized/weekly-outlooks-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Weekly Outlooks"
                             className="info-image-large"
                             loading="lazy"
                         />
+
                         <div className="info-content">
                             <h4>Weekly Outlooks</h4>
                             <p>
@@ -313,11 +331,14 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/coin-picks.webp"
+                            src="/assets/optimized/coin-picks.webp"
+                            srcSet="/assets/optimized/coin-picks-400.webp 400w, /assets/optimized/coin-picks-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Coin Picks"
                             className="info-image-large"
                             loading="lazy"
                         />
+
                         <div className="info-content">
                             <h4>Coin Picks</h4>
                             <p>
@@ -339,11 +360,14 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/market-analysis.webp"
+                            src="/assets/optimized/market-analysis.webp"
+                            srcSet="/assets/optimized/market-analysis-400.webp 400w, /assets/optimized/market-analysis-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Market Analysis"
                             className="info-image-large"
                             loading="lazy"
                         />
+
                         <div className="info-content">
                             <h4>Market Analysis</h4>
                             <p>
@@ -365,11 +389,14 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/portfolio-tips.webp"
+                            src="/assets/optimized/portfolio-tips.webp"
+                            srcSet="/assets/optimized/portfolio-tips-400.webp 400w, /assets/optimized/portfolio-tips-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
                             alt="Personalized Portfolio Tips"
                             className="info-image-large"
                             loading="lazy"
                         />
+
                         <div className="info-content">
                             <h4>Personalised Portfolio Tips</h4>
                             <p>
@@ -396,7 +423,7 @@ const HomePage = () => {
                 className="reviews-container"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                transition={{ duration: 1, delay: 0.1, ease: "easeOut" }}
                 viewport={{ once: true }}
             >
                 <div className="reviews">
