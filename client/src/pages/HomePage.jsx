@@ -261,7 +261,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/live-stream.png"
+                            src="/assets/live-stream.jpg"
                             alt="Live Streams"
                             className="info-image-large"
                             loading="lazy"
@@ -287,7 +287,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/weekly-outlooks.png"
+                            src="/assets/weekly-outlooks.jpg"
                             alt="Weekly Outlooks"
                             className="info-image-large"
                             loading="lazy"
@@ -313,7 +313,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/coin-picks.png"
+                            src="/assets/coin-picks.jpg"
                             alt="Coin Picks"
                             className="info-image-large"
                             loading="lazy"
@@ -339,7 +339,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/market-analysis.png"
+                            src="/assets/market-analysis.jpg"
                             alt="Market Analysis"
                             className="info-image-large"
                             loading="lazy"
@@ -365,7 +365,7 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/portfolio-tips.png"
+                            src="/assets/portfolio-tips.jpg"
                             alt="Personalized Portfolio Tips"
                             className="info-image-large"
                             loading="lazy"
@@ -391,7 +391,7 @@ const HomePage = () => {
                 <ArticleCarousel />
             </motion.div>
             <div className="section-divider"></div>
-            
+
             <motion.div
                 className="reviews-container"
                 initial={{ opacity: 0 }}
