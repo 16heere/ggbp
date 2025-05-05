@@ -14,11 +14,19 @@ const {
 const app = express();
 
 // CORS Configuration
+const allowedOrigins = ["https://ggbp.org.uk", "https://upload.ggbp.org.uk"];
+
 const corsOptions = {
-    origin: "https://ggbp.org.uk",
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
 };
 
 // CORS Middleware
