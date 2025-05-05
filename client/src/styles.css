@@ -1269,10 +1269,10 @@ hr {
     width: 100%;
     gap: 40px; /* Increased spacing */
     padding: 50px 10px;
-    background: #f9fafb; /* Subtle light gray */
     border-radius: 12px;
     text-align: center;
     margin: 50px auto;
+    margin-top: 0;
 }
 
 .more-info-point {
@@ -2475,6 +2475,20 @@ body {
 
 .carousel-section .research-card {
     height: 600px;
+}
+
+.feature-article-title {
+    width: 100%;
+    font-size: 2rem; /* Adjust as needed */
+    background: linear-gradient(
+        90deg,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    ); /* Gradient colors */
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; /* Make the rest of the text transparent */
+    text-align: center; /* Optional: center the text */
+    margin-bottom: 20px;
 }
 
 @media (max-width: 1200px) {

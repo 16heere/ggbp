@@ -391,6 +391,7 @@ const HomePage = () => {
                 <ArticleCarousel />
             </motion.div>
             <div className="section-divider"></div>
+            
             <motion.div
                 className="reviews-container"
                 initial={{ opacity: 0 }}
