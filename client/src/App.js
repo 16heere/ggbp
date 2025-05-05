@@ -44,7 +44,6 @@ const App = () => {
                             srcSet="/assets/optimized/logo-wide-200.webp 200w, /assets/optimized/logo-wide-400.webp 400w, /assets/optimized/logo-wide-800.webp 800w"
                             sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="GGBP logo"
-                            style={{ maxWidth: "100%", height: "auto" }}
                             loading="eager"
                         />
                     </Link>
