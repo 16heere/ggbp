@@ -5,6 +5,8 @@ import Scroller from "../components/Scroller";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ArticleCarousel from "../components/ArticleCarousel";
+import Marquee from "react-fast-marquee";
+import ScrollerCard from "../components/ScrollerCard";
 
 const HomePage = () => {
     const reviews = [
@@ -91,7 +93,17 @@ const HomePage = () => {
 
     return (
         <div className="home-page">
-            <Scroller items={prices} speed="fast" direction="left" />
+            <Marquee
+                gradient={false}
+                speed={60}
+                pauseOnHover={true}
+                style={{ padding: "10px" }}
+            >
+                {prices &&
+                    prices.map((price, index) => (
+                        <ScrollerCard item={price} key={index} index={index} />
+                    ))}
+            </Marquee>
             <div className="first-info">
                 <h1>Begin Your Trading Journey</h1>
                 <div className="courses">

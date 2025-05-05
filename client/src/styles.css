@@ -1,11 +1,13 @@
 @font-face {
     font-family: "SFPROREG";
     src: url("../public/fonts/SFPRODISPLAYREGULAR.OTF") format("opentype");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "SFPROBOLD";
     src: url("../public/fonts/SFPRODISPLAYBOLD.OTF") format("opentype");
+    font-display: swap;
 }
 
 * {
@@ -3189,5 +3191,66 @@ body {
 
     .payment-method-options label {
         flex: 1 1 calc(50% - 10px); /* 2 items per row with gap */
+    }
+}
+
+.ticker-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-right: 1rem;
+    border-radius: 8px;
+    box-shadow: 5px 1px 5px rgba(0, 0, 0, 0.06);
+    gap: 1rem;
+    min-width: fit-content;
+    transition: background-color 0.2s ease;
+}
+
+.ticker-card:hover {
+    background-color: #fff;
+}
+
+.ticker-card__logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.ticker-card__pair,
+.ticker-card__price,
+.ticker-card__change {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.ticker-card__pair {
+    color: #333;
+}
+
+.ticker-card__price {
+    color: #444;
+}
+
+.ticker-card__change--up {
+    color: #28a745; /* green */
+}
+
+.ticker-card__change--down {
+    color: #dc3545; /* red */
+}
+
+/* Responsive tweak for very small screens */
+@media (max-width: 400px) {
+    .ticker-card {
+        gap: 0.6rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .ticker-card__pair,
+    .ticker-card__price,
+    .ticker-card__change {
+        font-size: 0.8rem;
     }
 }
