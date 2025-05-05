@@ -37,7 +37,7 @@ const ResearchCard = ({ article, onRemove }) => {
         <div
             className={`research-card ${
                 article.is_premium && !user?.isSubscribed ? "locked" : ""
-            } ${user?.isAdmin ? "no-blur" : ""}`}
+            } ${user?.is_admin ? "no-blur" : ""}`}
             onClick={handleClick}
         >
             <img src={article.image} alt={article.title} />
@@ -51,7 +51,7 @@ const ResearchCard = ({ article, onRemove }) => {
                     <div className="lock-icon">🔒</div>
                 </div>
             )}
-            {user?.isAdmin && (
+            {user?.is_admin && (
                 <div class="voltage-button">
                     <button
                         onClick={(e) => {

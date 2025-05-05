@@ -446,7 +446,7 @@ const CoursePage = () => {
 
     return (
         <div className="course-page">
-            {user?.isAdmin && (
+            {user?.is_admin && (
                 <AdminPanel
                     videos={videos}
                     setVideos={setVideos}
@@ -584,7 +584,7 @@ const CoursePage = () => {
                         );
                     })}
                     {user?.isSubscribed &&
-                        !user?.isAdmin &&
+                        !user?.is_admin &&
                         (user?.subscriptionType !== "one-time" ||
                             user?.subscriptionType !== "one-to-one") && (
                             <p

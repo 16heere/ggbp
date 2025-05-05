@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
                 setUser({
                     id: response.data.id,
                     email: response.data.email,
-                    isAdmin: response.data.is_admin,
+                    is_admin: response.data.is_admin,
                     isSubscribed: response.data.subscription_status,
                     subscriptionType: response.data.subscription_type, // 👈 ADD THIS
                 });

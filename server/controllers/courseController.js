@@ -47,7 +47,7 @@ const loginUser = async (req, res) => {
             user: {
                 id: user.id,
                 email: user.email,
-                isAdmin: user.is_admin,
+                is_admin: user.is_admin,
                 isSubscribed: user.subscription_status,
                 subscriptionType: user.subscription_type,
             },
@@ -188,7 +188,7 @@ const getUser = async (req, res) => {
 };
 
 const addVideo = async (req, res) => {
-    if (!req.user.isAdmin) {
+    if (!req.user.is_admin) {
         return res
             .status(403)
             .json({ message: "Access denied: Admin privileges required" });
@@ -259,7 +259,7 @@ const addVideo = async (req, res) => {
 const removeVideo = async (req, res) => {
     const { id } = req.params;
 
-    if (!req.user.isAdmin) {
+    if (!req.user.is_admin) {
         return res.status(403).json({ message: "Access denied: Admin only" });
     }
 

@@ -45,7 +45,7 @@ const ResearchPage = () => {
         <div className="research-page">
             <h1>Research Articles</h1>
             {console.log(loading)}
-            {user?.isAdmin && (
+            {user?.is_admin && (
                 <AdminResearchPanel
                     key={user.id}
                     refreshArticles={fetchArticles}
