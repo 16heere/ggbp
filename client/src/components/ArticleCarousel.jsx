@@ -73,11 +73,12 @@ const ArticleCarousel = () => {
                         transform: `translateX(-${currentIndex * (100 / 3)}%)`,
                     }}
                 >
-                    {articles.map((article, index) => (
-                        <div className="carousel-section" key={index}>
-                            <ResearchCard article={article} />
-                        </div>
-                    ))}
+                    {articles &&
+                        articles.map((article, index) => (
+                            <div className="carousel-section" key={index}>
+                                <ResearchCard article={article} />
+                            </div>
+                        ))}
                 </div>
             </div>
             <button
