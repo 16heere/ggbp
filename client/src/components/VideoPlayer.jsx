@@ -8,7 +8,7 @@ const VideoPlayer = ({ video, onWatched }) => {
         const progress =
             (videoElement.currentTime / videoElement.duration) * 100;
         // Mark as watched and notify parent
-        if (progress === 100 && !isWatched) {
+        if (progress >= 90 && !isWatched) {
             setIsWatched(true);
             onWatched(video.id, Math.floor(videoElement.duration));
         }
