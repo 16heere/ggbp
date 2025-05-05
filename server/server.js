@@ -23,6 +23,7 @@ const corsOptions = {
 
 // CORS Middleware
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(cookieParser());
 // Webhook Route (use raw bodyParser)
 app.post(
