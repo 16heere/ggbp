@@ -146,10 +146,11 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/IMG_7594.webp"
-                            srcSet="/assets/optimized/IMG_7594-400.webp 400w, /assets/optimized/IMG_7594-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/IMG_7594-200.webp 200w, /assets/optimized/IMG_7594-400.webp 400w, /assets/optimized/IMG_7594-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Education"
                             className="course-image"
+                            loading="lazy"
                         />
 
                         <h4>Education</h4>
@@ -173,10 +174,11 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/IMG_7595.webp"
-                            srcSet="/assets/optimized/IMG_7595-400.webp 400w, /assets/optimized/IMG_7595-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/IMG_7595-200.webp 200w, /assets/optimized/IMG_7595-400.webp 400w, /assets/optimized/IMG_7595-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Insights"
                             className="course-image"
+                            loading="lazy"
                         />
 
                         <h4>Insights You Can Trust</h4>
@@ -199,10 +201,11 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/IMG_7593.webp"
-                            srcSet="/assets/optimized/IMG_7593-400.webp 400w, /assets/optimized/IMG_7593-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/IMG_7593-200.webp 200w, /assets/optimized/IMG_7593-400.webp 400w, /assets/optimized/IMG_7593-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Market Analysis"
                             className="course-image"
+                            loading="lazy"
                         />
 
                         <h4>Market Analysis</h4>
@@ -225,10 +228,11 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/IMG_7596.webp"
-                            srcSet="/assets/optimized/IMG_7596-400.webp 400w, /assets/optimized/IMG_7596-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/IMG_7596-200.webp 200w, /assets/optimized/IMG_7596-400.webp 400w, /assets/optimized/IMG_7596-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Network"
                             className="course-image"
+                            loading="lazy"
                         />
 
                         <h4>Network</h4>
@@ -273,11 +277,11 @@ const HomePage = () => {
                         viewport={{ once: true }}
                     >
                         <img
-                            src="/assets/optimized/live-stream.webp"
-                            srcSet="/assets/optimized/live-stream-400.webp 400w, /assets/optimized/live-stream-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
-                            alt="Live Streams"
-                            className="info-image-large"
+                            src="/assets/optimized/IMG_7596.webp"
+                            srcSet="/assets/optimized/IMG_7596-200.webp 200w, /assets/optimized/IMG_7596-400.webp 400w, /assets/optimized/IMG_7596-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
+                            alt="Network"
+                            className="course-image"
                             loading="lazy"
                         />
 
@@ -303,8 +307,8 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/weekly-outlooks.webp"
-                            srcSet="/assets/optimized/weekly-outlooks-400.webp 400w, /assets/optimized/weekly-outlooks-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/weekly-outlooks-200.webp 200w, /assets/optimized/weekly-outlooks-400.webp 400w, /assets/optimized/weekly-outlooks-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Weekly Outlooks"
                             className="info-image-large"
                             loading="lazy"
@@ -332,8 +336,8 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/coin-picks.webp"
-                            srcSet="/assets/optimized/coin-picks-400.webp 400w, /assets/optimized/coin-picks-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/coin-picks-200.webp 200w, /assets/optimized/coin-picks-400.webp 400w, /assets/optimized/coin-picks-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Coin Picks"
                             className="info-image-large"
                             loading="lazy"
@@ -361,8 +365,8 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/market-analysis.webp"
-                            srcSet="/assets/optimized/market-analysis-400.webp 400w, /assets/optimized/market-analysis-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
+                            srcSet="/assets/optimized/market-analysis-200.webp 200w, /assets/optimized/market-analysis-400.webp 400w, /assets/optimized/market-analysis-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                             alt="Market Analysis"
                             className="info-image-large"
                             loading="lazy"
@@ -390,9 +394,9 @@ const HomePage = () => {
                     >
                         <img
                             src="/assets/optimized/portfolio-tips.webp"
-                            srcSet="/assets/optimized/portfolio-tips-400.webp 400w, /assets/optimized/portfolio-tips-800.webp 800w"
-                            sizes="(max-width: 600px) 400px, 800px"
-                            alt="Personalized Portfolio Tips"
+                            srcSet="/assets/optimized/portfolio-tips-200.webp 200w, /assets/optimized/portfolio-tips-400.webp 400w, /assets/optimized/portfolio-tips-800.webp 800w"
+                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
+                            alt="Personalised Portfolio Tips"
                             className="info-image-large"
                             loading="lazy"
                         />
