@@ -14,7 +14,11 @@ const {
 const app = express();
 
 // CORS Configuration
-const allowedOrigins = ["https://ggbp.org.uk", "https://upload.ggbp.org.uk"];
+const allowedOrigins = [
+    "https://ggbp.org.uk",
+    "https://upload.ggbp.org.uk",
+    "http://localhost:3000",
+];
 
 const corsOptions = {
     origin: function (origin, callback) {

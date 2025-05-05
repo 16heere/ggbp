@@ -446,6 +446,7 @@ const CoursePage = () => {
 
     return (
         <div className="course-page">
+            {console.log(user)}
             {user?.is_admin && (
                 <AdminPanel
                     videos={videos}
