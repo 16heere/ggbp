@@ -39,7 +39,13 @@ const App = () => {
             <header className="navbar">
                 <h1>
                     <Link to="/">
-                        <img src="/assets/ggbp LOGO white wide.png" alt="" />
+                        <img
+                            src="/assets/optimized/logo-wide.webp"
+                            srcSet="/assets/optimized/logo-wide-400.webp 400w, /assets/optimized/logo-wide-800.webp 800w"
+                            sizes="(max-width: 600px) 400px, 800px"
+                            alt="GGBP logo"
+                            loading="eager"
+                        />
                     </Link>
                 </h1>
                 <button className="hamburger" onClick={toggleSidebar}>
