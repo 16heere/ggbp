@@ -14,13 +14,18 @@ const {
 const app = express();
 
 // CORS Configuration
-const allowedOrigins = ["https://ggbp.org.uk", "https://upload.ggbp.org.uk"];
+const allowedOrigins = [
+    "https://ggbp.org.uk",
+    "https://upload.ggbp.org.uk",
+    "https://www.ggbp.org.uk",
+];
 
 const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.error("CORS error - blocked origin:", origin);
             callback(new Error("Not allowed by CORS"));
         }
     },
