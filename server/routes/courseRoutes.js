@@ -94,6 +94,12 @@ router.get("/videos/:id", protect, getVideoById);
 // Admin routes
 router.post(
     "/videos",
+    (req, res, next) => {
+        console.log("🔥 Received POST /videos");
+        console.log("Origin:", req.headers.origin);
+        console.log("Body:", req.body);
+        next();
+    },
     protect,
     adminOnly,
     upload.fields([
