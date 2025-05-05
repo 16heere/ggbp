@@ -102,10 +102,21 @@ router.post(
     },
     protect,
     adminOnly,
-    upload.fields([
-        { name: "video", maxCount: 1 },
-        { name: "powerpoint", maxCount: 1 },
-    ]),
+    (req, res, next) => {
+        upload.fields([
+            { name: "video", maxCount: 1 },
+            { name: "powerpoint", maxCount: 1 },
+        ])(req, res, function (err) {
+            if (err) {
+                console.error("❌ Upload error:", err.message);
+                return res.status(400).json({ error: err.message });
+            }
+            console.log("🔥 Authenticated upload:");
+            console.log("Body:", req.body);
+            console.log("Files:", req.files);
+            next();
+        });
+    },
     addVideo
 ); // Add a video
 router.delete("/videos/:id", protect, adminOnly, removeVideo); // Remove a video
