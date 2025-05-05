@@ -92,22 +92,10 @@ const HomePage = () => {
     return (
         <div className="home-page">
             <Scroller items={prices} speed="fast" direction="left" />
-            <motion.div
-                className="first-info"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }}
-                viewport={{ once: true }}
-            >
+            <div className="first-info">
                 <h1>Begin Your Trading Journey</h1>
-                <motion.div className="courses">
-                    <div
-                        className="course crypto-course"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        viewport={{ once: true }}
-                    >
+                <div className="courses">
+                    <div className="course crypto-course">
                         <p>
                             GGBP offers a clear and secure path to navigating
                             crypto, removing the confusion of going solo and
@@ -118,19 +106,13 @@ const HomePage = () => {
                             Get Involved
                         </button> */}
                     </div>
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
 
             <div className="course-info">
-                <motion.div
-                    className="course-info-title"
-                    initial={{ opacity: 0, y: -20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    viewport={{ once: true }}
-                >
+                <div className="course-info-title">
                     <h2>What our Program Includes</h2>
-                </motion.div>
+                </div>
 
                 <div className="course-info-points">
                     <motion.div
@@ -245,191 +227,72 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <motion.div
-                className="more-info-container"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                    duration: 1,
-                    ease: "easeInOut",
-                }}
-                viewport={{ once: true }}
-            >
-                <motion.h3
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    viewport={{ once: true }}
-                >
-                    AND MUCH MORE
-                </motion.h3>
-
+            <section className="more-info-container fade-in">
+                <h3>AND MUCH MORE</h3>
                 <div className="more-info">
-                    <motion.div
-                        className="more-info-point"
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{
-                            duration: 0.8,
-                            ease: "easeOut",
-                            delay: 0.2,
-                        }}
-                        viewport={{ once: true }}
-                    >
-                        <img
-                            src="/assets/optimized/IMG_7596.webp"
-                            srcSet="/assets/optimized/IMG_7596-200.webp 200w, /assets/optimized/IMG_7596-400.webp 400w, /assets/optimized/IMG_7596-800.webp 800w"
-                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
-                            alt="Network"
-                            className="course-image"
-                            loading="lazy"
-                        />
-
-                        <div className="info-content">
-                            <h4>Live Streams</h4>
-                            <p>
-                                Join live sessions with crypto experts and gain
-                                actionable insights.
-                            </p>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="more-info-point"
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{
-                            duration: 0.8,
-                            ease: "easeOut",
-                            delay: 0.4,
-                        }}
-                        viewport={{ once: true }}
-                    >
-                        <img
-                            src="/assets/optimized/weekly-outlooks.webp"
-                            srcSet="/assets/optimized/weekly-outlooks-200.webp 200w, /assets/optimized/weekly-outlooks-400.webp 400w, /assets/optimized/weekly-outlooks-800.webp 800w"
-                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
-                            alt="Weekly Outlooks"
-                            className="info-image-large"
-                            loading="lazy"
-                        />
-
-                        <div className="info-content">
-                            <h4>Weekly Outlooks</h4>
-                            <p>
-                                Prepare with weekly market trends and key
-                                opportunities.
-                            </p>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="more-info-point"
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{
-                            duration: 0.8,
-                            ease: "easeOut",
-                            delay: 0.6,
-                        }}
-                        viewport={{ once: true }}
-                    >
-                        <img
-                            src="/assets/optimized/coin-picks.webp"
-                            srcSet="/assets/optimized/coin-picks-200.webp 200w, /assets/optimized/coin-picks-400.webp 400w, /assets/optimized/coin-picks-800.webp 800w"
-                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
-                            alt="Coin Picks"
-                            className="info-image-large"
-                            loading="lazy"
-                        />
-
-                        <div className="info-content">
-                            <h4>Coin Picks</h4>
-                            <p>
-                                Access handpicked coin recommendations for
-                                maximum growth.
-                            </p>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="more-info-point"
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{
-                            duration: 0.8,
-                            ease: "easeOut",
-                            delay: 0.8,
-                        }}
-                        viewport={{ once: true }}
-                    >
-                        <img
-                            src="/assets/optimized/market-analysis.webp"
-                            srcSet="/assets/optimized/market-analysis-200.webp 200w, /assets/optimized/market-analysis-400.webp 400w, /assets/optimized/market-analysis-800.webp 800w"
-                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
-                            alt="Market Analysis"
-                            className="info-image-large"
-                            loading="lazy"
-                        />
-
-                        <div className="info-content">
-                            <h4>Market Analysis</h4>
-                            <p>
-                                Clear analysis of trends and macroeconomic
-                                factors.
-                            </p>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        className="more-info-point"
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{
-                            duration: 0.8,
-                            ease: "easeOut",
-                            delay: 1,
-                        }}
-                        viewport={{ once: true }}
-                    >
-                        <img
-                            src="/assets/optimized/portfolio-tips.webp"
-                            srcSet="/assets/optimized/portfolio-tips-200.webp 200w, /assets/optimized/portfolio-tips-400.webp 400w, /assets/optimized/portfolio-tips-800.webp 800w"
-                            sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
-                            alt="Personalised Portfolio Tips"
-                            className="info-image-large"
-                            loading="lazy"
-                        />
-
-                        <div className="info-content">
-                            <h4>Personalised Portfolio Tips</h4>
-                            <p>
-                                Receive tailored advice to optimise your
-                                portfolio.
-                            </p>
-                        </div>
-                    </motion.div>
+                    {[
+                        {
+                            img: "IMG_7596.webp",
+                            title: "Live Streams",
+                            desc: "Join live sessions with crypto experts and gain actionable insights.",
+                        },
+                        {
+                            img: "weekly-outlooks.webp",
+                            title: "Weekly Outlooks",
+                            desc: "Prepare with weekly market trends and key opportunities.",
+                        },
+                        {
+                            img: "coin-picks.webp",
+                            title: "Coin Picks",
+                            desc: "Access handpicked coin recommendations for maximum growth.",
+                        },
+                        {
+                            img: "market-analysis.webp",
+                            title: "Market Analysis",
+                            desc: "Clear analysis of trends and macroeconomic factors.",
+                        },
+                        {
+                            img: "portfolio-tips.webp",
+                            title: "Personalised Portfolio Tips",
+                            desc: "Receive tailored advice to optimise your portfolio.",
+                        },
+                    ].map((item, i) => (
+                        <motion.div
+                            key={i}
+                            className="more-info-point"
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{
+                                duration: 0.8,
+                                ease: "easeOut",
+                                delay: 0.2,
+                            }}
+                            viewport={{ once: true }}
+                        >
+                            <img
+                                src={`/assets/optimized/${item.img}`}
+                                srcSet={`/assets/optimized/${item.img.replace(".webp", "-200.webp")} 200w, /assets/optimized/${item.img.replace(".webp", "-400.webp")} 400w, /assets/optimized/${item.img.replace(".webp", "-800.webp")} 800w`}
+                                sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
+                                alt={item.title}
+                                className="info-image-large"
+                                loading="lazy"
+                            />
+                            <div className="info-content">
+                                <h4>{item.title}</h4>
+                                <p>{item.desc}</p>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
-            </motion.div>
+            </section>
 
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                viewport={{ once: true }}
-            >
+            <section className="featured-articles fade-in">
                 <h2 className="feature-article-title">Featured Articles</h2>
                 <ArticleCarousel />
-            </motion.div>
+            </section>
             <div className="section-divider"></div>
 
-            <motion.div
-                className="reviews-container"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.1, ease: "easeOut" }}
-                viewport={{ once: true }}
-            >
+            <section className="reviews-container fade-in">
                 <div className="reviews">
                     <h3 className="reviews-title">What Our Users Say</h3>
                     <div
@@ -441,9 +304,7 @@ const HomePage = () => {
                         <div className="carousel-inner">
                             {reviews.map((review, index) => (
                                 <div
-                                    className={`carousel-item ${
-                                        index === 0 ? "active" : ""
-                                    }`}
+                                    className={`carousel-item ${index === 0 ? "active" : ""}`}
                                     key={index}
                                 >
                                     <div className="review text-center">
@@ -484,7 +345,7 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div
-                    class="trustpilot-widget"
+                    className="trustpilot-widget"
                     data-locale="en-GB"
                     data-template-id="56278e9abfbbba0bdcd568bc"
                     data-businessunit-id="6761cdf3148b1d5d425fd96b"
@@ -499,7 +360,7 @@ const HomePage = () => {
                         Trustpilot
                     </a>
                 </div>
-            </motion.div>
+            </section>
         </div>
     );
 };
