@@ -297,10 +297,75 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <section className="featured-articles fade-in">
-                <h2 className="feature-article-title">Featured Articles</h2>
-                <ArticleCarousel />
+            <ArticleCarousel />
+
+            <section className="founders-section fade-in">
+                <h2 className="section-title text-center mb-4">
+                    Meet the Founders
+                </h2>
+                <div className="founders-container d-flex justify-content-center gap-4 flex-wrap">
+                    {[
+                        {
+                            name: "Sarven M.",
+                            role: "Co-Founder & Mentor",
+                            image: "/assets/sarven.jpeg",
+                            linkedin: "https://www.linkedin.com/in/",
+                            description:
+                                "Sarven is a co-founder of GGBP and a dedicated mentor committed to making crypto education clear, actionable, and accessible. With years of experience in trading and mentoring, Sarven focuses on building long-term success for members by combining technical analysis, risk management, and mindset coaching.",
+                        },
+                        {
+                            name: "Mikail A.",
+                            role: "Co-Founder & Strategy Lead",
+                            image: "/assets/mikail.jpeg",
+                            linkedin: "https://www.linkedin.com/in/",
+                            description:
+                                "Mikail is one of the world's leading cryptocurrency traders, who has amassed over 8 figures in cryptocurrency at the age of 20. Within GGBP, he aids students to reach similar accolodaes and change their financial situation through cryptocurrency. His education and expertise has built some of the industry's best performing traders.",
+                        },
+                        {
+                            name: "Eshar H.",
+                            role: "Lead Developer",
+                            image: "/assets/eshar.jpg",
+                            linkedin: "https://www.linkedin.com/in/",
+                            description:
+                                "Eshar engineered the entire function of GGBP from a technological perspective. He has excelled in building the GGBP platform, and actively operates in maintaining functionality. Helping to facilitate delivery of cryptocurrency's leading education & insights.",
+                        },
+                    ].map((founder, index) => (
+                        <motion.div
+                            key={index}
+                            className="founder-card text-center"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 * index }}
+                            viewport={{ once: true }}
+                        >
+                            <img
+                                src={founder.image}
+                                alt={founder.name}
+                                className="founder-image rounded-circle mb-3"
+                                loading="lazy"
+                            />
+                            <h5 className="founder-name mb-1">
+                                {founder.name}
+                            </h5>
+                            <p className="founder-role text-muted mb-2">
+                                {founder.role}
+                            </p>
+                            <p className="founder-description mb-3">
+                                {founder.description}
+                            </p>
+                            <a
+                                href={founder.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="founder-button btn btn-outline-primary btn-sm"
+                            >
+                                View LinkedIn
+                            </a>
+                        </motion.div>
+                    ))}
+                </div>
             </section>
+
             <div className="section-divider"></div>
 
             <section className="reviews-container fade-in">

@@ -55,9 +55,13 @@ h4 {
         rgba(0, 74, 173, 255)
     ); /* Blue to purple gradient */
     color: #f9fafb; /* Light text */
-    padding: 15px 50px;
+    padding: 10px 50px !important;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.navbar h1 {
+    margin: 0;
 }
 
 .navbar h1 a {
@@ -2432,6 +2436,8 @@ body {
     height: auto;
     max-width: 1200px;
     margin: auto;
+    z-index: 10000;
+    background-color: transparent;
 }
 
 .carousel-track-container {
@@ -2479,21 +2485,40 @@ body {
     height: 600px;
 }
 
-.feature-article-title {
-    width: 100%;
-    font-size: 2rem; /* Adjust as needed */
+.featured-articles {
+    padding: 50px;
+    color: #fff;
+    width: 100vw; /* Makes sure the background spans the full viewport width */
+    min-height: 500px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden; /* Ensures pseudo-element stays contained */
     background: linear-gradient(
-        90deg,
+        to right,
         rgba(202, 108, 230, 255),
         rgba(0, 74, 173, 255)
-    ); /* Gradient colors */
-    -webkit-background-clip: text; /* Clip the background to the text */
-    -webkit-text-fill-color: transparent; /* Make the rest of the text transparent */
+    );
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.feature-article-title {
+    font-size: 2.5rem;
+    color: #fff;
+    width: 100%;
     text-align: center; /* Optional: center the text */
-    margin-bottom: 20px;
+    margin-bottom: 50px;
+    letter-spacing: 1px;
 }
 
 @media (max-width: 1200px) {
+    .featured-articles {
+        display: none;
+    }
+
     .feature-article-title {
         display: none;
     }
@@ -2651,6 +2676,7 @@ body {
     .navbar {
         flex-direction: column; /* Stack links vertically */
         gap: 15px;
+        padding: 10px 20px !important;
     }
 
     .navbar nav a,
@@ -3253,4 +3279,81 @@ body {
     .ticker-card__change {
         font-size: 0.8rem;
     }
+}
+
+.section-title {
+    width: 100%;
+    font-size: 2rem;
+    background: linear-gradient(
+        90deg,
+        rgba(202, 108, 230, 255),
+        rgba(0, 74, 173, 255)
+    ); /* Gradient colors */
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; /* Make the rest of the text transparent */
+    text-align: center; /* Optional: center the text */
+    margin-bottom: 20px;
+}
+
+.founders-section {
+    padding: 60px 20px;
+}
+
+.founders-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.founder-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 30px 20px;
+    min-width: 250px;
+    max-width: 300px;
+    min-height: 400px;
+    flex: 1 1 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.founder-card:hover {
+    transform: translateY(-5px);
+}
+
+.founder-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #007bff;
+    margin-bottom: 15px;
+}
+
+.founder-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.founder-role {
+    font-size: 1rem;
+    color: #666;
+}
+
+.founder-description {
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 10px;
+    min-height: 60px;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.founder-button {
+    justify-self: flex-end;
 }
