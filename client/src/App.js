@@ -20,10 +20,11 @@ const ResearchPage = lazy(() => import("./pages/ResearchPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 const WeeklyOutlooks = lazy(() => import("./pages/WeeklyOutlooks"));
-const SubscriptionOptionPage = lazy(
-    () => import("./pages/SubscriptionOptionPage")
-);
-const SubscriptionFormPage = lazy(() => import("./pages/SubscriptionFormPage"));
+// const SubscriptionOptionPage = lazy(
+//     () => import("./pages/SubscriptionOptionPage")
+// );
+// const SubscriptionFormPage = lazy(() => import("./pages/SubscriptionFormPage"));
+const IntakeClosedPage = lazy(() => import("./pages/IntakeClosedPage"));
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
@@ -158,11 +159,11 @@ const App = () => {
                         <Route path="/login" element={<LoginPage />} />
                         <Route
                             path="/subscribe"
-                            element={<SubscriptionOptionPage />}
+                            element={<IntakeClosedPage />}
                         />
                         <Route
                             path="/subscribe/form"
-                            element={<SubscriptionFormPage />}
+                            element={<IntakeClosedPage />}
                         />
                         <Route
                             path="/resubscribe"
