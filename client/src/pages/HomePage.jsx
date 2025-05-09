@@ -309,7 +309,8 @@ const HomePage = () => {
                             name: "Sarven M.",
                             role: "Co-Founder & Mentor",
                             image: "/assets/sarven.jpeg",
-                            linkedin: "https://www.linkedin.com/in/",
+                            linkedin:
+                                "https://www.linkedin.com/in/sarven-m-257243245/",
                             description:
                                 "Sarven is a co-founder of GGBP and a dedicated mentor committed to making crypto education clear, actionable, and accessible. With years of experience in trading and mentoring, Sarven focuses on building long-term success for members by combining technical analysis, risk management, and mindset coaching.",
                         },
@@ -317,7 +318,8 @@ const HomePage = () => {
                             name: "Mikail A.",
                             role: "Co-Founder & Strategy Lead",
                             image: "/assets/mikail.jpeg",
-                            linkedin: "https://www.linkedin.com/in/",
+                            linkedin:
+                                "https://www.linkedin.com/in/mikail-anser-856b50228/",
                             description:
                                 "Mikail is one of the world's leading cryptocurrency traders, who has amassed over 8 figures in cryptocurrency at the age of 20. Within GGBP, he aids students to reach similar accolodaes and change their financial situation through cryptocurrency. His education and expertise has built some of the industry's best performing traders.",
                         },
@@ -325,7 +327,7 @@ const HomePage = () => {
                             name: "Eshar H.",
                             role: "Lead Developer",
                             image: "/assets/eshar.jpg",
-                            linkedin: "https://www.linkedin.com/in/",
+                            linkedin: "https://www.linkedin.com/in/esharheer/",
                             description:
                                 "Eshar engineered the entire function of GGBP from a technological perspective. He has excelled in building the GGBP platform, and actively operates in maintaining functionality. Helping to facilitate delivery of cryptocurrency's leading education & insights.",
                         },
