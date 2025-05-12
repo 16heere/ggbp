@@ -41,6 +41,7 @@ const CoursePage = () => {
             "advanced technical series",
             "advanced crypto series",
             "application series",
+            "day trading"
         ],
         []
     );

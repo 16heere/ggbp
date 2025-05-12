@@ -24,6 +24,7 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
         "advanced crypto series",
         "application series",
         "weekly outlooks",
+        "day trading"
     ];
 
     const groupedVideos = levels.reduce((groups, level) => {
@@ -459,6 +460,9 @@ const AdminPanel = ({ videos, setVideos, fetchVideos }) => {
                         Application Series
                     </option>
                     <option value="weekly outlooks">Weekly Outlooks</option>
+                    <option value="day trading">
+                        Day Trading
+                    </option>
                 </select>
                 <input
                     type="file"
