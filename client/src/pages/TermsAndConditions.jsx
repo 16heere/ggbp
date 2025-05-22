@@ -6,6 +6,36 @@ const TermsAndConditions = () => {
             <h1 className="terms-title">Terms and Conditions</h1>
 
             <section className="terms-section">
+                <h2 className="terms-heading">Important Disclaimer</h2>
+                <p className="terms-paragraph">
+                    GGBP is not authorised or regulated by the Financial Conduct
+                    Authority (FCA), and does not offer regulated financial
+                    services or investment advice.
+                </p>
+                <p className="terms-paragraph">
+                    All services provided by GGBP, including 1-on-1 coaching,
+                    group sessions, and electronic communications, are strictly
+                    for educational and informational purposes only. No content
+                    should be interpreted as personal or general investment
+                    advice.
+                </p>
+                <p className="terms-paragraph">
+                    Members are fully responsible for their own trading
+                    decisions, risk management, and investment outcomes.
+                    Participation in GGBP services or groups constitutes
+                    acceptance of these terms.
+                </p>
+                <p className="terms-paragraph">
+                    Any trade ideas, market commentary, or discussions shared
+                    within GGBP-managed groups or private channels (e.g.,
+                    Telegram) are for educational purposes only and do not
+                    constitute investment advice. GGBP and its representatives
+                    are not responsible for any actions taken by members based
+                    on this information.
+                </p>
+            </section>
+
+            <section className="terms-section">
                 <h2 className="terms-heading">Trading Cryptocurrencies</h2>
                 <p className="terms-paragraph">
                     Trading Cryptocurrencies on margin carries a high level of
