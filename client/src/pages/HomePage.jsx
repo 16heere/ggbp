@@ -19,7 +19,6 @@ const HomePage = () => {
             content:
                 "This service is for sure worth the money and I'd recommend it to anyone who would like to understand and truly get into the world of trading",
         },
-        { name: "Eshar Heer", content: "I wish I joined sooner" },
         {
             name: "Jessica Mitchell",
             content:
@@ -282,7 +281,16 @@ const HomePage = () => {
                         >
                             <img
                                 src={`/assets/optimized/${item.img}`}
-                                srcSet={`/assets/optimized/${item.img.replace(".webp", "-200.webp")} 200w, /assets/optimized/${item.img.replace(".webp", "-400.webp")} 400w, /assets/optimized/${item.img.replace(".webp", "-800.webp")} 800w`}
+                                srcSet={`/assets/optimized/${item.img.replace(
+                                    ".webp",
+                                    "-200.webp"
+                                )} 200w, /assets/optimized/${item.img.replace(
+                                    ".webp",
+                                    "-400.webp"
+                                )} 400w, /assets/optimized/${item.img.replace(
+                                    ".webp",
+                                    "-800.webp"
+                                )} 800w`}
                                 sizes="(max-width: 400px) 200px, (max-width: 768px) 400px, 800px"
                                 alt={item.title}
                                 className="info-image-large"
@@ -382,7 +390,9 @@ const HomePage = () => {
                         <div className="carousel-inner">
                             {reviews.map((review, index) => (
                                 <div
-                                    className={`carousel-item ${index === 0 ? "active" : ""}`}
+                                    className={`carousel-item ${
+                                        index === 0 ? "active" : ""
+                                    }`}
                                     key={index}
                                 >
                                     <div className="review text-center">
