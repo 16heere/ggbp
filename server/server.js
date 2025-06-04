@@ -74,6 +74,51 @@ app.post(
                     return res.status(500).send("Internal Server Error");
                 }
                 break;
+            case "invoice.payment_failed":
+                const failedSubId = event.data.object.subscription;
+                if (failedSubId) {
+                    try {
+                        const { rows } = await db.query(
+                            "SELECT user_id, type FROM subscriptions WHERE stripe_subscription_id = $1",
+                            [failedSubId]
+                        );
+                        if (rows.length > 0 && rows[0].type === "subscribe") {
+                            await db.query(
+                                "UPDATE subscriptions SET status = false WHERE stripe_subscription_id = $1",
+                                [failedSubId]
+                            );
+                            console.log(
+                                `❌ Subscription access revoked for user ID ${rows[0].user_id}`
+                            );
+                        }
+                    } catch (err) {
+                        console.error(
+                            "Error updating subscription after payment failure:",
+                            err.message
+                        );
+                    }
+                }
+                break;
+
+            case "invoice.payment_succeeded":
+                const succeededSubId = event.data.object.subscription;
+                if (succeededSubId) {
+                    try {
+                        await db.query(
+                            "UPDATE subscriptions SET status = true WHERE stripe_subscription_id = $1 AND type = 'subscribe'",
+                            [succeededSubId]
+                        );
+                        console.log(
+                            `✅ Subscription reactivated for Stripe ID ${succeededSubId}`
+                        );
+                    } catch (err) {
+                        console.error(
+                            "Error updating subscription after payment success:",
+                            err.message
+                        );
+                    }
+                }
+                break;
             default:
                 console.log(`Unhandled event type: ${event.type}`);
                 break;
