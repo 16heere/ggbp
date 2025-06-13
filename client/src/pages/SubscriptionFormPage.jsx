@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/userContext";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import TelegramLoginButton from "react-telegram-login";
 
 const SubscriptionFormPage = () => {
     const location = useLocation();
@@ -18,10 +19,17 @@ const SubscriptionFormPage = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [selectedMethod, setSelectedMethod] = useState("stripe");
     const [error, setError] = useState("");
+    const [telegramData, setTelegramData] = useState(null);
 
     useEffect(() => {
         if (user) navigate("/course");
     }, [user, navigate]);
+
+    const onTelegramAuth = (user) => {
+        console.log("Telegram login success:", user);
+        localStorage.setItem("telegramUser", JSON.stringify(user));
+        setTelegramData(user);
+    };
 
     const validateFields = () => {
         if (
@@ -29,7 +37,8 @@ const SubscriptionFormPage = () => {
             !confirmEmail ||
             !password ||
             !confirmPassword ||
-            !isChecked
+            !isChecked ||
+            !telegramData
         )
             return "Please fill out all fields";
         if (email !== confirmEmail) return "Emails do not match";
@@ -61,7 +70,7 @@ const SubscriptionFormPage = () => {
 
                 const response = await axios.post(
                     `${process.env.REACT_APP_API_ENDPOINT}${endpoint}`,
-                    { email, password }
+                    { email, password, telegram: telegramData }
                 );
 
                 window.location.href = response.data.url;
@@ -73,7 +82,7 @@ const SubscriptionFormPage = () => {
 
                 const response = await axios.post(
                     `${process.env.REACT_APP_API_ENDPOINT}/subscription/crypto-payment`,
-                    { email, password, paymentType }
+                    { email, password, paymentType, telegram: telegramData }
                 );
 
                 window.location.href = response.data.url;
@@ -82,7 +91,6 @@ const SubscriptionFormPage = () => {
             setError(error.response?.data?.message || "Payment failed.");
         }
     };
-
     return (
         <div className="subscription-page">
             <div className="subscription-card">
@@ -130,6 +138,11 @@ const SubscriptionFormPage = () => {
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+
+                    <TelegramLoginButton
+                        dataOnauth={onTelegramAuth}
+                        botName="ggbp_login_bot"
                     />
 
                     <div className="checkbox">

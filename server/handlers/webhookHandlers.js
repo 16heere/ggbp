@@ -23,6 +23,10 @@ async function generateTelegramInviteLink() {
 async function handleCheckoutSessionCompleted(session) {
     const email = session.metadata.email;
     const password = session.metadata.password || null;
+    const telegramId = session.metadata.telegram_id;
+    const telegramUsername = session.metadata.telegram_username;
+    const telegramName = session.metadata.telegram_name;
+
     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
 
     const type = session.metadata?.type || "subscription";
@@ -82,6 +86,13 @@ async function handleCheckoutSessionCompleted(session) {
             );
             console.log(`New user ${email} subscribed`);
         }
+
+        await db.query(
+            "UPDATE users SET telegram_id = $1, telegram_username = $2, telegram_name = $3 WHERE email = $4",
+            [telegramId, telegramUsername, telegramName, email]
+        );
+
+        console.log(`Telegram user ${telegramUsername} linked to ${email}`);
 
         const inviteLink = await generateTelegramInviteLink();
         const text = `Welcome to GGBP, you now have access to the full course on the website. Additionally you can join our premium telegram channel - ${inviteLink}`;

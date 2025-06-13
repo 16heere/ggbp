@@ -10,7 +10,7 @@ const router = express.Router();
 const NOWPAYMENTS_API_KEY = process.env.NOW_PAYMENTS_API_KEY;
 const NOWPAYMENTS_API_URL = "https://api.nowpayments.io/v1/invoice";
 router.post("/create-checkout-session", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, telegram } = req.body;
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -25,6 +25,9 @@ router.post("/create-checkout-session", async (req, res) => {
             metadata: {
                 email,
                 password,
+                telegram_id: telegram?.id || "",
+                telegram_username: telegram?.username || "",
+                telegram_name: telegram?.first_name || "",
             },
             success_url: "https://ggbp.org.uk/login",
             cancel_url: "https://ggbp.org.uk/",
@@ -128,7 +131,7 @@ router.post("/resubscribe-session", async (req, res) => {
 });
 
 router.post("/checkout-one-time", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, telegram } = req.body;
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -144,6 +147,9 @@ router.post("/checkout-one-time", async (req, res) => {
                 email,
                 password,
                 type: "one-time",
+                telegram_id: telegram?.id || "",
+                telegram_username: telegram?.username || "",
+                telegram_name: telegram?.first_name || "",
             },
             success_url: "https://ggbp.org.uk/login",
             cancel_url: "https://ggbp.org.uk/",
@@ -157,7 +163,7 @@ router.post("/checkout-one-time", async (req, res) => {
 });
 
 router.post("/checkout-one-to-one", async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, telegram } = req.body;
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -173,6 +179,9 @@ router.post("/checkout-one-to-one", async (req, res) => {
                 email,
                 password,
                 type: "one-to-one",
+                telegram_id: telegram?.id || "",
+                telegram_username: telegram?.username || "",
+                telegram_name: telegram?.first_name || "",
             },
             success_url: "https://ggbp.org.uk/login",
             cancel_url: "https://ggbp.org.uk/",
@@ -203,8 +212,8 @@ router.post("/crypto-payment", async (req, res) => {
             paymentType === "one-to-one"
                 ? 2500
                 : paymentType === "one-time"
-                  ? 1000
-                  : null;
+                ? 1000
+                : null;
 
         if (!priceAmount) {
             return res.status(400).json({ message: "Invalid payment type." });
@@ -219,7 +228,9 @@ router.post("/crypto-payment", async (req, res) => {
                 ipn_callback_url: `${process.env.BASE_URL}/webhook/nowpayments`,
                 success_url: `${process.env.BASE_URL}/login`,
                 cancel_url: `${process.env.BASE_URL}/subscribe/cancel`,
-                order_id: `np_${Buffer.from(JSON.stringify({ email, password, paymentType })).toString("base64")}`,
+                order_id: `np_${Buffer.from(
+                    JSON.stringify({ email, password, paymentType })
+                ).toString("base64")}`,
                 is_fixed_rate: true,
             },
             {
