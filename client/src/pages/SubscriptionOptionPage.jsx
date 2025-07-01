@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SubscriptionOptionPage = () => {
-    const [paymentType, setPaymentType] = useState("subscription");
+    const [paymentType, setPaymentType] = useState("one-time");
     const navigate = useNavigate();
 
     const handleNext = () => {
@@ -13,19 +13,15 @@ const SubscriptionOptionPage = () => {
         <div className="subscription-page">
             <div className="subscription-card">
                 <h2>
-                    {paymentType === "subscription"
-                        ? "Monthly Membership – £150/mo"
-                        : paymentType === "one-time"
-                          ? "Lifetime Access – £1000"
-                          : "1-1 Mentorship Package – £2500"}
+                    {paymentType === "one-time"
+                        ? "Lifetime Access – £999"
+                        : "1-1 Mentorship Package – £2500"}
                 </h2>
 
                 <p className="billing-info">
-                    {paymentType === "subscription"
-                        ? "Billed monthly, cancel anytime"
-                        : paymentType === "one-time"
-                          ? "One-time payment for full lifetime access"
-                          : "Includes full course + personal mentorship"}
+                    {paymentType === "one-time"
+                        ? "One-time payment for full lifetime access"
+                        : "Includes full course + personal mentorship"}
                 </p>
 
                 <h3 className="course-name">GGBP Course</h3>
@@ -41,16 +37,6 @@ const SubscriptionOptionPage = () => {
                 </ul>
 
                 <div className="payment-options">
-                    <label>
-                        <input
-                            type="radio"
-                            name="paymentType"
-                            value="subscription"
-                            checked={paymentType === "subscription"}
-                            onChange={() => setPaymentType("subscription")}
-                        />
-                        Monthly – £150/month
-                    </label>
                     <label>
                         <input
                             type="radio"

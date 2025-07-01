@@ -139,7 +139,7 @@ router.post("/checkout-one-time", async (req, res) => {
             mode: "payment", // one-time
             line_items: [
                 {
-                    price: "price_1RJfCJDwIDDdMRawzIbqBpkW", // replace with your one-time price
+                    price: "price_1Rg8NADwIDDdMRawlMBropzo", // replace with your one-time price
                     quantity: 1,
                 },
             ],
@@ -212,8 +212,8 @@ router.post("/crypto-payment", async (req, res) => {
             paymentType === "one-to-one"
                 ? 2500
                 : paymentType === "one-time"
-                ? 1000
-                : null;
+                  ? 1000
+                  : null;
 
         if (!priceAmount) {
             return res.status(400).json({ message: "Invalid payment type." });

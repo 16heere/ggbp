@@ -85,21 +85,11 @@ const SubscriptionPage = () => {
                         <input
                             type="radio"
                             name="paymentType"
-                            value="subscription"
-                            checked={paymentType === "subscription"}
-                            onChange={(e) => setPaymentType(e.target.value)}
-                        />
-                        Monthly (£150/month)
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="paymentType"
                             value="one-time"
                             checked={paymentType === "one-time"}
                             onChange={(e) => setPaymentType(e.target.value)}
                         />
-                        One-Time (£499 lifetime access)
+                        One-Time (£999 lifetime access)
                     </label>
                 </div>
                 <form className="subscription-form">

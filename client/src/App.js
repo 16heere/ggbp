@@ -20,10 +20,10 @@ const ResearchPage = lazy(() => import("./pages/ResearchPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 const WeeklyOutlooks = lazy(() => import("./pages/WeeklyOutlooks"));
-// const SubscriptionOptionPage = lazy(
-//     () => import("./pages/SubscriptionOptionPage")
-// );
-// const SubscriptionFormPage = lazy(() => import("./pages/SubscriptionFormPage"));
+const SubscriptionOptionPage = lazy(
+    () => import("./pages/SubscriptionOptionPage")
+);
+const SubscriptionFormPage = lazy(() => import("./pages/SubscriptionFormPage"));
 const IntakeClosedPage = lazy(() => import("./pages/IntakeClosedPage"));
 
 const App = () => {
@@ -159,11 +159,11 @@ const App = () => {
                         <Route path="/login" element={<LoginPage />} />
                         <Route
                             path="/subscribe"
-                            element={<IntakeClosedPage />}
+                            element={<SubscriptionOptionPage />}
                         />
                         <Route
                             path="/subscribe/form"
-                            element={<IntakeClosedPage />}
+                            element={<SubscriptionFormPage />}
                         />
                         <Route
                             path="/resubscribe"

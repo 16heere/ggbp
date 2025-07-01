@@ -98,7 +98,7 @@ const SubscriptionFormPage = () => {
                     {paymentType === "subscription"
                         ? "Monthly Plan"
                         : paymentType === "one-time"
-                          ? "One-Time Payment"
+                          ? "Lifetime Access"
                           : "1-1 Mentorship Plan"}
                 </h2>
 
