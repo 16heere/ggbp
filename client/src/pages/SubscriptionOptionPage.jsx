@@ -45,7 +45,7 @@ const SubscriptionOptionPage = () => {
                             checked={paymentType === "one-time"}
                             onChange={() => setPaymentType("one-time")}
                         />
-                        Lifetime Access – £1000
+                        Lifetime Access – £999
                     </label>
                     <label>
                         <input
