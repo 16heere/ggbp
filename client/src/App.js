@@ -24,7 +24,6 @@ const SubscriptionOptionPage = lazy(
     () => import("./pages/SubscriptionOptionPage")
 );
 const SubscriptionFormPage = lazy(() => import("./pages/SubscriptionFormPage"));
-const IntakeClosedPage = lazy(() => import("./pages/IntakeClosedPage"));
 
 const App = () => {
     const { user, logout } = useContext(UserContext);
