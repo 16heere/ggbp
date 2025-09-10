@@ -276,6 +276,11 @@ progress::-moz-progress-bar {
 .subscription-card > * {
     width: 100%;
 }
+
+.subscription-card p {
+    font-style: italic;
+    width: 60%;
+}
 /* Price and Billing Info */
 .subscription-card .price {
     font-size: 3rem;

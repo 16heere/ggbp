@@ -18,7 +18,7 @@ router.post("/create-checkout-session", async (req, res) => {
             mode: "subscription",
             line_items: [
                 {
-                    price: "price_1RDaQTDwIDDdMRawNl5J3Ig6",
+                    price: "price_1S5tu2DwIDDdMRawcVHOfR02",
                     quantity: 1,
                 },
             ],
@@ -212,7 +212,7 @@ router.post("/crypto-payment", async (req, res) => {
             paymentType === "one-to-one"
                 ? 2500
                 : paymentType === "one-time"
-                  ? 1000
+                  ? 999
                   : null;
 
         if (!priceAmount) {
