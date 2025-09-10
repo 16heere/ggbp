@@ -140,12 +140,6 @@ const SubscriptionOptionPage = () => {
                         keep building forever.
                     </p>
                 )}
-                {paymentType === "one-to-one" && (
-                    <p style={{ marginBottom: "20px" }}>
-                        Best for serious learners who want to invest once and
-                        keep building forever.
-                    </p>
-                )}
 
                 <div className="payment-options">
                     <label>
