@@ -89,7 +89,7 @@ const SubscriptionPage = () => {
                             checked={paymentType === "subscription"}
                             onChange={(e) => setPaymentType(e.target.value)}
                         />
-                        Monthly (£99/month)
+                        Monthly (£120/month)
                     </label>
                     <label>
                         <input

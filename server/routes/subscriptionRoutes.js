@@ -18,7 +18,7 @@ router.post("/create-checkout-session", async (req, res) => {
             mode: "subscription",
             line_items: [
                 {
-                    price: "price_1S5tu2DwIDDdMRawcVHOfR02",
+                    price: "price_1SE5CODwIDDdMRawRX90g8Zz",
                     quantity: 1,
                 },
             ],
