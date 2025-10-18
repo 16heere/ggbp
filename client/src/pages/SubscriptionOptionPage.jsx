@@ -14,7 +14,7 @@ const SubscriptionOptionPage = () => {
             <div className="subscription-card">
                 <h2>
                     {paymentType === "subscription"
-                        ? "🟦 Tier 1 - Monthly – £99/mo"
+                        ? "🟦 Tier 1 - Monthly – 120/mo"
                         : paymentType === "one-time"
                           ? "🟧 Tier 2 - Lifetime Access – £999"
                           : "🟥 Tier 3 - 1-1 Mentorship Package – £2500"}
@@ -150,7 +150,7 @@ const SubscriptionOptionPage = () => {
                             checked={paymentType === "subscription"}
                             onChange={() => setPaymentType("subscription")}
                         />
-                        Monthly £99/month
+                        Monthly £120/month
                     </label>
                     <label>
                         <input

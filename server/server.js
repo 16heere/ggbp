@@ -10,6 +10,7 @@ const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const {
     handleCheckoutSessionCompleted,
 } = require("./handlers/webhookHandlers");
+const db = require("./models/db");
 
 const app = express();
 
@@ -100,25 +101,29 @@ app.post(
                 }
                 break;
 
-            case "invoice.payment_succeeded":
-                const succeededSubId = event.data.object.subscription;
-                if (succeededSubId) {
-                    try {
-                        await db.query(
-                            "UPDATE subscriptions SET status = true WHERE stripe_subscription_id = $1 AND type = 'subscribe'",
-                            [succeededSubId]
-                        );
-                        console.log(
-                            `✅ Subscription reactivated for Stripe ID ${succeededSubId}`
-                        );
-                    } catch (err) {
-                        console.error(
-                            "Error updating subscription after payment success:",
-                            err.message
-                        );
-                    }
-                }
+            case "invoice.payment_succeeded": {
+                const invoice = event.data.object;
+
+                // Only act on subscription invoices
+                if (!invoice.subscription) break;
+
+                // Distinguish first charge vs renewal
+                // 'subscription_create' => first invoice right after checkout
+                // 'subscription_cycle'  => renewal
+                const isFirstInvoice =
+                    invoice.billing_reason === "subscription_create";
+
+                // If you already activated access on checkout.session.completed,
+                // you can skip doing it again for the first invoice:
+                if (isFirstInvoice) break;
+
+                // Otherwise (renewal/reactivation), mark active:
+                await db.query(
+                    "UPDATE subscriptions SET status = true WHERE stripe_subscription_id = $1 AND type = 'subscribe'",
+                    [invoice.subscription]
+                );
                 break;
+            }
             default:
                 console.log(`Unhandled event type: ${event.type}`);
                 break;
