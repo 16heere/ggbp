@@ -39,6 +39,8 @@ const upload = multer({
         s3: s3,
         bucket: "ggbp",
         acl: "private",
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        contentDisposition: "inline",
         key: function (req, file, cb) {
             if (file.fieldname === "video") {
                 cb(null, `videos/${Date.now()}-${file.originalname}`);
