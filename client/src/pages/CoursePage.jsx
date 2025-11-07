@@ -41,7 +41,7 @@ const CoursePage = () => {
             "advanced technical series",
             "advanced crypto series",
             "application series",
-            "day trading"
+            "day trading",
         ],
         []
     );
@@ -253,10 +253,8 @@ const CoursePage = () => {
         try {
             await axios.post(
                 `${process.env.REACT_APP_API_ENDPOINT}/courses/unsubscribe`,
-                {},
-                {
-                    withCredentials: true,
-                }
+                { userId: user.id },
+                { withCredentials: true }
             );
 
             setUser((prevUser) => ({
