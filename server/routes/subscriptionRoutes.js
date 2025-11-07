@@ -68,6 +68,7 @@ router.post("/unsubscribe", async (req, res) => {
             [userId]
         );
 
+        console.log(`User with id ${userId} unsubscribed successfully`);
         res.status(200).json({ message: "Unsubscribed successfully" });
     } catch (error) {
         console.error("Error unsubscribing:", error.message);
