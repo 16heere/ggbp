@@ -48,7 +48,7 @@ router.post("/unsubscribe", async (req, res) => {
     try {
         // Fetch user subscription details
         const user = await db.query(
-            "SELECT stripe_subscription_id FROM users WHERE id = $1",
+            "SELECT stripe_subscription_id FROM subscriptions WHERE user_id = $1",
             [userId]
         );
         if (!user.rows.length || !user.rows[0].stripe_subscription_id) {
