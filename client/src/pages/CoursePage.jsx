@@ -252,7 +252,7 @@ const CoursePage = () => {
 
         try {
             await axios.post(
-                `${process.env.REACT_APP_API_ENDPOINT}/courses/unsubscribe`,
+                `${process.env.REACT_APP_API_ENDPOINT}/subscription/unsubscribe`,
                 { userId: user.id },
                 { withCredentials: true }
             );

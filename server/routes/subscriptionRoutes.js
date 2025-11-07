@@ -43,6 +43,8 @@ router.post("/create-checkout-session", async (req, res) => {
 router.post("/unsubscribe", async (req, res) => {
     const { userId } = req.body;
 
+    console.log("Unsubscribing user with id: " + id);
+
     try {
         // Fetch user subscription details
         const user = await db.query(
